@@ -8,32 +8,30 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingOverlayWrapper.local(builder: (context) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "My Homepage",
-              ),
-              12.height,
-              ElevatedButton(
-                onPressed: () async {
-                  final c = context.overlay;
-                  c.show(text: "Processing data...");
-                  await Future.delayed(Duration(seconds: 2));
-                  c.show(text: "Saving new data!");
-                  await Future.delayed(Duration(seconds: 2));
-                  // c.hide();
-                  context.push("/chat");
-                },
-                child: Text("Start Processing"),
-              ),
-            ],
-          ),
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "My Homepage",
+            ),
+            12.height,
+            ElevatedButton(
+              onPressed: () async {
+                final c = context.overlay;
+                c.show(text: "Processing data...");
+                await Future.delayed(Duration(seconds: 2));
+                c.show(text: "Saving new data!");
+                await Future.delayed(Duration(seconds: 2));
+                // c.hide();
+                context.push("/chat");
+              },
+              child: Text("Start Processing"),
+            ),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }

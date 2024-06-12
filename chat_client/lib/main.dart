@@ -1,4 +1,4 @@
-import 'package:chat_client/src/root/root.dart';
+import 'package:chat_client/src/services/initializer/root.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

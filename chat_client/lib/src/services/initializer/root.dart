@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../app.dart';
+import '../../app.dart';
 import 'views/error_screen.dart';
 import 'views/splash_screen.dart';
 import 'controller/root_state_controller.dart';

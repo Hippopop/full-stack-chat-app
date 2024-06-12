@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 import '../animations/build_text_animation.dart';
 
@@ -44,10 +43,6 @@ class LoadingWidget extends StatelessWidget {
                   height: 20,
                 ),
                 AnimatedBuildText(text),
-                TextButton(
-                  onPressed: () {},
-                  child: Text("Check My Theme"),
-                ),
               ],
             ),
           ),
@@ -76,10 +71,9 @@ extension ParentResponsiveStateGetter on BuildContext {
     final state = findAncestorStateOfType<LoadingOverlayState>();
     if (state == null) {
       throw UnimplementedError(
-        "No parent [ResponsiveParentWrapper] "
+        "No parent [LoadingOverlayWrapper] "
         "widget found in the current widget tree!"
-        "Or the widget hasn't been built yet."
-        "Please make sure the system is ready before using value!",
+        "Please make sure you have a [LoadingOverlayWrapper] somewhere top in your widget tree!",
       );
     }
     return state;
@@ -87,32 +81,32 @@ extension ParentResponsiveStateGetter on BuildContext {
 }
 
 class LoadingOverlayWrapper {
+  const LoadingOverlayWrapper._();
+
   static Widget local({
     required WidgetBuilder builder,
     LoadingWidgetBuilder? loaderBuilder,
-  }) {
-    return _LoadingOverlayWidget(
-      builder: builder,
-      loaderBuilder: loaderBuilder,
-    );
-  }
+  }) =>
+      _LoadingOverlayWidget(
+        builder: builder,
+        loaderBuilder: loaderBuilder,
+      );
 
   static Widget global({
     ThemeData? loaderTheme,
     required WidgetBuilder builder,
     LoadingWidgetBuilder? loaderBuilder,
-  }) {
-    return MaterialApp(
-      theme: loaderTheme,
-      debugShowCheckedModeBanner: false,
-      home: Builder(builder: (context) {
-        return _LoadingOverlayWidget(
-          builder: builder,
-          loaderBuilder: loaderBuilder,
-        );
-      }),
-    );
-  }
+  }) =>
+      MaterialApp(
+        theme: loaderTheme,
+        debugShowCheckedModeBanner: false,
+        home: Builder(builder: (context) {
+          return _LoadingOverlayWidget(
+            builder: builder,
+            loaderBuilder: loaderBuilder,
+          );
+        }),
+      );
 }
 
 class _LoadingOverlayWidget extends StatefulWidget {
@@ -129,11 +123,13 @@ class LoadingOverlayState extends State<_LoadingOverlayWidget> {
 
   void show({
     required String text,
+    Color? overlayColor,
     LoadingWidgetBuilder? loaderBuilder,
   }) {
-    if ((_controller?.update(text) ?? false) && loaderBuilder == null) {
-      return;
-    } else {
+    final couldUpdateCurrentState = _controller?.update(text) ?? false;
+    final mustBuildNew = loaderBuilder == null && overlayColor == null;
+
+    if (!(couldUpdateCurrentState && mustBuildNew)) {
       _controller?.close();
       _controller = _showOverlay(
         text: text,
@@ -149,11 +145,11 @@ class LoadingOverlayState extends State<_LoadingOverlayWidget> {
 
   _LoadingOverlayController _showOverlay({
     required String text,
+    Color? overlayColor,
     LoadingWidgetBuilder? builder,
   }) {
     final textStream = StreamController<String>()..add(text);
 
-    // get the size
     final state = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
@@ -161,7 +157,7 @@ class LoadingOverlayState extends State<_LoadingOverlayWidget> {
     final overlay = OverlayEntry(
       builder: (context) {
         return Material(
-          color: Colors.black.withAlpha(150),
+          color: overlayColor ?? Colors.black.withAlpha(150),
           child: StreamBuilder<String>(
             initialData: text,
             stream: textStream.stream,
@@ -176,14 +172,15 @@ class LoadingOverlayState extends State<_LoadingOverlayWidget> {
     );
 
     state.insert(overlay);
+
     return _LoadingOverlayController(
+      update: (text) {
+        textStream.add(text);
+        return true;
+      },
       close: () {
         textStream.close();
         overlay.remove();
-        return true;
-      },
-      update: (text) {
-        textStream.add(text);
         return true;
       },
     );
@@ -191,7 +188,7 @@ class LoadingOverlayState extends State<_LoadingOverlayWidget> {
 
   @override
   void dispose() {
-    _controller?.close();
+    hide();
     super.dispose();
   }
 
@@ -205,85 +202,6 @@ class LoadingOverlayState extends State<_LoadingOverlayWidget> {
   Widget build(BuildContext context) {
     return Builder(
       builder: widget.builder,
-    );
-  }
-}
-
-class OverlayLoader {
-  // Singleton pattern!
-  OverlayLoader._sharedInstance();
-  static OverlayLoader get instance => _shared;
-  static final OverlayLoader _shared = OverlayLoader._sharedInstance();
-
-  _LoadingOverlayController? _controller;
-
-  void show({
-    BuildContext? context,
-    required String text,
-  }) {
-    if (_controller?.update(text) ?? false) {
-      return;
-    } else {
-      if (context == null) {
-        if (kDebugMode) {
-          assert(
-            false,
-            "Provide a [BuildContext] to show the overlay!",
-          );
-        }
-        return;
-      }
-      _controller = _showOverlay(
-        context: context,
-        text: text,
-      );
-    }
-  }
-
-  void hide() {
-    _controller?.close();
-    _controller = null;
-  }
-
-  _LoadingOverlayController _showOverlay({
-    required String text,
-    required BuildContext context,
-    LoadingWidgetBuilder? builder,
-  }) {
-    final textStream = StreamController<String>()..add(text);
-
-    // get the size
-    final state = Overlay.of(context);
-    final renderBox = context.findRenderObject() as RenderBox;
-    final size = renderBox.size;
-
-    final overlay = OverlayEntry(
-      builder: (context) {
-        return Material(
-          color: Colors.black.withAlpha(150),
-          child: StreamBuilder<String>(
-            initialData: text,
-            stream: textStream.stream,
-            builder: (context, snapshot) {
-              final widget = builder?.call(size, snapshot.data!);
-              return widget ?? LoadingWidget(size: size, text: snapshot.data!);
-            },
-          ),
-        );
-      },
-    );
-
-    state.insert(overlay);
-    return _LoadingOverlayController(
-      close: () {
-        textStream.close();
-        overlay.remove();
-        return true;
-      },
-      update: (text) {
-        textStream.add(text);
-        return true;
-      },
     );
   }
 }

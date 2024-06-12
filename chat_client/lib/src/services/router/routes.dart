@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/homepage/screens/homepage.dart';
-import '../../root/views/error_screen.dart';
+import '../initializer/views/error_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>(
   (ref) {
