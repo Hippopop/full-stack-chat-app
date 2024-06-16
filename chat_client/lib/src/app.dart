@@ -1,4 +1,5 @@
 import 'package:chat_client/src/utilities/dialogues/overlay_loader.dart';
+import 'package:chat_client/src/utilities/scaffold_utils/snackbar_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,6 +19,7 @@ class App extends ConsumerWidget {
         title: 'Full-Stack Chat',
         theme: themeState.currentTheme,
         debugShowCheckedModeBanner: false,
+        scaffoldMessengerKey: ScaffoldUtilities.instance.key,
       );
     });
   }

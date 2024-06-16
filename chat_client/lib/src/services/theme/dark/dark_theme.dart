@@ -8,27 +8,27 @@ const _theme = Colors.white;
 const _opposite = Colors.black;
 const _mainAccent = Color(0xFFFE9901);
 const _primaryColor = Color(0xFF00BF6D);
-const _primaryAccent = Color(0xFF1D1D35);
-const _secondaryAccent = Color(0xFF1D1D35);
+const _primaryAccent = Color(0xFFF5FCF9);
 
+const _secondaryColor = Color(0xFF1D1D35);
 const _errorColor = Color(0xFFF03738);
 const _warningColor = Color(0xFFF3BB1C);
 
-const lightThemeKey = "#BASE_LIGHT_THEME";
-final lightTheme = ThemeData.light().copyWith(
+const darkThemeKey = "#BASE_DARK_THEME";
+final darkTheme = ThemeData.dark().copyWith(
   primaryColor: _primaryColor,
-  scaffoldBackgroundColor: Colors.white,
-  appBarTheme: appBarTheme,
+  scaffoldBackgroundColor: _secondaryColor,
+  appBarTheme: appBarTheme.copyWith(backgroundColor: _secondaryColor),
   iconTheme: const IconThemeData(color: _primaryAccent),
   textTheme: GoogleFonts.interTextTheme().apply(bodyColor: _primaryAccent),
-  colorScheme: const ColorScheme.light(
-    primary: _primaryColor,
-    secondary: _mainAccent,
+  colorScheme: const ColorScheme.dark().copyWith(
     error: _errorColor,
+    primary: _primaryColor,
+    secondary: _warningColor,
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: Colors.white,
-    selectedItemColor: _primaryAccent.withOpacity(0.7),
+    backgroundColor: _secondaryColor,
+    selectedItemColor: Colors.white70,
     unselectedItemColor: _primaryAccent.withOpacity(0.32),
     selectedIconTheme: const IconThemeData(color: _primaryColor),
     showUnselectedLabels: true,
@@ -42,7 +42,7 @@ final lightTheme = ThemeData.light().copyWith(
       errorState: _errorColor,
       warningState: _warningColor,
       primaryAccent: _primaryAccent,
-      secondaryAccent: _secondaryAccent,
+      secondaryAccent: _secondaryColor,
     ),
   },
 );

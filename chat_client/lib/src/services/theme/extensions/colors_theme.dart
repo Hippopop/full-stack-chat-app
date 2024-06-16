@@ -10,7 +10,7 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
   final Color theme;
   final Color opposite;
 
-  final Color mainBackground;
+  final Color background;
   final Color primaryBackground;
   final Color secondaryBackground;
 
@@ -19,31 +19,31 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
   final Color infoState;
   final Color successState;
 
-  final Color mainText;
+  final Color text;
   final Color primaryText;
   final Color secondaryText;
 
-  final Color main;
+  final Color color;
   final Color primary;
   final Color secondary;
 
-  final Color mainSupport;
-  final Color primarySupport;
-  final Color secondarySupport;
-
-  final Color mainAccent;
+  final Color accent;
   final Color primaryAccent;
   final Color secondaryAccent;
 
-  final Color mainFirstBatch;
+  final Color support;
+  final Color primarySupport;
+  final Color secondarySupport;
+
+  final Color firstBatch;
   final Color primaryFirstBatch;
   final Color secondaryFirstBatch;
 
-  final Color mainSecondBatch;
+  final Color secondBatch;
   final Color primarySecondBatch;
   final Color secondarySecondBatch;
 
-  final Color mainThirdBatch;
+  final Color thirdBatch;
   final Color primaryThirdBatch;
   final Color secondaryThirdBatch;
 
@@ -51,38 +51,38 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
     this.extra = Colors.blueGrey,
     this.theme = Colors.blueGrey,
     this.opposite = Colors.blueGrey,
-    this.mainBackground = Colors.blueGrey,
+    this.background = Colors.blueGrey,
     this.primaryBackground = Colors.blueGrey,
     this.secondaryBackground = Colors.blueGrey,
     this.errorState = Colors.blueGrey,
     this.warningState = Colors.blueGrey,
     this.infoState = Colors.blueGrey,
     this.successState = Colors.blueGrey,
-    this.mainText = Colors.blueGrey,
+    this.text = Colors.blueGrey,
     this.primaryText = Colors.blueGrey,
     this.secondaryText = Colors.blueGrey,
-    this.main = Colors.blueGrey,
+    this.color = Colors.blueGrey,
     this.primary = Colors.blueGrey,
     this.secondary = Colors.blueGrey,
-    this.mainSupport = Colors.blueGrey,
+    this.support = Colors.blueGrey,
     this.primarySupport = Colors.blueGrey,
     this.secondarySupport = Colors.blueGrey,
-    this.mainAccent = Colors.blueGrey,
+    this.accent = Colors.blueGrey,
     this.primaryAccent = Colors.blueGrey,
     this.secondaryAccent = Colors.blueGrey,
-    this.mainFirstBatch = Colors.blueGrey,
+    this.firstBatch = Colors.blueGrey,
     this.primaryFirstBatch = Colors.blueGrey,
     this.secondaryFirstBatch = Colors.blueGrey,
-    this.mainSecondBatch = Colors.blueGrey,
+    this.secondBatch = Colors.blueGrey,
     this.primarySecondBatch = Colors.blueGrey,
     this.secondarySecondBatch = Colors.blueGrey,
-    this.mainThirdBatch = Colors.blueGrey,
+    this.thirdBatch = Colors.blueGrey,
     this.primaryThirdBatch = Colors.blueGrey,
     this.secondaryThirdBatch = Colors.blueGrey,
   });
 
   @override
-  ColorTheme copyWith({
+  ThemeExtension<ColorTheme> copyWith({
     Color? extraColor,
     Color? themeColor,
     Color? oppositeColor,
@@ -119,32 +119,32 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
       extra: extraColor ?? extra,
       theme: themeColor ?? theme,
       opposite: oppositeColor ?? opposite,
-      mainBackground: mainBackgroundColor ?? mainBackground,
+      background: mainBackgroundColor ?? background,
       primaryBackground: primaryBackgroundColor ?? primaryBackground,
       secondaryBackground: secondaryBackgroundColor ?? secondaryBackground,
       errorState: errorStateColor ?? errorState,
       warningState: warningStateColor ?? warningState,
       infoState: infoStateColor ?? infoState,
       successState: successStateColor ?? successState,
-      mainText: mainTextColor ?? mainText,
+      text: mainTextColor ?? text,
       primaryText: primaryTextColor ?? primaryText,
       secondaryText: secondaryTextColor ?? secondaryText,
-      main: mainColor ?? main,
+      color: mainColor ?? color,
       primary: primaryColor ?? primary,
       secondary: secondaryColor ?? secondary,
-      mainSupport: mainSupportColor ?? mainSupport,
+      support: mainSupportColor ?? support,
       primarySupport: primarySupportColor ?? primarySupport,
       secondarySupport: secondarySupportColor ?? secondarySupport,
-      mainAccent: mainAccentColor ?? mainAccent,
+      accent: mainAccentColor ?? accent,
       primaryAccent: primaryAccentColor ?? primaryAccent,
       secondaryAccent: secondaryAccentColor ?? secondaryAccent,
-      mainFirstBatch: mainFirstBatchColor ?? mainFirstBatch,
+      firstBatch: mainFirstBatchColor ?? firstBatch,
       primaryFirstBatch: primaryFirstBatchColor ?? primaryFirstBatch,
       secondaryFirstBatch: secondaryFirstBatchColor ?? secondaryFirstBatch,
-      mainSecondBatch: mainSecondBatchColor ?? mainSecondBatch,
+      secondBatch: mainSecondBatchColor ?? secondBatch,
       primarySecondBatch: primarySecondBatchColor ?? primarySecondBatch,
       secondarySecondBatch: secondarySecondBatchColor ?? secondarySecondBatch,
-      mainThirdBatch: mainThirdBatchColor ?? mainThirdBatch,
+      thirdBatch: mainThirdBatchColor ?? thirdBatch,
       primaryThirdBatch: primaryThirdBatchColor ?? primaryThirdBatch,
       secondaryThirdBatch: secondaryThirdBatchColor ?? secondaryThirdBatch,
     );
@@ -173,9 +173,9 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
         other.opposite,
         t,
       )!,
-      mainBackground: Color.lerp(
-        mainBackground,
-        other.mainBackground,
+      background: Color.lerp(
+        background,
+        other.background,
         t,
       )!,
       primaryBackground: Color.lerp(
@@ -208,9 +208,9 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
         other.successState,
         t,
       )!,
-      mainText: Color.lerp(
-        mainText,
-        other.mainText,
+      text: Color.lerp(
+        text,
+        other.text,
         t,
       )!,
       primaryText: Color.lerp(
@@ -223,9 +223,9 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
         other.secondaryText,
         t,
       )!,
-      main: Color.lerp(
-        main,
-        other.main,
+      color: Color.lerp(
+        color,
+        other.color,
         t,
       )!,
       primary: Color.lerp(
@@ -238,9 +238,9 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
         other.secondary,
         t,
       )!,
-      mainSupport: Color.lerp(
-        mainSupport,
-        other.mainSupport,
+      support: Color.lerp(
+        support,
+        other.support,
         t,
       )!,
       primarySupport: Color.lerp(
@@ -253,9 +253,9 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
         other.secondarySupport,
         t,
       )!,
-      mainAccent: Color.lerp(
-        mainAccent,
-        other.mainAccent,
+      accent: Color.lerp(
+        accent,
+        other.accent,
         t,
       )!,
       primaryAccent: Color.lerp(
@@ -268,9 +268,9 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
         other.secondaryAccent,
         t,
       )!,
-      mainFirstBatch: Color.lerp(
-        mainFirstBatch,
-        other.mainFirstBatch,
+      firstBatch: Color.lerp(
+        firstBatch,
+        other.firstBatch,
         t,
       )!,
       primaryFirstBatch: Color.lerp(
@@ -283,9 +283,9 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
         other.secondaryFirstBatch,
         t,
       )!,
-      mainSecondBatch: Color.lerp(
-        mainSecondBatch,
-        other.mainSecondBatch,
+      secondBatch: Color.lerp(
+        secondBatch,
+        other.secondBatch,
         t,
       )!,
       primarySecondBatch: Color.lerp(
@@ -298,9 +298,9 @@ class ColorTheme extends ThemeExtension<ColorTheme> {
         other.secondarySecondBatch,
         t,
       )!,
-      mainThirdBatch: Color.lerp(
-        mainThirdBatch,
-        other.mainThirdBatch,
+      thirdBatch: Color.lerp(
+        thirdBatch,
+        other.thirdBatch,
         t,
       )!,
       primaryThirdBatch: Color.lerp(

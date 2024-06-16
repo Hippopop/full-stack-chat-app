@@ -1,4 +1,5 @@
 import 'package:chat_client/src/features/chat_page/screens/chat_page.dart';
+import 'package:chat_client/src/features/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +17,7 @@ final goRouterProvider = Provider<GoRouter>(
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const Homepage(),
+          builder: (context, state) => const WelcomeScreen(),
         ),
         GoRoute(
           path: '/chat',
