@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'components/body.dart';
 
 class ChatScreen extends StatefulWidget {
+  static const path = "/Home";
   const ChatScreen({super.key});
 
   @override

@@ -16,11 +16,18 @@ class Body extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.fromLTRB(
-              defaultPaddingSpace, 0, defaultPaddingSpace, defaultPaddingSpace),
+            defaultPaddingSpace,
+            0,
+            defaultPaddingSpace,
+            defaultPaddingSpace,
+          ),
           color: context.color.primary,
           child: Row(
             children: [
-              FillOutlineButton(press: () {}, text: "Recent Message"),
+              FillOutlineButton(
+                press: () {},
+                text: "Recent Message",
+              ),
               const SizedBox(width: defaultPaddingSpace),
               FillOutlineButton(
                 press: () {},

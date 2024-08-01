@@ -13,24 +13,28 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // color: MediaQuery.of(context).platformBrightness == Brightness.dark
-      //     ? Colors.white
-      //     : Colors.black,
-      padding: const EdgeInsets.symmetric(
-        horizontal: defaultPaddingSpace * 0.75,
-        vertical: defaultPaddingSpace / 2,
-      ),
-      decoration: BoxDecoration(
-        color: context.color.primary.withOpacity(message!.isSender ? 1 : 0.1),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Text(
-        message!.text,
-        style: TextStyle(
-          color: message!.isSender
-              ? Colors.white
-              : Theme.of(context).textTheme.bodyLarge!.color,
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        // color: MediaQuery.of(context).platformBrightness == Brightness.dark
+        //     ? Colors.white
+        //     : Colors.black,
+        padding: const EdgeInsets.symmetric(
+          horizontal: defaultPaddingSpace * 0.75,
+          vertical: defaultPaddingSpace / 2,
+        ),
+        decoration: BoxDecoration(
+          color: context.color.primary.withOpacity(message!.isSender ? 1 : 0.1),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Text(
+          message!.text,
+          softWrap: true,
+          style: TextStyle(
+            color: message!.isSender
+                ? Colors.white
+                : Theme.of(context).textTheme.bodyLarge!.color,
+          ),
         ),
       ),
     );

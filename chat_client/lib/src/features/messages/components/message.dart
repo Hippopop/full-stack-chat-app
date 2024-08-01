@@ -43,7 +43,7 @@ class Message extends StatelessWidget {
             ),
             const SizedBox(width: defaultPaddingSpace / 2),
           ],
-          messageContains(message),
+          Expanded(child: messageContains(message)),
           if (message.isSender) MessageStatusDot(status: message.messageStatus)
         ],
       ),

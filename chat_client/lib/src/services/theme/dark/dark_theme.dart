@@ -16,6 +16,7 @@ const _warningColor = Color(0xFFF3BB1C);
 
 const darkThemeKey = "#BASE_DARK_THEME";
 final darkTheme = ThemeData.dark().copyWith(
+  useMaterial3: false,
   primaryColor: _primaryColor,
   scaffoldBackgroundColor: _secondaryColor,
   appBarTheme: appBarTheme.copyWith(backgroundColor: _secondaryColor),

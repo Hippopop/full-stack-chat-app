@@ -1,10 +1,11 @@
 import 'package:chat_client/src/constants/design/paddings.dart';
-import 'package:chat_client/src/features/signinOrSignUp/signin_or_signup_screen.dart';
-import 'package:chat_client/src/utilities/scaffold_utils/snackbar_util.dart';
 import 'package:flutter/material.dart';
 
+import '../authentication/authentication_screen.dart';
+
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+  static const path = "/Welcome";
+  const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SigninOrSignupScreen(),
+                        builder: (context) => const AuthenticationScreen(),
                       ),
                     );
                   },

@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 class ChatCard extends StatelessWidget {
   const ChatCard({
-    Key? key,
+    super.key,
     required this.chat,
     required this.press,
-  }) : super(key: key);
+  });
 
   final Chat chat;
   final VoidCallback press;
@@ -19,8 +19,9 @@ class ChatCard extends StatelessWidget {
       onTap: press,
       child: Padding(
         padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingSpace,
-            vertical: defaultPaddingSpace * 0.75),
+          horizontal: defaultPaddingSpace,
+          vertical: defaultPaddingSpace * 0.75,
+        ),
         child: Row(
           children: [
             Stack(
@@ -57,7 +58,9 @@ class ChatCard extends StatelessWidget {
                     Text(
                       chat.name,
                       style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w500),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Opacity(

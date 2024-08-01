@@ -27,7 +27,7 @@ class _ChatPageState extends State<ChatPage> {
       );
     });
 
-    Future.delayed(Duration(seconds: 2))
+    Future.delayed(const Duration(seconds: 2))
         .then((value) => context.overlay.hide());
   }
 
@@ -44,15 +44,9 @@ class _ChatPageState extends State<ChatPage> {
             12.height,
             ElevatedButton(
               onPressed: () async {
-                final c = context.overlay;
-                c.show(text: "Processing data...");
-                await Future.delayed(Duration(seconds: 2));
-                c.show(text: "Saving new data!");
-                await Future.delayed(Duration(seconds: 2));
-                c.hide();
                 context.push("/");
               },
-              child: Text("Start Processing"),
+              child: const Text("Start Processing"),
             ),
           ],
         ),

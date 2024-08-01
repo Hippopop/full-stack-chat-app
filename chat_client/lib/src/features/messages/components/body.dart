@@ -6,7 +6,9 @@ import 'chat_input_field.dart';
 import 'message.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key? key}) : super(key: key);
+  const Body({super.key, required this.messageList});
+
+  final List<ChatMessage> messageList;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +19,9 @@ class Body extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: defaultPaddingSpace),
             child: ListView.builder(
-              itemCount: demeChatMessages.length,
+              itemCount: messageList.length,
               itemBuilder: (context, index) =>
-                  Message(message: demeChatMessages[index]),
+                  Message(message: messageList[index]),
             ),
           ),
         ),

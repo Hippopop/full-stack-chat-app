@@ -16,6 +16,7 @@ const _warningColor = Color(0xFFF3BB1C);
 
 const lightThemeKey = "#BASE_LIGHT_THEME";
 final lightTheme = ThemeData.light().copyWith(
+  useMaterial3: false,
   primaryColor: _primaryColor,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: appBarTheme,
