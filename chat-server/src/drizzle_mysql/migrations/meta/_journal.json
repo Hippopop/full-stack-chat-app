@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1722639121323,
+      "tag": "20240802225201_absurd_garia",
+      "breakpoints": true
+    }
+  ]
+}
