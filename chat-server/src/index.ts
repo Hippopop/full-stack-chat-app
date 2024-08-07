@@ -1,29 +1,62 @@
 import * as dotenv from "dotenv";
+import * as path from "path";
+
+import { createClient, RedisClientType } from "redis";
+import express from "express";
 import { Server } from "socket.io";
-import { createServer } from "http";
-import express, { NextFunction, Request, Response } from "express";
+import authRoute from "./routes/auth/auth-apis";
+import tokenRoute from "./routes/token/token";
 
 dotenv.config();
 const port = process.env.PORT ?? 8080;
 
-
 const app = express();
-const httpServer = createServer(app);
+let redisClient: RedisClientType;
 
+let initRedis = async () => {
+    redisClient = createClient();
+    redisClient.on("error", (error) => console.error(`Error : ${error}`));
+    await redisClient.connect();
+};
+initRedis();
 
-const socket = new Server(httpServer, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-    }
-},);
+app.use(express.json());
+app.use(express.static(path.resolve('./public')));
 
-socket.on("connection", (socket) => {
-    console.log(`Socket on port ${port}! New connection ${socket.id}`)
+app.use("/token", tokenRoute);
+app.use("/authentication", authRoute);
 
-    socket.emit(`Welcome connection! Your ID is -> ${socket.id}`);
+app.get("/", (req, res, next) => {
+    return res.sendFile(path.resolve("./public/index.html"));
+});
+app.all("*", (req, res, next) => {
+    return res.send("<h1>Entered to a unknown World!</h1>");
 });
 
-httpServer.listen(port, () =>
-    console.log(`Listening on port ${port} // http://localhost:${port}/`)
-);
+const server = app.listen(port, () => {
+    console.log(`Listening on port ${port} // http://localhost:${port}/`);
+});
+
+
+// Socket system!
+const io = new Server(server, {
+    cors: { origin: "*" }
+});
+
+io.on("connection", (socket) => {
+    /// --- Start of connection processing!
+    console.log(`   --- Connected ${socket.id} ---   `);
+
+    /// --- Beginning of functional processing!
+    socket.emit("message", `Welcome connection! Your ID is -> ${socket.id}`);
+    socket.emit("message", `Current path is -> ${socket.handshake.url}`);
+    socket.on("message", (message) => {
+        console.log(`Message received: ${message}`);
+        socket.emit('message', `Now you can fuck off!`);
+    });
+
+    /// --- End of connection processing!
+    socket.on("disconnect", (_) => {
+        console.log(`   --- Disconnected ${socket.id} ---   `);
+    });
+});
