@@ -1,3 +1,6 @@
+import 'package:chat_client/src/features/authentication/authentication_screen.dart';
+import 'package:chat_client/src/features/authentication/login.dart';
+import 'package:chat_client/src/features/authentication/registration.dart';
 import 'package:chat_client/src/features/chats/chats_screen.dart';
 import 'package:chat_client/src/features/messages/message_screen.dart';
 import 'package:chat_client/src/features/welcome/welcome_screen.dart';
@@ -9,7 +12,7 @@ import '../initializer/views/error_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>(
   (ref) {
-    final isAuthenticated = true;
+    final isAuthenticated = false;
     final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: '#root');
     return GoRouter(
       initialLocation: ChatScreen.path,
@@ -32,8 +35,18 @@ final goRouterProvider = Provider<GoRouter>(
           builder: (context, state) => const WelcomeScreen(),
           routes: [
             GoRoute(
-              path: "login",
-              builder: (context, state) => const WelcomeScreen(),
+              path: AuthenticationScreen.path,
+              builder: (context, state) => const AuthenticationScreen(),
+              routes: [
+                GoRoute(
+                  path: LoginScreen.path,
+                  builder: (context, state) => const LoginScreen(),
+                ),
+                GoRoute(
+                  path: RegistrationScreen.path,
+                  builder: (context, state) => const RegistrationScreen(),
+                ),
+              ],
             ),
           ],
         ),

@@ -6,5 +6,8 @@ extension ThemeGetter on BuildContext {
   ThemeData get theme => Theme.of(this);
 
   ///[TextTheme] Root for this [BuildContext]!
-  TextTheme get text => theme.textTheme;
+  TextTheme get textTheme => theme.textTheme;
+
+  ///Checks if [Brightness] is dark!
+  bool get isDarkTheme => theme.brightness == Brightness.dark;
 }

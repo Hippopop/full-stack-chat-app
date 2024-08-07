@@ -1,8 +1,6 @@
-import 'dart:io';
-import 'package:socket_io_client/socket_io_client.dart' as c;
+import 'package:chat_client/src/services/socket_isolate/socket_isolate.dart';
 
 import 'package:chat_client/src/constants/design/paddings.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/ChatMessage.dart';
@@ -16,52 +14,33 @@ class MessagesScreen extends StatefulWidget {
 }
 
 class _MessagesScreenState extends State<MessagesScreen> {
-  late c.Socket ws;
+  late final SocketIsolate isolate;
   final List<ChatMessage> messages = [];
 
   @override
   void initState() {
     super.initState();
-
-    final wsUrl = (!kIsWeb && Platform.isAndroid)
-        ? ('http://10.0.2.2:8080/')
-        : ('http://localhost:8080/');
-
-    ws = c.io(
-        wsUrl,
-        c.OptionBuilder().setTransports(['websocket']) // for Flutter or Dart VM
-            .build());
-    ws.onConnect(
-      (event) {
-        messages.add(
-          ChatMessage(
-            text: "Connection initialized!",
-            messageType: ChatMessageType.text,
-            messageStatus: MessageStatus.viewed,
-            isSender: false,
-          ),
-        );
-
-        setState(() {});
-      },
-    );
-    ws.on("message", (message) {
-      messages.add(
-        ChatMessage(
-          text: message.toString(),
-          messageType: ChatMessageType.text,
-          messageStatus: MessageStatus.viewed,
-          isSender: false,
-        ),
-      );
-      setState(() {});
+    isolate = SocketIsolate.factory();
+    isolate.initiate().then((_) {
+      isolate.receiveStreamController.stream.listen(_isolateListener);
+      isolate.sendPort.send(("message", "Sending this message from mobile!"));
     });
-    ws.emit('message', "Hearing back from mobile!");
+  }
+
+  _isolateListener(msg) {
+    setState(() {
+      messages.add(ChatMessage(
+        text: msg.toString(),
+        messageType: ChatMessageType.text,
+        messageStatus: MessageStatus.viewed,
+        isSender: false,
+      ));
+    });
   }
 
   @override
   void dispose() {
-    ws.close();
+    isolate.dispose();
     super.dispose();
   }
 

@@ -1,5 +1,7 @@
 import 'package:chat_client/src/constants/design/paddings.dart';
+import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../authentication/authentication_screen.dart';
 
@@ -39,25 +41,14 @@ class WelcomeScreen extends StatelessWidget {
             const Spacer(flex: 3),
             FittedBox(
               child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AuthenticationScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: () => context.go(AuthenticationScreen.route),
                   child: Row(
                     children: [
                       Text(
                         "Skip",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .color!
-                                  .withOpacity(0.8),
-                            ),
+                        style: context.textTheme.bodyLarge!.copyWith(
+                          color: context.color.primaryAccent.withOpacity(0.8),
+                        ),
                       ),
                       const SizedBox(width: defaultPaddingSpace / 4),
                       Icon(
