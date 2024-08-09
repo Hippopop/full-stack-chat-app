@@ -1,17 +1,15 @@
 import 'package:chat_client/src/constants/assets/assets.dart';
 import 'package:chat_client/src/constants/design/paddings.dart';
-import 'package:chat_client/src/features/authentication/login.dart';
-import 'package:chat_client/src/features/authentication/registration.dart';
-import 'package:chat_client/src/features/chats/chats_screen.dart';
-import 'package:chat_client/src/features/welcome/welcome_screen.dart';
+import 'package:chat_client/src/features/authentication/screens/login.dart';
+import 'package:chat_client/src/features/authentication/screens/registration.dart';
 import 'package:chat_client/src/services/theme/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../global/widgets/primary_button.dart';
+import '../../global/widgets/primary_button.dart';
 
 class AuthenticationScreen extends StatelessWidget {
-  static const path = "Authentication";
-  static const route = "${WelcomeScreen.path}/${AuthenticationScreen.path}";
+  static const path = "/Authentication";
+  static const route = AuthenticationScreen.path;
   const AuthenticationScreen({super.key});
 
   @override

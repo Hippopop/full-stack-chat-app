@@ -1,17 +1,17 @@
 import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-import 'components/body.dart';
+import '../../chats/components/body.dart';
 
-class ChatScreen extends StatefulWidget {
+class HomepageScreen extends StatefulWidget {
   static const path = "/Home";
-  const ChatScreen({super.key});
+  const HomepageScreen({super.key});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<HomepageScreen> createState() => _HomepageScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _HomepageScreenState extends State<HomepageScreen> {
   int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {

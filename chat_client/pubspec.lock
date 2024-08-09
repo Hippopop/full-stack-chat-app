@@ -217,6 +217,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.6"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      sha256: e17f6b3097b8c51b72c74c9f071a605c47bcc8893839bd66732457a5ebe73714
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.5.0+1"
+  dio_web_adapter:
+    dependency: transitive
+    description:
+      name: dio_web_adapter
+      sha256: "36c5b2d79eb17cdae41e974b7a8284fec631651d2a6f39a8a2ff22327e90aeac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -296,6 +312,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
+  fresh:
+    dependency: transitive
+    description:
+      name: fresh
+      sha256: "9d345f48d4685781a5d8768b05634a0b2a46dfacec42c4b9d4b49ebe5127ef2e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.3"
+  fresh_dio:
+    dependency: "direct main"
+    description:
+      name: fresh_dio
+      sha256: afa3cc9fe6189ec22d0f9a936f01c8e6724e9801b610d4709bd39945890e22ad
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.2"
   frontend_server_client:
     dependency: transitive
     description:
@@ -385,7 +417,7 @@ packages:
     source: hosted
     version: "3.2.1"
   http_parser:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http_parser
       sha256: "2aa08ce0341cc9b354a498388e30986515406668dbcc4f7c950c3e715496693b"

@@ -1,4 +1,4 @@
-import 'package:chat_client/src/features/authentication/authentication_screen.dart';
+import 'package:chat_client/src/features/authentication/screens/authentication_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatelessWidget {

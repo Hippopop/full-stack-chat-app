@@ -5,6 +5,10 @@
             "type": "dart",
             "request": "launch",
             "name": "chat_client",
+            "args": [
+                "--dart-define-from-file",
+                "server/config.json",
+            ],
             // "preLaunchTask": "RUN_SERVER_PYTHON",
         },
         {

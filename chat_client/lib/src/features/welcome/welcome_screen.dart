@@ -3,7 +3,7 @@ import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../authentication/authentication_screen.dart';
+import '../authentication/screens/authentication_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const path = "/Welcome";

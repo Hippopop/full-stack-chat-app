@@ -1,7 +1,7 @@
-import 'package:chat_client/src/features/authentication/authentication_screen.dart';
-import 'package:chat_client/src/features/authentication/login.dart';
-import 'package:chat_client/src/features/authentication/registration.dart';
-import 'package:chat_client/src/features/chats/chats_screen.dart';
+import 'package:chat_client/src/features/authentication/screens/authentication_screen.dart';
+import 'package:chat_client/src/features/authentication/screens/login.dart';
+import 'package:chat_client/src/features/authentication/screens/registration.dart';
+import 'package:chat_client/src/features/homepage/screens/homepage_screen.dart';
 import 'package:chat_client/src/features/messages/message_screen.dart';
 import 'package:chat_client/src/features/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +15,11 @@ final goRouterProvider = Provider<GoRouter>(
     final isAuthenticated = false;
     final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: '#root');
     return GoRouter(
-      initialLocation: ChatScreen.path,
+      initialLocation: HomepageScreen.path,
       debugLogDiagnostics: true,
       navigatorKey: rootNavigatorKey,
       redirect: (context, state) async {
-        final isHome = state.matchedLocation == ChatScreen.path;
+        final isHome = state.matchedLocation == HomepageScreen.path;
         if (isHome && !isAuthenticated) {
           return WelcomeScreen.path;
         }
@@ -27,26 +27,29 @@ final goRouterProvider = Provider<GoRouter>(
       },
       routes: [
         GoRoute(
-          path: ChatScreen.path,
-          builder: (context, state) => const ChatScreen(),
+          name: '$HomepageScreen',
+          path: HomepageScreen.path,
+          builder: (context, state) => const HomepageScreen(),
         ),
         GoRoute(
+          name: '$WelcomeScreen',
           path: WelcomeScreen.path,
           builder: (context, state) => const WelcomeScreen(),
+        ),
+        GoRoute(
+          name: '$AuthenticationScreen',
+          path: AuthenticationScreen.path,
+          builder: (context, state) => const AuthenticationScreen(),
           routes: [
             GoRoute(
-              path: AuthenticationScreen.path,
-              builder: (context, state) => const AuthenticationScreen(),
-              routes: [
-                GoRoute(
-                  path: LoginScreen.path,
-                  builder: (context, state) => const LoginScreen(),
-                ),
-                GoRoute(
-                  path: RegistrationScreen.path,
-                  builder: (context, state) => const RegistrationScreen(),
-                ),
-              ],
+              name: '$LoginScreen',
+              path: LoginScreen.path,
+              builder: (context, state) => const LoginScreen(),
+            ),
+            GoRoute(
+              name: '$RegistrationScreen',
+              path: RegistrationScreen.path,
+              builder: (context, state) => const RegistrationScreen(),
             ),
           ],
         ),

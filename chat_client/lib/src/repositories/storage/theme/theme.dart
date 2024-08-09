@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/theme/theme_config.dart';
-import '../config/hive_config.dart';
+import '../source/hive_config.dart';
 
 class ThemeStorage {
   const ThemeStorage();
