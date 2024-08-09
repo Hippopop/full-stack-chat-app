@@ -1,4 +1,4 @@
-import 'package:chat_client/src/repositories/storage/config/hive_config.dart';
+import 'package:chat_client/src/repositories/storage/source/hive_config.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class LocalRepo<T, Y> {

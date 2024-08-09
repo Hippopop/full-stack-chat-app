@@ -10,10 +10,10 @@ type Attachment = {
 };
 
 export const messages = mysqlTable('messages', {
-    uuid: varchar('uuid', { length: 256 }).notNull().unique(),
+    key: varchar('key', { length: 256 }).notNull().unique(),
     text: text('text'),
     voiceNote: varchar('voice_note', { length: 256 }),
-    parent: varchar('parent', { length: 256 }).references((): AnyMySqlColumn => messages.uuid),
+    parent: varchar('parent', { length: 256 }).references((): AnyMySqlColumn => messages.key),
     sender: varchar('sender', { length: 256 }).notNull().references(() => users.uuid),
     receiver: varchar('receiver', { length: 256 }).notNull().references(() => users.uuid),
     attachment: json('attachment').$type<Attachment>(),

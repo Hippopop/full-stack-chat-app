@@ -1,9 +1,69 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "7f0dfbdf-b108-40f1-9463-d7129c808090",
+  "id": "d3a3eb60-3efb-4505-bdb1-81c685c0e982",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "activities": {
+      "name": "activities",
+      "columns": {
+        "user": {
+          "name": "user",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "activities_user_authentication_uuid_fk": {
+          "name": "activities_user_authentication_uuid_fk",
+          "tableFrom": "activities",
+          "tableTo": "authentication",
+          "columnsFrom": [
+            "user"
+          ],
+          "columnsTo": [
+            "uuid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "activities_user_unique": {
+          "name": "activities_user_unique",
+          "columns": [
+            "user"
+          ]
+        }
+      }
+    },
     "authentication": {
       "name": "authentication",
       "columns": {
@@ -98,11 +158,258 @@
         }
       }
     },
+    "connections": {
+      "name": "connections",
+      "columns": {
+        "key": {
+          "name": "key",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user_one": {
+          "name": "user_one",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_two": {
+          "name": "user_two",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "last_message": {
+          "name": "last_message",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "connections_user_one_authentication_uuid_fk": {
+          "name": "connections_user_one_authentication_uuid_fk",
+          "tableFrom": "connections",
+          "tableTo": "authentication",
+          "columnsFrom": [
+            "user_one"
+          ],
+          "columnsTo": [
+            "uuid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "connections_user_two_authentication_uuid_fk": {
+          "name": "connections_user_two_authentication_uuid_fk",
+          "tableFrom": "connections",
+          "tableTo": "authentication",
+          "columnsFrom": [
+            "user_two"
+          ],
+          "columnsTo": [
+            "uuid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "connections_last_message_messages_key_fk": {
+          "name": "connections_last_message_messages_key_fk",
+          "tableFrom": "connections",
+          "tableTo": "messages",
+          "columnsFrom": [
+            "last_message"
+          ],
+          "columnsTo": [
+            "key"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "connections_key": {
+          "name": "connections_key",
+          "columns": [
+            "key"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "connections_last_message_unique": {
+          "name": "connections_last_message_unique",
+          "columns": [
+            "last_message"
+          ]
+        },
+        "connections_user_one_user_two_unique": {
+          "name": "connections_user_one_user_two_unique",
+          "columns": [
+            "user_one",
+            "user_two"
+          ]
+        },
+        "unique_combination": {
+          "name": "unique_combination",
+          "columns": [
+            "user_one",
+            "user_two"
+          ]
+        }
+      }
+    },
+    "medias": {
+      "name": "medias",
+      "columns": {
+        "key": {
+          "name": "key",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "extension": {
+          "name": "extension",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "message": {
+          "name": "message",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "enum('profile','photo','video','voice_note')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "uuid": {
+          "name": "uuid",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "medias_message_messages_key_fk": {
+          "name": "medias_message_messages_key_fk",
+          "tableFrom": "medias",
+          "tableTo": "messages",
+          "columnsFrom": [
+            "message"
+          ],
+          "columnsTo": [
+            "key"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "medias_uuid_authentication_uuid_fk": {
+          "name": "medias_uuid_authentication_uuid_fk",
+          "tableFrom": "medias",
+          "tableTo": "authentication",
+          "columnsFrom": [
+            "uuid"
+          ],
+          "columnsTo": [
+            "uuid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "medias_key": {
+          "name": "medias_key",
+          "columns": [
+            "key"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "medias_uuid_unique": {
+          "name": "medias_uuid_unique",
+          "columns": [
+            "uuid"
+          ]
+        },
+        "medias_uuid_name_type_message_unique": {
+          "name": "medias_uuid_name_type_message_unique",
+          "columns": [
+            "uuid",
+            "name",
+            "type",
+            "message"
+          ]
+        },
+        "unique_combination": {
+          "name": "unique_combination",
+          "columns": [
+            "uuid",
+            "name",
+            "type",
+            "message"
+          ]
+        }
+      }
+    },
     "messages": {
       "name": "messages",
       "columns": {
-        "uuid": {
-          "name": "uuid",
+        "key": {
+          "name": "key",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true,
@@ -183,15 +490,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "messages_parent_messages_uuid_fk": {
-          "name": "messages_parent_messages_uuid_fk",
+        "messages_parent_messages_key_fk": {
+          "name": "messages_parent_messages_key_fk",
           "tableFrom": "messages",
           "tableTo": "messages",
           "columnsFrom": [
             "parent"
           ],
           "columnsTo": [
-            "uuid"
+            "key"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -225,10 +532,10 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "messages_uuid_unique": {
-          "name": "messages_uuid_unique",
+        "messages_key_unique": {
+          "name": "messages_key_unique",
           "columns": [
-            "uuid"
+            "key"
           ]
         }
       }

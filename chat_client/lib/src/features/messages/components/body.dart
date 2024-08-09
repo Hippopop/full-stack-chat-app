@@ -1,5 +1,5 @@
 import 'package:chat_client/src/constants/design/paddings.dart';
-import 'package:chat_client/src/data/models/ChatMessage.dart';
+import 'package:chat_client/src/data/models/chat_message.dart';
 import 'package:flutter/material.dart';
 
 import 'chat_input_field.dart';

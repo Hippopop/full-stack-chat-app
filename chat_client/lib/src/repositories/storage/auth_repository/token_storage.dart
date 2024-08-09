@@ -1,4 +1,4 @@
-import 'package:chat_client/src/repositories/storage/config/hive_config.dart';
+import 'package:chat_client/src/repositories/storage/source/hive_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fresh_dio/fresh_dio.dart';
 import 'package:hive/hive.dart';

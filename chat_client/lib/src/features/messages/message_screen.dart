@@ -3,7 +3,7 @@ import 'package:chat_client/src/services/socket_isolate/socket_isolate.dart';
 import 'package:chat_client/src/constants/design/paddings.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/models/ChatMessage.dart';
+import '../../data/models/chat_message.dart';
 import 'components/body.dart';
 
 class MessagesScreen extends StatefulWidget {

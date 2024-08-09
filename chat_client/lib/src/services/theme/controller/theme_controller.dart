@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../data/local/theme/theme.dart';
+import '../../../repositories/storage/theme/theme.dart';
 import 'theme_state/app_theme_state.dart';
 
 final themeStateProvider = NotifierProvider<ThemeController, AppThemeState>(
