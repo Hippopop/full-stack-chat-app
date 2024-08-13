@@ -14,12 +14,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../controllers/login_controller.dart';
+import 'authentication_screen.dart';
 import 'registration_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-  static const route = "/login";
-
+  static const path = "Login";
+  static const route = "${AuthenticationScreen.route}/$path";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +116,7 @@ class _VerticalLoginAreaState extends State<VerticalLoginArea> {
                     Text(
                       "Hello again, you've been missed!",
                       style: context.textTheme.labelMedium?.copyWith(
-                        color: context.color.background,
+                        color: context.color.text.withOpacity(0.8),
                       ),
                     ),
                     50.height,
@@ -217,35 +218,35 @@ class _VerticalLoginAreaState extends State<VerticalLoginArea> {
                       ],
                     ),
                     16.height,
-                    Builder(builder: (context) {
-                      return FilledButton(
-                        onPressed: () async {
-                          final formState = Form.of(context).validate();
-                          if (formState) {
-                            final controller = ref.read(
-                              loginControllerProvider.notifier,
-                            );
-                            controller.attemptLogin();
-                          }
-                        },
-                        child: provider.isLoading
-                            ? const Padding(
-                                padding: vertical8,
-                                child: SizedBox.square(
-                                  dimension: 24,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
+                    Builder(
+                      builder: (context) {
+                        return FilledButton(
+                          onPressed: () async {
+                            final formState = Form.of(context).validate();
+                            if (formState) {
+                              final controller = ref.read(
+                                loginControllerProvider.notifier,
+                              );
+                              controller.attemptLogin();
+                            }
+                          },
+                          child: provider.isLoading
+                              ? const Padding(
+                                  padding: vertical8,
+                                  child: SizedBox.square(
+                                    dimension: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
                                   ),
+                                )
+                              : const Padding(
+                                  padding: vertical8,
+                                  child: Text("Login"),
                                 ),
-                              )
-                            : const Padding(
-                                padding: vertical8,
-                                child: Text(
-                                  "Login",
-                                ),
-                              ),
-                      );
-                    }),
+                        );
+                      },
+                    ),
                     18.height,
                     Row(
                       children: [
@@ -257,7 +258,7 @@ class _VerticalLoginAreaState extends State<VerticalLoginArea> {
                           child: Text(
                             "Or With",
                             style: context.textTheme.labelMedium?.copyWith(
-                              color: context.color.secondaryText,
+                              color: context.color.accent,
                             ),
                           ),
                         ),
@@ -278,7 +279,7 @@ class _VerticalLoginAreaState extends State<VerticalLoginArea> {
                                 dimension: 24,
                                 child: Padding(
                                   padding: all3,
-                                  child: Image.asset(IconAssets.logoDarkSVG),
+                                  child: Image.asset(IconAssets.facebook),
                                 ),
                               ),
                             ),
@@ -295,7 +296,7 @@ class _VerticalLoginAreaState extends State<VerticalLoginArea> {
                                 dimension: 24,
                                 child: Padding(
                                   padding: all3,
-                                  child: Image.asset(IconAssets.logoDarkSVG),
+                                  child: Image.asset(IconAssets.google),
                                 ),
                               ),
                             ),
@@ -314,10 +315,10 @@ class _VerticalLoginAreaState extends State<VerticalLoginArea> {
                             TextSpan(
                               text: "Register.",
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () =>
-                                    context.push(RegistrationScreen.route),
+                                ..onTap =
+                                    () => context.go(RegistrationScreen.route),
                               style: TextStyle(
-                                color: context.color.secondBatch,
+                                color: context.color.primary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

@@ -1,7 +1,6 @@
 import 'package:chat_client/src/constants/assets/assets.dart';
 import 'package:chat_client/src/constants/design/paddings.dart';
 import 'package:chat_client/src/features/authentication/controllers/registration_controller.dart';
-import 'package:chat_client/src/features/authentication/screens/login.dart';
 import 'package:chat_client/src/global/widgets/custom_titled_textfield.dart';
 import 'package:chat_client/src/global/widgets/image_button_avatar.dart';
 import 'package:chat_client/src/global/widgets/responsive_two_sided_card.dart';
@@ -17,10 +16,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'authentication_screen.dart';
+import 'login_screen.dart';
+
 class RegistrationScreen extends StatelessWidget {
   const RegistrationScreen({super.key});
-  static const route = "/registration";
-
+  static const path = "Registration";
+  static const route = "${AuthenticationScreen.route}/$path";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,14 +132,14 @@ class _VerticalRegistrationAreaState extends State<VerticalRegistrationArea> {
                       Text(
                         "Start a organized life today.",
                         style: context.textTheme.labelMedium?.copyWith(
-                          color: context.color.accent,
+                          color: context.color.text.withOpacity(0.8),
                         ),
                       ),
                       25.height,
                     ],
                     Center(
                       child: ImageAvatarWithButton(
-                        assetPath: ImageAssets.logoDark,
+                        assetPath: ImageAssets.profile,
                         filePath: registrationState.imagePath?.imageData,
                         onAddClick: () async {
                           final picker = ImagePicker();
@@ -328,7 +330,7 @@ class _VerticalRegistrationAreaState extends State<VerticalRegistrationArea> {
                             child: Text(
                               "Or With",
                               style: context.textTheme.labelMedium?.copyWith(
-                                color: context.color.secondaryText,
+                                color: context.color.accent,
                               ),
                             ),
                           ),
@@ -349,7 +351,7 @@ class _VerticalRegistrationAreaState extends State<VerticalRegistrationArea> {
                                   dimension: 24,
                                   child: Padding(
                                     padding: all3,
-                                    child: Image.asset(IconAssets.logoDarkSVG),
+                                    child: Image.asset(IconAssets.facebook),
                                   ),
                                 ),
                               ),
@@ -366,7 +368,7 @@ class _VerticalRegistrationAreaState extends State<VerticalRegistrationArea> {
                                   dimension: 24,
                                   child: Padding(
                                     padding: all3,
-                                    child: Image.asset(IconAssets.logoDarkSVG),
+                                    child: Image.asset(IconAssets.google),
                                   ),
                                 ),
                               ),

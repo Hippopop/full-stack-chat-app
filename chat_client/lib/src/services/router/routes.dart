@@ -1,9 +1,9 @@
 import 'package:chat_client/src/features/authentication/screens/authentication_screen.dart';
-import 'package:chat_client/src/features/authentication/screens/login.dart';
-import 'package:chat_client/src/features/authentication/screens/registration.dart';
+import 'package:chat_client/src/features/authentication/screens/login_screen.dart';
+import 'package:chat_client/src/features/authentication/screens/registration_screen.dart';
 import 'package:chat_client/src/features/homepage/screens/homepage_screen.dart';
-import 'package:chat_client/src/features/messages/message_screen.dart';
 import 'package:chat_client/src/features/welcome/welcome_screen.dart';
+import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +12,7 @@ import '../initializer/views/error_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>(
   (ref) {
-    final isAuthenticated = false;
+    final authState = ref.watch(authStateNotifierProvider);
     final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: '#root');
     return GoRouter(
       initialLocation: HomepageScreen.path,
@@ -20,7 +20,7 @@ final goRouterProvider = Provider<GoRouter>(
       navigatorKey: rootNavigatorKey,
       redirect: (context, state) async {
         final isHome = state.matchedLocation == HomepageScreen.path;
-        if (isHome && !isAuthenticated) {
+        if (isHome && !authState.isAuthenticated) {
           return WelcomeScreen.path;
         }
         return state.matchedLocation;

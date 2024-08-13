@@ -2,6 +2,7 @@ import 'package:chat_client/src/data/auth_provider/auth_repository_provider.dart
 import 'package:chat_client/src/repositories/server/auth_repository/auth_repository.dart';
 import 'package:chat_client/src/repositories/server/source/config_provider.dart';
 import 'package:chat_client/src/repositories/server/source/helpers/request_handler_provider.dart';
+import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/registration_model/registration_state.dart';
@@ -106,6 +107,9 @@ class RegistrationStateNotifier extends AsyncNotifier<RegistrationState> {
         image: currentValue.imagePath,
       );
       if (res.isSuccess) {
+        final notifier = ref.read(authStateNotifierProvider.notifier);
+        await notifier.saveUserToken(res.data!.token);
+        await notifier.saveAppUser(res.data!.user);
         return currentValue.copyWith(
           authorized: true,
           responseMsg: (level: 1, msg: res.msg),

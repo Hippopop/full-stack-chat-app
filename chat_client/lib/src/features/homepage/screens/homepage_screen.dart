@@ -1,5 +1,8 @@
+import 'package:chat_client/src/constants/server/api_config.dart';
+import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../chats/components/body.dart';
 
@@ -26,11 +29,14 @@ class _HomepageScreenState extends State<HomepageScreen> {
           color: Colors.white,
         ),
       ),
-      bottomNavigationBar: buildBottomNavigationBar(),
+      bottomNavigationBar: Consumer(builder: (context, ref, _) {
+        return buildBottomNavigationBar(ref);
+      }),
     );
   }
 
-  BottomNavigationBar buildBottomNavigationBar() {
+  BottomNavigationBar buildBottomNavigationBar(WidgetRef ref) {
+    final state = ref.watch(authStateNotifierProvider);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex: _selectedIndex,
@@ -39,14 +45,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
           _selectedIndex = value;
         });
       },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.messenger), label: "Chats"),
-        BottomNavigationBarItem(icon: Icon(Icons.people), label: "People"),
-        BottomNavigationBarItem(icon: Icon(Icons.call), label: "Calls"),
+      items: [
+        const BottomNavigationBarItem(
+            icon: Icon(Icons.messenger), label: "Chats"),
+        const BottomNavigationBarItem(
+            icon: Icon(Icons.people), label: "People"),
+        const BottomNavigationBarItem(icon: Icon(Icons.call), label: "Calls"),
         BottomNavigationBarItem(
           icon: CircleAvatar(
             radius: 14,
-            backgroundImage: AssetImage("assets/images/user_2.png"),
+            backgroundImage:
+                NetworkImage(APIConfig.baseURL + state.currentUser!.photo!),
           ),
           label: "Profile",
         ),

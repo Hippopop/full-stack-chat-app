@@ -38,7 +38,7 @@ class ImageAvatarWithButton extends StatelessWidget {
         DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: context.color.background,
+            color: context.color.accent.withOpacity(0.5),
           ),
           child: Padding(
             padding: all3,
@@ -59,7 +59,10 @@ class ImageAvatarWithButton extends StatelessWidget {
               color: context.color.primaryAccent,
             ),
             child: IconButton(
-              icon: const Icon(Icons.add),
+              icon: Icon(
+                Icons.add,
+                color: context.color.accent,
+              ),
               visualDensity: VisualDensity.compact,
               onPressed: onAddClick,
             ),
