@@ -1,0 +1,5 @@
+sudo npm install bcrypt body cors dotenv express jsonwebtoken luxon multer mysql2 uuid zod
+sudo npm i -D @types/bcrypt @types/body-parser @types/cors @types/express @types/jsonwebtoken @types/luxon @types/multer @types/node @types/uuid ts-node typescript
+
+sudo npm i drizzle-orm mysql2
+sudo npm i -D drizzle-kit

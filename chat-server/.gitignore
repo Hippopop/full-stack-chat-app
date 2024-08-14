@@ -3,3 +3,5 @@ dist
 # NodeJs package related files.
 node_modules
 package-lock.json
+# Extras!
+.env

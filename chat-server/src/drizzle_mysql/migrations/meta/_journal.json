@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1723228728362,
+      "tag": "20240809183848_stiff_legion",
+      "breakpoints": true
+    }
+  ]
+}

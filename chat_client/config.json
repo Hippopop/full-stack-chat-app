@@ -1,0 +1,6 @@
+{
+    "LOGIN":"/auth/login",
+    "REGISTER":"/auth/register",
+    "REFRESH":"/token/refresh_token",
+    "BASE_URL":"http://10.0.2.2:8080"
+}

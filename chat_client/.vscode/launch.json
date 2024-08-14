@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "dart",
+            "request": "launch",
+            "name": "chat_client",
+            "args": [
+                "--dart-define-from-file",
+                "config.json",
+            ],
+            // "preLaunchTask": "RUN_SERVER_PYTHON",
+        },
+        {
+            "type": "dart",
+            "request": "launch",
+            "flutterMode": "profile",
+            "name": "chat_client (profile mode)",
+        },
+        {
+            "type": "dart",
+            "request": "launch",
+            "flutterMode": "release",
+            "name": "chat_client (release mode)",
+        }
+    ]
+}
