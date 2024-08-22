@@ -1,5 +1,6 @@
 import 'package:chat_client/src/repositories/storage/auth_repository/auth_storage.dart';
 import 'package:chat_client/src/services/authentication/models/app_authentication.dart';
+import 'package:chat_client/src/utilities/scaffold_utils/snackbar_util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fresh_dio/fresh_dio.dart';
 
@@ -21,6 +22,12 @@ class AuthenticationStateNotifier extends Notifier<AuthenticationState>
     return AuthenticationState(token: tokens, currentUser: user);
   }
 
+  logout() async {
+    await _storage.delete();
+    ref.invalidateSelf();
+    showToastSuccess("User logged out successfully!");
+  }
+
   Future<void> saveAppUser(AppUser newUser) async {
     await _storage.saveAppUser(newUser);
     ref.invalidateSelf();
@@ -37,7 +44,6 @@ class AuthenticationStateNotifier extends Notifier<AuthenticationState>
 
   @override
   Future<OAuth2Token?> read() async {
-    print("Token Reading");
     final tokenSet = _storage.getUserToken();
     if (tokenSet == null) return null;
     return OAuth2Token(
@@ -46,7 +52,6 @@ class AuthenticationStateNotifier extends Notifier<AuthenticationState>
 
   @override
   Future<void> write(OAuth2Token token) async {
-    print("Token Writing");
     await _storage.saveUserToken(token.accessToken, token.refreshToken!);
     ref.invalidateSelf();
   }

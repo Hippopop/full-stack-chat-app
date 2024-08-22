@@ -130,7 +130,7 @@ class _VerticalRegistrationAreaState extends State<VerticalRegistrationArea> {
                         style: context.textTheme.headlineMedium,
                       ),
                       Text(
-                        "Start a organized life today.",
+                        "Let's connect you to the whole world.",
                         style: context.textTheme.labelMedium?.copyWith(
                           color: context.color.text.withOpacity(0.8),
                         ),

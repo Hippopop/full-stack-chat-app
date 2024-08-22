@@ -19,6 +19,7 @@ class Body extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: defaultPaddingSpace),
             child: ListView.builder(
+              reverse: true,
               itemCount: messageList.length,
               itemBuilder: (context, index) =>
                   Message(message: messageList[index]),

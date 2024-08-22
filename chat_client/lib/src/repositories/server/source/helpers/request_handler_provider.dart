@@ -29,6 +29,7 @@ class RequestHandler {
     String url,
     dynamic params, {
     bool tokenNeeded = true,
+    CancelToken? cancelToken,
     String? errorMsg,
     String? baseUrl,
     Options? options,
@@ -68,13 +69,13 @@ class RequestHandler {
     String url, {
     dynamic data,
     bool tokenNeeded = true,
+    CancelToken? cancelToken,
     String? errorMsg,
     String? baseUrl,
     Options? options,
     Map<String, dynamic>? queryParams,
   }) {
     try {
-      print(dio.interceptors);
       return dio.get(
         (baseUrl ?? mainUrl) + url,
         options: options,
@@ -105,6 +106,7 @@ class RequestHandler {
     String url,
     Map<String, dynamic> params, {
     bool tokenNeeded = true,
+    CancelToken? cancelToken,
     String? errorMsg,
     String? baseUrl,
     Options? options,
@@ -144,6 +146,7 @@ class RequestHandler {
     String url,
     Map<String, dynamic> params, {
     bool tokenNeeded = true,
+    CancelToken? cancelToken,
     String? errorMsg,
     String? baseUrl,
     Options? options,

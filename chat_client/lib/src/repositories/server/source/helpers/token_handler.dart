@@ -14,6 +14,7 @@ final tokenInterceptorProvider =
 class TokenInterceptorNotifier extends Notifier<Interceptor> {
   @override
   Interceptor build() {
+    ref.watch(authStateNotifierProvider);
     final storage = ref.watch(authStateNotifierProvider.notifier);
     return Fresh.oAuth2(
       tokenStorage: storage,

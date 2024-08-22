@@ -1,19 +1,31 @@
+import 'package:chat_client/src/constants/assets/assets.dart';
+import 'package:chat_client/src/features/messages/models/personal_chat_query.dart';
 import 'package:chat_client/src/services/socket_isolate/socket_isolate.dart';
 
 import 'package:chat_client/src/constants/design/paddings.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../data/models/chat_message.dart';
 import 'components/body.dart';
 
-class MessagesScreen extends StatefulWidget {
-  const MessagesScreen({super.key});
+class PersonalChatScreen extends StatefulWidget {
+  static const path = "/PersonalChat/:uuid";
+  static String route({required String uuid}) => "/PersonalChat/$uuid";
 
+  const PersonalChatScreen({
+    super.key,
+    required this.uuid,
+  });
+
+  final String uuid;
   @override
-  State<MessagesScreen> createState() => _MessagesScreenState();
+  State<PersonalChatScreen> createState() => _PersonalChatScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen> {
+class _PersonalChatScreenState extends State<PersonalChatScreen> {
+  PersonalChatQuery get queryData =>
+      PersonalChatQuery.fromJson(GoRouterState.of(context).uri.queryParameters);
   late final SocketIsolate isolate;
   final List<ChatMessage> messages = [];
 
@@ -46,6 +58,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(queryData.toJson());
+    print(GoRouterState.of(context).uri.queryParameters);
     return Scaffold(
       appBar: buildAppBar(),
       body: Body(
@@ -57,24 +71,28 @@ class _MessagesScreenState extends State<MessagesScreen> {
   AppBar buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: const Row(
+      title: Row(
         children: [
-          BackButton(),
+          const BackButton(),
           CircleAvatar(
-            backgroundImage: AssetImage("assets/images/user_2.png"),
+            foregroundImage: queryData.photoUrl == null
+                ? null
+                : NetworkImage(queryData.photoUrl!),
+            backgroundImage: const AssetImage(ImageAssets.profile),
           ),
-          SizedBox(width: defaultPaddingSpace * 0.75),
+          const SizedBox(width: defaultPaddingSpace * 0.75),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Kristin Watson",
-                style: TextStyle(fontSize: 16),
+                queryData.name ?? " ??? ",
+                style: const TextStyle(fontSize: 16),
               ),
-              Text(
-                "Active 3m ago",
-                style: TextStyle(fontSize: 12),
-              )
+              if (queryData.activityStatus != null)
+                Text(
+                  queryData.activityStatus!,
+                  style: const TextStyle(fontSize: 12),
+                )
             ],
           )
         ],

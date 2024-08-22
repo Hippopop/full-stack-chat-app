@@ -2,5 +2,6 @@
     "LOGIN":"/authentication/login",
     "REGISTER":"/authentication/register",
     "REFRESH":"/token/refresh_token",
+    "SEARCH_USER":"/users/search",
     "BASE_URL":"http://10.0.2.2:8080"
 }

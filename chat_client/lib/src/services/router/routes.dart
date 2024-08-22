@@ -2,6 +2,8 @@ import 'package:chat_client/src/features/authentication/screens/authentication_s
 import 'package:chat_client/src/features/authentication/screens/login_screen.dart';
 import 'package:chat_client/src/features/authentication/screens/registration_screen.dart';
 import 'package:chat_client/src/features/homepage/screens/homepage_screen.dart';
+import 'package:chat_client/src/features/messages/message_screen.dart';
+import 'package:chat_client/src/features/search_user/screens/user_search_screen.dart';
 import 'package:chat_client/src/features/welcome/welcome_screen.dart';
 import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +16,11 @@ final goRouterProvider = Provider<GoRouter>(
   (ref) {
     final authState = ref.watch(authStateNotifierProvider);
     final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: '#root');
+
     return GoRouter(
-      initialLocation: HomepageScreen.path,
       debugLogDiagnostics: true,
       navigatorKey: rootNavigatorKey,
-      redirect: (context, state) async {
-        final isHome = state.matchedLocation == HomepageScreen.path;
-        if (isHome && !authState.isAuthenticated) {
-          return WelcomeScreen.path;
-        }
-        return state.matchedLocation;
-      },
+      initialLocation: HomepageScreen.path,
       routes: [
         GoRoute(
           name: '$HomepageScreen',
@@ -35,6 +31,18 @@ final goRouterProvider = Provider<GoRouter>(
           name: '$WelcomeScreen',
           path: WelcomeScreen.path,
           builder: (context, state) => const WelcomeScreen(),
+        ),
+        GoRoute(
+          name: '$UserSearchScreen',
+          path: UserSearchScreen.path,
+          builder: (context, state) => const UserSearchScreen(),
+        ),
+        GoRoute(
+          name: '$PersonalChatScreen',
+          path: PersonalChatScreen.path,
+          builder: (context, state) => PersonalChatScreen(
+            uuid: state.pathParameters['uuid']!,
+          ),
         ),
         GoRoute(
           name: '$AuthenticationScreen',
@@ -57,6 +65,20 @@ final goRouterProvider = Provider<GoRouter>(
       errorBuilder: (context, state) => GlobalErrorScreen(
         errorObject: state.error as Object,
       ),
+      redirect: (context, state) async {
+        final inAuthenticationPages = [
+          LoginScreen.route,
+          WelcomeScreen.route,
+          AuthenticationScreen.route,
+          RegistrationScreen.route,
+        ].contains(state.matchedLocation);
+        if (inAuthenticationPages && authState.isAuthenticated) {
+          return HomepageScreen.path;
+        }
+        if (!inAuthenticationPages && !authState.isAuthenticated) {
+          return WelcomeScreen.path;
+        }
+      },
     );
   },
 );

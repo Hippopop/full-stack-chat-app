@@ -3,8 +3,6 @@ import 'package:chat_client/src/repositories/server/source/helpers/token_handler
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'helpers/request_handler_provider.dart';
 
-int val = 0;
-
 final requestHandlerProvider = Provider<RequestHandler>(
   (ref) {
     final tokenInterceptor = ref.watch(tokenInterceptorProvider);

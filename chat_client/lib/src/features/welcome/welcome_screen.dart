@@ -7,6 +7,7 @@ import '../authentication/screens/authentication_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const path = "/Welcome";
+  static const route = WelcomeScreen.path;
   const WelcomeScreen({super.key});
 
   @override

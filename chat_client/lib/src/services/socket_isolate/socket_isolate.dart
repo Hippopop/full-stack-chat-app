@@ -1,7 +1,7 @@
-import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
+import 'dart:async';
 import 'dart:isolate';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -10,9 +10,8 @@ typedef TransactionMsg = ({String key, String msg});
 
 class SocketIsolate {
   SocketIsolate._internal();
-  static final SocketIsolate _shared = SocketIsolate._internal();
-
   factory SocketIsolate.factory() => _shared;
+  static final SocketIsolate _shared = SocketIsolate._internal();
 
   final _initializationError = UnimplementedError(
     "Please call the initiate function before using the class!",

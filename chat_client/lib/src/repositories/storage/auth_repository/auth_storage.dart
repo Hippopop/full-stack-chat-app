@@ -9,10 +9,10 @@ class AuthenticationStorage {
   const AuthenticationStorage();
   HiveConfig get _config => HiveConfig();
 
-  Box<String> get _myBox => _config.tokenBox;
+  Box<String> get _myBox => _config.authenticationBox;
+  static const userInfoKey = "#APP_USER_KEY";
   static const accessTokenKey = "#ACCESS_TOKEN";
   static const refreshTokenKey = "#REFRESH_TOKEN";
-  static const userInfoKey = "#APP_USER_KEY";
 
   saveUserToken(String accessToken, String refreshToken) async {
     await _myBox.put(accessTokenKey, accessToken);
@@ -45,6 +45,6 @@ class AuthenticationStorage {
   }
 
   delete() async {
-    _myBox.clear();
+    await _myBox.clear();
   }
 }
