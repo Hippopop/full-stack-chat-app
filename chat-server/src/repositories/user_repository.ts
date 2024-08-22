@@ -1,6 +1,8 @@
-import { eq, or } from "drizzle-orm";
+import { eq, like, or } from "drizzle-orm";
 import drizzleDatabase from "../drizzle_mysql/database";
 import { DB_User, DB_User_Schema, DBN_User, users } from "../drizzle_mysql/schemas/user_schema";
+import { authentication } from "../drizzle_mysql/schemas/auth_schema";
+import { SearchedUser } from "./models/search_user";
 
 const createUser = async (data: DBN_User): Promise<DB_User> => {
   const response = await drizzleDatabase.insert(users).values({
@@ -27,24 +29,26 @@ const getUserData = async (uniqueData: string): Promise<DB_User | undefined> => 
   return element;
 };
 
-/* const getUserProfilePic = async (
-  uniqueData: string
-): Promise<Buffer | undefined> => {
-  console.log("#Calling Image Function.");
-  const [rows, _] = await connectionConfig.query<RowDataPacket[]>(
-    findUserImageQuery,
-    Array.from(
-      {
-        length: 3,
-      },
-      () => uniqueData
-    )
-  );
-  console.log(rows);
+const searchUser = async (uniqueData: string): Promise<SearchedUser[]> => {
+  return await drizzleDatabase.select({
+    name: users.name,
+    photo: users.photo,
+    birthdate: users.birthdate,
+    createdAt: users.createdAt,
+    updatedAt: users.updatedAt,
+    uuid: authentication.uuid,
+    phone: authentication.phone,
+    email: authentication.email,
+  })
+    .from(authentication)
+    .innerJoin(users, eq(authentication.uuid, users.uuid))
+    .where(or(
+      eq(authentication.uuid, uniqueData),
+      eq(authentication.phone, uniqueData),
+      eq(authentication.email, uniqueData),
+      like(users.name, `%${uniqueData}%`),
+    ));
+}
 
-  if (rows.length === 0 || !rows.at(0)) return undefined;
-  const element = rows.at(0);
-  return element!.photo;
-}; */
+export { createUser, getUserData, searchUser };
 
-export { createUser, getUserData, /* getUserProfilePic */ };

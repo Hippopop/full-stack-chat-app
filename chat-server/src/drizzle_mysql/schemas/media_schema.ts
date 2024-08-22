@@ -19,14 +19,18 @@ export const medias = mysqlTable('medias', {
 }));
 
 export const DB_Media_Schema = createSelectSchema(medias, {
+    message: (schema) => schema.message.optional(),
     createdAt: (schema) => schema.createdAt.optional(),
     updatedAt: (schema) => schema.updatedAt.optional(),
 });
 
+const DB_Media_Type_Schema = DB_Media_Schema.shape.type;
 export const DBN_Media_Schema = createInsertSchema(medias);
+
 
 export type DB_Media = z.infer<typeof DB_Media_Schema>;
 export type DBN_Media = z.infer<typeof DBN_Media_Schema>;
+export type DB_Media_Type = z.infer<typeof DB_Media_Type_Schema>;
 
 
 export default {
