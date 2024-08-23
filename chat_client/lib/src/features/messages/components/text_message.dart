@@ -30,6 +30,7 @@ class TextMessage extends StatelessWidget {
         child: Text(
           message!.text,
           softWrap: true,
+          textWidthBasis: TextWidthBasis.longestLine,
           style: TextStyle(
             color: message!.isSender
                 ? Colors.white

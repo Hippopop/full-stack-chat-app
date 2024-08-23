@@ -68,13 +68,13 @@ export const wrapperFunction =
               "Attempting Unauthorized Access!"
             );
           const token = authorization.split(" ")[1];
-          console.log(`**${token}**`)
           const authData = await tokenizer.verifyAccessTokenWithData(
             token!,
             UserSchema,
           );
           if (authData) {
             userData = authData;
+            console.log(`** ${userData.uuid} **`);
           } else throw new ResponseError(unauthorized, "Invalid access token!");
         }
 

@@ -1,6 +1,6 @@
 CREATE TABLE `activities` (
 	`user` varchar(256) NOT NULL,
-	`is_active` boolean NOT NULL,
+	`is_active` boolean NOT NULL DEFAULT false,
 	`created_at` timestamp DEFAULT (now()),
 	`updated_at` timestamp DEFAULT CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3),
 	CONSTRAINT `activities_user_unique` UNIQUE(`user`)
@@ -23,15 +23,17 @@ CREATE TABLE `authentication` (
 --> statement-breakpoint
 CREATE TABLE `connections` (
 	`key` int AUTO_INCREMENT NOT NULL,
-	`user_one` varchar(256) NOT NULL,
-	`user_two` varchar(256) NOT NULL,
+	`accept_time` timestamp,
+	`to_user` varchar(256) NOT NULL,
+	`from_user` varchar(256) NOT NULL,
+	`connection_status` enum('requested','accepted','rejected','blocked'),
 	`last_message` varchar(256),
 	`created_at` timestamp DEFAULT (now()),
 	`updated_at` timestamp DEFAULT CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3),
 	CONSTRAINT `connections_key` PRIMARY KEY(`key`),
 	CONSTRAINT `connections_last_message_unique` UNIQUE(`last_message`),
-	CONSTRAINT `connections_user_one_user_two_unique` UNIQUE(`user_one`,`user_two`),
-	CONSTRAINT `unique_combination` UNIQUE(`user_one`,`user_two`)
+	CONSTRAINT `connections_from_user_to_user_unique` UNIQUE(`from_user`,`to_user`),
+	CONSTRAINT `unique_combination` UNIQUE(`from_user`,`to_user`)
 );
 --> statement-breakpoint
 CREATE TABLE `medias` (
@@ -79,8 +81,8 @@ CREATE TABLE `users` (
 );
 --> statement-breakpoint
 ALTER TABLE `activities` ADD CONSTRAINT `activities_user_authentication_uuid_fk` FOREIGN KEY (`user`) REFERENCES `authentication`(`uuid`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `connections` ADD CONSTRAINT `connections_user_one_authentication_uuid_fk` FOREIGN KEY (`user_one`) REFERENCES `authentication`(`uuid`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `connections` ADD CONSTRAINT `connections_user_two_authentication_uuid_fk` FOREIGN KEY (`user_two`) REFERENCES `authentication`(`uuid`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `connections` ADD CONSTRAINT `connections_to_user_authentication_uuid_fk` FOREIGN KEY (`to_user`) REFERENCES `authentication`(`uuid`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `connections` ADD CONSTRAINT `connections_from_user_authentication_uuid_fk` FOREIGN KEY (`from_user`) REFERENCES `authentication`(`uuid`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `connections` ADD CONSTRAINT `connections_last_message_messages_key_fk` FOREIGN KEY (`last_message`) REFERENCES `messages`(`key`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `medias` ADD CONSTRAINT `medias_message_messages_key_fk` FOREIGN KEY (`message`) REFERENCES `messages`(`key`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `medias` ADD CONSTRAINT `medias_uuid_authentication_uuid_fk` FOREIGN KEY (`uuid`) REFERENCES `authentication`(`uuid`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint

@@ -5,3 +5,5 @@ node_modules
 package-lock.json
 # Extras!
 .env
+upload
+.DS_Store

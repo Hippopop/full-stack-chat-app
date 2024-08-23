@@ -4,7 +4,7 @@
   "description": "Chat server for the cross-platform chat app.",
   "main": "src/index.ts",
   "scripts": {
-    "build": "npm i && tsc",
+    "build": "sudo npm i && tsc",
     "dev": "nodemon src/index.ts"
   },
   "keywords": [

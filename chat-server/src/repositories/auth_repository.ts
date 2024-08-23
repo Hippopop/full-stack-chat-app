@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuIdv4 } from "uuid";
 import { eq, or, SQL } from "drizzle-orm";
 import drizzleDatabase from "../drizzle_mysql/database";
-import { RegistrationUserModel } from "../routes/auth/models/register";
+import { RegistrationUserModel } from "../routes/authentication/models/register";
 import { authentication, DB_Authentication, DB_Authentication_Schema, DBN_Authentication } from "../drizzle_mysql/schemas/auth_schema";
 import { ResponseError } from "../types/response/errors/error-z";
 
@@ -31,8 +31,8 @@ export const register = async (data: RegistrationUserModel): Promise<DB_Authenti
     const response = await drizzleDatabase.insert(authentication).values({
         uuid: uuid,
         password: hash,
-        email: data.email,
         phone: data.phone,
+        email: data.email.toLowerCase(),
     }).$returningId();
 
     console.log(`New registration(${JSON.stringify(response)}) -> ${response[0]!.key}`);

@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "d3a3eb60-3efb-4505-bdb1-81c685c0e982",
+  "id": "65045e49-3dea-484e-a8df-8535008bc7b0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "activities": {
@@ -19,7 +19,8 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": false
         },
         "created_at": {
           "name": "created_at",
@@ -168,18 +169,32 @@
           "notNull": true,
           "autoincrement": true
         },
-        "user_one": {
-          "name": "user_one",
+        "accept_time": {
+          "name": "accept_time",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "to_user": {
+          "name": "to_user",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "user_two": {
-          "name": "user_two",
+        "from_user": {
+          "name": "from_user",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "connection_status": {
+          "name": "connection_status",
+          "type": "enum('requested','accepted','rejected','blocked')",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "last_message": {
@@ -208,12 +223,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "connections_user_one_authentication_uuid_fk": {
-          "name": "connections_user_one_authentication_uuid_fk",
+        "connections_to_user_authentication_uuid_fk": {
+          "name": "connections_to_user_authentication_uuid_fk",
           "tableFrom": "connections",
           "tableTo": "authentication",
           "columnsFrom": [
-            "user_one"
+            "to_user"
           ],
           "columnsTo": [
             "uuid"
@@ -221,12 +236,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "connections_user_two_authentication_uuid_fk": {
-          "name": "connections_user_two_authentication_uuid_fk",
+        "connections_from_user_authentication_uuid_fk": {
+          "name": "connections_from_user_authentication_uuid_fk",
           "tableFrom": "connections",
           "tableTo": "authentication",
           "columnsFrom": [
-            "user_two"
+            "from_user"
           ],
           "columnsTo": [
             "uuid"
@@ -263,18 +278,18 @@
             "last_message"
           ]
         },
-        "connections_user_one_user_two_unique": {
-          "name": "connections_user_one_user_two_unique",
+        "connections_from_user_to_user_unique": {
+          "name": "connections_from_user_to_user_unique",
           "columns": [
-            "user_one",
-            "user_two"
+            "from_user",
+            "to_user"
           ]
         },
         "unique_combination": {
           "name": "unique_combination",
           "columns": [
-            "user_one",
-            "user_two"
+            "from_user",
+            "to_user"
           ]
         }
       }

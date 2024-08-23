@@ -1,46 +1,49 @@
+import 'package:chat_client/src/constants/assets/assets.dart';
+import 'package:chat_client/src/features/messages/components/message.dart';
+import 'package:chat_client/src/features/messages/models/personal_chat_query.dart';
 import 'package:chat_client/src/services/socket_isolate/socket_isolate.dart';
 
 import 'package:chat_client/src/constants/design/paddings.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../data/models/chat_message.dart';
-import 'components/body.dart';
+import 'components/chat_input_field.dart';
 
-class MessagesScreen extends StatefulWidget {
-  const MessagesScreen({super.key});
+class PersonalChatScreen extends StatefulWidget {
+  static const path = "/PersonalChat/:uuid";
+  static String route({
+    required String uuid,
+    PersonalChatQuery? queryParameters,
+  }) {
+    final path = "/PersonalChat/$uuid";
+    final queryParams = queryParameters?.toJson()
+      ?..removeWhere((key, value) => value == null);
+    return Uri(path: path, queryParameters: queryParams).toString();
+  }
 
+  const PersonalChatScreen({
+    super.key,
+    required this.uuid,
+  });
+
+  final String uuid;
   @override
-  State<MessagesScreen> createState() => _MessagesScreenState();
+  State<PersonalChatScreen> createState() => _PersonalChatScreenState();
 }
 
-class _MessagesScreenState extends State<MessagesScreen> {
-  late final SocketIsolate isolate;
+class _PersonalChatScreenState extends State<PersonalChatScreen> {
+  PersonalChatQuery get queryData =>
+      PersonalChatQuery.fromJson(GoRouterState.of(context).uri.queryParameters);
   final List<ChatMessage> messages = [];
 
   @override
   void initState() {
     super.initState();
-    isolate = SocketIsolate.factory();
-    isolate.initiate().then((_) {
-      isolate.receiveStreamController.stream.listen(_isolateListener);
-      isolate.sendPort.send(("message", "Sending this message from mobile!"));
-    });
-  }
-
-  _isolateListener(msg) {
-    setState(() {
-      messages.add(ChatMessage(
-        text: msg.toString(),
-        messageType: ChatMessageType.text,
-        messageStatus: MessageStatus.viewed,
-        isSender: false,
-      ));
-    });
   }
 
   @override
   void dispose() {
-    isolate.dispose();
     super.dispose();
   }
 
@@ -57,24 +60,28 @@ class _MessagesScreenState extends State<MessagesScreen> {
   AppBar buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: const Row(
+      title: Row(
         children: [
-          BackButton(),
+          const BackButton(),
           CircleAvatar(
-            backgroundImage: AssetImage("assets/images/user_2.png"),
+            foregroundImage: queryData.photoUrl == null
+                ? null
+                : NetworkImage(queryData.photoUrl!),
+            backgroundImage: const AssetImage(ImageAssets.profile),
           ),
-          SizedBox(width: defaultPaddingSpace * 0.75),
+          const SizedBox(width: defaultPaddingSpace * 0.75),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Kristin Watson",
-                style: TextStyle(fontSize: 16),
+                queryData.name ?? " ??? ",
+                style: const TextStyle(fontSize: 16),
               ),
-              Text(
-                "Active 3m ago",
-                style: TextStyle(fontSize: 12),
-              )
+              if (queryData.activityStatus != null)
+                Text(
+                  queryData.activityStatus!,
+                  style: const TextStyle(fontSize: 12),
+                )
             ],
           )
         ],
@@ -89,6 +96,33 @@ class _MessagesScreenState extends State<MessagesScreen> {
           onPressed: () {},
         ),
         const SizedBox(width: defaultPaddingSpace / 2),
+      ],
+    );
+  }
+}
+
+class Body extends StatelessWidget {
+  const Body({super.key, required this.messageList});
+
+  final List<ChatMessage> messageList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: defaultPaddingSpace),
+            child: ListView.builder(
+              reverse: true,
+              itemCount: messageList.length,
+              itemBuilder: (context, index) =>
+                  Message(message: messageList[index]),
+            ),
+          ),
+        ),
+        const ChatInputField(),
       ],
     );
   }

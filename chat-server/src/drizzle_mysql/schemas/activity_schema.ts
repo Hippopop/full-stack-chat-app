@@ -6,7 +6,7 @@ import { authentication } from "./auth_schema";
 
 export const activities = mysqlTable('activities', {
     user: varchar('user', { length: 256 }).notNull().unique().references(() => authentication.uuid),
-    isActive: boolean('is_active').notNull(),
+    isActive: boolean('is_active').notNull().default(false),
     ...drizzleTimeFields,
 });
 

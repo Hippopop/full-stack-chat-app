@@ -2,7 +2,7 @@ import 'package:chat_client/src/data/auth_provider/auth_repository_provider.dart
 import 'package:chat_client/src/repositories/server/auth_repository/auth_repository.dart';
 import 'package:chat_client/src/repositories/server/source/config_provider.dart';
 import 'package:chat_client/src/repositories/server/source/helpers/request_handler_provider.dart';
-import 'package:chat_client/src/repositories/storage/auth_repository/token_storage.dart';
+import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/login_model/login_state.dart';
@@ -13,8 +13,8 @@ final loginControllerProvider =
 );
 
 class LoginStateNotifier extends AsyncNotifier<LoginState> {
-  late final RequestHandler _requestHandler;
-  late final AuthRepository _repository;
+  late RequestHandler _requestHandler;
+  late AuthRepository _repository;
 
   @override
   LoginState build() {
@@ -67,9 +67,9 @@ class LoginStateNotifier extends AsyncNotifier<LoginState> {
         password: currentValue.password!,
       );
       if (res.isSuccess) {
-        ref
-            .read(tokenStorageNotifierProvider.notifier)
-            .saveUserToken(res.data!.token);
+        final notifier = ref.read(authStateNotifierProvider.notifier);
+        await notifier.saveUserToken(res.data!.token);
+        await notifier.saveAppUser(res.data!.user);
         return currentValue.copyWith(
           authorized: true,
           responseMsg: (level: 1, msg: res.msg),

@@ -5,6 +5,7 @@ import '../common/app_bar_theme.dart';
 import '../extensions/colors_theme.dart';
 
 const _theme = Colors.white;
+const _text = Colors.white;
 const _opposite = Colors.black;
 const _mainAccent = Color(0xFFFE9901);
 const _primaryColor = Color(0xFF00BF6D);
@@ -15,13 +16,15 @@ const _errorColor = Color(0xFFF03738);
 const _warningColor = Color(0xFFF3BB1C);
 
 const lightThemeKey = "#BASE_LIGHT_THEME";
-final lightTheme = ThemeData.light().copyWith(
-  useMaterial3: false,
+final lightTheme = ThemeData.light(useMaterial3: false).copyWith(
   primaryColor: _primaryColor,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: appBarTheme,
   iconTheme: const IconThemeData(color: _primaryAccent),
-  textTheme: GoogleFonts.interTextTheme().apply(bodyColor: _primaryAccent),
+  textTheme: GoogleFonts.interTextTheme().apply(
+    bodyColor: _primaryAccent,
+    displayColor: _text,
+  ),
   colorScheme: const ColorScheme.light(
     primary: _primaryColor,
     secondary: _mainAccent,
@@ -36,6 +39,7 @@ final lightTheme = ThemeData.light().copyWith(
   ),
   extensions: {
     ColorTheme(
+      text: _text,
       theme: _theme,
       opposite: _opposite,
       primary: _primaryColor,

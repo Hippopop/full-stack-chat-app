@@ -1,5 +1,4 @@
 import 'package:chat_client/src/services/theme/app_theme.dart';
-import 'package:chat_client/src/services/theme/extensions/extensions.dart';
 import 'package:chat_client/src/utilities/extensions/size_utilities.dart';
 import 'package:chat_client/src/utilities/tools/form_validator_helper.dart';
 import 'package:flutter/material.dart';
@@ -45,9 +44,7 @@ class CustomTitledTextFormField extends StatelessWidget {
       obscureText: isObscured,
       onChanged: onChange,
       controller: controller,
-      style: context.textTheme.labelMedium?.copyWith(
-        color: context.color.opposite,
-      ),
+      style: context.textTheme.labelMedium,
       onFieldSubmitted: (value) {
         nextFocus?.requestFocus();
         submit?.call(value);
@@ -73,13 +70,14 @@ class CustomTitledTextFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        4.height,
         Text(
           title,
           style: context.textTheme.labelMedium?.copyWith(
-            color: context.color.secondBatch,
+            color: context.color.text,
           ),
         ),
-        8.height,
+        4.height,
         formField,
       ],
     );

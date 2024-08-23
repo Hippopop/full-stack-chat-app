@@ -11,6 +11,10 @@ import { RegistrationUserSchema } from "./models/register";
 
 import * as auth from "../../repositories/auth_repository";
 import * as user from "../../repositories/user_repository";
+import { getMediaEntry, insertMediaEntry } from "../../repositories/media_repository";
+import fs from "fs";
+import path from "path";
+import { profilePath, profilePathString } from "../../constants/directories";
 
 
 
@@ -66,22 +70,24 @@ authRoute.post(
     successMsg: "Registration Successfully Completed!",
     errorMsg: "Sorry! Couldn't register with the given data.",
     businessLogic: async (req: Request, res: Response, next?: NextFunction) => {
+      console.log(req.body);
       const data = RegistrationUserSchema.safeParse(req.body);
       if (data.success) {
         const authData = await auth.register(data.data);
         let imagePath: string | undefined;
         console.log(req.file?.path, req.file?.mimetype, req.file?.filename, req.file?.size, req.file?.buffer, req.file?.originalname);
-        // if (req.file) {
-        //   console.log("Inserting file to DB!");
-        //   const image = await insertImage({
-        //     type: "profile",
-        //     uuid: authData.uuid,
-        //     extension: req.file.mimetype.split("/")[1] ?? "unknown",
-        //     name: (req.file.filename ?? req.file.originalname),
-        //     imageFile: (req.file.path) ? (await fs.readFile(req.file.path)) : req.file.buffer,
-        //   });
-        //   imagePath = `auth/user_image?type=profile&uuid=${authData.uuid}&name=${image.name}`;
-        // }
+        if (req.file) {
+          console.log("Saving profile image!");
+          const imageName = req.file.filename ?? req.file.originalname;
+          console.log(imageName);
+          const image = await insertMediaEntry({
+            type: "profile",
+            name: imageName,
+            uuid: authData.uuid,
+            extension: req.file.mimetype.split("/")[1] ?? "unknown",
+          });
+          imagePath = `/authentication/user_image?type=profile&uuid=${authData.uuid}&name=${image.name}`;
+        }
 
 
         const userData = await user.createUser({
@@ -108,30 +114,42 @@ authRoute.post(
   })
 );
 
-// authRoute.get(
-//   "/user_image",
-//   wrapperFunction<void>({
-//     successCode: 200,
-//     errorMsg: "Image not found!",
-//     successMsg: "Image fetched successfully!",
-//     businessLogic: async (req: Request, res: Response, next?: NextFunction) => {
-//       if (req.query.type && req.query.uuid && req.query.name) {
-//         const image = await getProfileImage(
-//           req.query.type as string,
-//           req.query.uuid as string,
-//           req.query.name as string
-//         );
-//         if (image) {
-//           res.writeHead(200, { "Content-Type": "image/jpeg" }).end(image.imageFile);
-//         } else {
-//           throw userNotFoundError;
-//         }
-//       } else {
-//         throw userNotFoundError;
-//       }
-//     },
-//   })
-// );
+authRoute.get(
+  "/user_image",
+  wrapperFunction<void>({
+    successCode: 200,
+    errorMsg: "Image not found!",
+    successMsg: "Image fetched successfully!",
+    businessLogic: async (req: Request, res: Response, next?: NextFunction) => {
+      const type = "profile";
+      if (req.query.type && req.query.uuid && req.query.name) {
+        const image = await getMediaEntry(
+          req.query.uuid as string,
+          req.query.name as string,
+          type,
+        );
+        if (image) {
+          const filePath = path.join(profilePath, image.name);
+
+          console.log(`GET -> PROFILE_PIC -> PATH -> ${filePath}`);
+          const stream = fs.createReadStream(filePath);
+          res.writeHead(200, { "Content-Type": "image/jpeg" });
+          stream.on("open", () => {
+            stream.pipe(res);
+          });
+          stream.on("error", (err) => {
+            console.log(err);
+            throw userNotFoundError;
+          });
+        } else {
+          throw userNotFoundError;
+        }
+      } else {
+        throw userNotFoundError;
+      }
+    },
+  })
+);
 
 // TODO: Update profile system!
 

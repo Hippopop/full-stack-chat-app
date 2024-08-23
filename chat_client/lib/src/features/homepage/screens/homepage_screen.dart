@@ -1,10 +1,17 @@
+import 'package:chat_client/src/constants/assets/assets.dart';
+import 'package:chat_client/src/constants/server/api_config.dart';
+import 'package:chat_client/src/features/search_user/screens/user_search_screen.dart';
+import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../chats/components/body.dart';
+import 'chats_page/chats_page.dart';
 
 class HomepageScreen extends StatefulWidget {
   static const path = "/Home";
+  static const route = HomepageScreen.path;
   const HomepageScreen({super.key});
 
   @override
@@ -15,22 +22,25 @@ class _HomepageScreenState extends State<HomepageScreen> {
   int _selectedIndex = 1;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: const Body(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: context.color.primary,
-        child: const Icon(
-          Icons.person_add_alt_1,
-          color: Colors.white,
+    return Consumer(builder: (context, ref, _) {
+      return Scaffold(
+        appBar: buildAppBar(ref),
+        body: const ChatsScreen(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => context.push(UserSearchScreen.route),
+          backgroundColor: context.color.primary,
+          child: const Icon(
+            Icons.person_add_alt_1,
+            color: Colors.white,
+          ),
         ),
-      ),
-      bottomNavigationBar: buildBottomNavigationBar(),
-    );
+        bottomNavigationBar: buildBottomNavigationBar(ref),
+      );
+    });
   }
 
-  BottomNavigationBar buildBottomNavigationBar() {
+  BottomNavigationBar buildBottomNavigationBar(WidgetRef ref) {
+    final state = ref.watch(authStateNotifierProvider);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex: _selectedIndex,
@@ -39,14 +49,38 @@ class _HomepageScreenState extends State<HomepageScreen> {
           _selectedIndex = value;
         });
       },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.messenger), label: "Chats"),
-        BottomNavigationBarItem(icon: Icon(Icons.people), label: "People"),
-        BottomNavigationBarItem(icon: Icon(Icons.call), label: "Calls"),
+      items: [
+        const BottomNavigationBarItem(
+          label: "Chats",
+          icon: Icon(Icons.messenger),
+        ),
+        const BottomNavigationBarItem(
+          label: "People",
+          icon: Icon(Icons.people),
+        ),
+        const BottomNavigationBarItem(
+          label: "Calls",
+          icon: Icon(Icons.call),
+        ),
         BottomNavigationBarItem(
-          icon: CircleAvatar(
-            radius: 14,
-            backgroundImage: AssetImage("assets/images/user_2.png"),
+          icon: DecoratedBox(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: context.color.accent.withOpacity(0.5),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: CircleAvatar(
+                radius: 12,
+                backgroundImage: ((state.currentUser?.photo == null)
+                    ? const AssetImage(
+                        ImageAssets.profile,
+                      )
+                    : NetworkImage(
+                        APIConfig.baseURL + state.currentUser!.photo!,
+                      )) as ImageProvider,
+              ),
+            ),
           ),
           label: "Profile",
         ),
@@ -54,15 +88,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(WidgetRef ref) {
     return AppBar(
       backgroundColor: context.color.primary,
       automaticallyImplyLeading: false,
       title: const Text("Chats"),
       actions: [
         IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () {},
+          icon: const Icon(Icons.logout),
+          onPressed: () async {
+            await ref.watch(authStateNotifierProvider.notifier).logout();
+          },
         ),
       ],
     );

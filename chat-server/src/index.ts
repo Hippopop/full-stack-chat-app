@@ -4,8 +4,10 @@ import * as path from "path";
 import { createClient, RedisClientType } from "redis";
 import express from "express";
 import { Server } from "socket.io";
-import authRoute from "./routes/auth/auth-apis";
-import tokenRoute from "./routes/token/token";
+import authRoute from "./routes/authentication/auth-apis";
+import tokenRoute from "./routes/token/token_apis";
+import { profilePath, publicPath } from "./constants/directories";
+import userRoute from "./routes/user/user_apis";
 
 dotenv.config();
 const port = process.env.PORT ?? 8080;
@@ -21,8 +23,9 @@ let initRedis = async () => {
 initRedis();
 
 app.use(express.json());
-app.use(express.static(path.resolve('./public')));
+app.use(express.static(publicPath));
 
+app.use("/users", userRoute);
 app.use("/token", tokenRoute);
 app.use("/authentication", authRoute);
 
@@ -30,6 +33,7 @@ app.get("/", (req, res, next) => {
     return res.sendFile(path.resolve("./public/index.html"));
 });
 app.all("*", (req, res, next) => {
+    console.log(`Trying to reach an unavailable path --> ${req.path}`);
     return res.send("<h1>Entered to a unknown World!</h1>");
 });
 
@@ -43,7 +47,11 @@ const io = new Server(server, {
     cors: { origin: "*" }
 });
 
-io.on("connection", (socket) => {
+io.use((socket, next) => {
+    socket.handshake.auth;
+});
+
+io.on("connection", async (socket) => {
     /// --- Start of connection processing!
     console.log(`   --- Connected ${socket.id} ---   `);
 
