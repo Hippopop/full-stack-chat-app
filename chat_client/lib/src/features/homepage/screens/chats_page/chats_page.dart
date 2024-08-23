@@ -1,4 +1,3 @@
-import 'package:chat_client/src/features/messages/message_screen.dart';
 import 'package:chat_client/src/services/socket_isolate/socket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';

@@ -9,6 +9,9 @@ part of 'app_authentication.dart';
 _$AuthenticationStateImpl _$$AuthenticationStateImplFromJson(
         Map<String, dynamic> json) =>
     _$AuthenticationStateImpl(
+      currentUser: json['currentUser'] == null
+          ? null
+          : AppUser.fromJson(json['currentUser'] as Map<String, dynamic>),
       token: _$recordConvertNullable(
         json['token'],
         ($jsonValue) => (
@@ -16,21 +19,18 @@ _$AuthenticationStateImpl _$$AuthenticationStateImplFromJson(
           refreshToken: $jsonValue['refreshToken'] as String,
         ),
       ),
-      currentUser: json['currentUser'] == null
-          ? null
-          : AppUser.fromJson(json['currentUser'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$AuthenticationStateImplToJson(
         _$AuthenticationStateImpl instance) =>
     <String, dynamic>{
+      'currentUser': instance.currentUser,
       'token': instance.token == null
           ? null
           : <String, dynamic>{
               'accessToken': instance.token!.accessToken,
               'refreshToken': instance.token!.refreshToken,
             },
-      'currentUser': instance.currentUser,
     };
 
 $Rec? _$recordConvertNullable<$Rec>(

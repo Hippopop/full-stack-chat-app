@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:developer';
 
+import 'package:chat_client/src/services/socket_isolate/utils/event_keys.dart';
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -17,7 +18,9 @@ class SocketIsolate {
     "Please call the initiate function before using the class!",
   );
 
-  Future<void> initiate() async {
+  Future<void> initiate(
+    ({String accessToken, String refreshToken}) tokens,
+  ) async {
     try {
       _receivePort = ReceivePort();
       _receiveStream = StreamController.broadcast();
@@ -31,6 +34,7 @@ class SocketIsolate {
       );
       _sendPort = (await _receiveStream!.stream
           .firstWhere((port) => port is SendPort)) as SendPort;
+      sendPort.send((SocketEventKeys.credentials, tokens));
     } catch (e, s) {
       log(
         error: e,
@@ -83,7 +87,8 @@ __initIsolate(SendPort sendPort) async {
       ? ('http://10.0.2.2:8080/')
       : ('http://localhost:8080/');
 
-  final option = OptionBuilder().setTransports(['websocket']).build();
+  final option =
+      OptionBuilder().setTransports(['websocket']).setAuth({}).build();
   final Socket websocket = io(wsUrl, option);
   sendPort.send(receivePort.sendPort);
 
@@ -96,10 +101,22 @@ __initIsolate(SendPort sendPort) async {
     sendPort.send(message.toString());
   });
 
+  websocket.on(
+    "connection_error",
+    (data) {
+      sendPort.send(data.toString());
+    },
+  );
+
   receivePort.listen(
     (message) {
-      if (message case (String key, String message)) {
-        websocket.emit(key, message);
+      switch (message) {
+        case (String key, String message):
+          websocket.emit(key, message);
+        case (String key, Object data):
+          {
+            if (key == SocketEventKeys.credentials) {}
+          }
       }
     },
   );

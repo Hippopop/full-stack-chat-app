@@ -12,14 +12,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../initializer/views/error_screen.dart';
 
+final _navigatorKey = GlobalKey<NavigatorState>(debugLabel: '#root');
 final goRouterProvider = Provider<GoRouter>(
   (ref) {
     final authState = ref.watch(authStateNotifierProvider);
-    final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: '#root');
-
     return GoRouter(
       debugLogDiagnostics: true,
-      navigatorKey: rootNavigatorKey,
+      navigatorKey: _navigatorKey,
       initialLocation: HomepageScreen.path,
       routes: [
         GoRoute(

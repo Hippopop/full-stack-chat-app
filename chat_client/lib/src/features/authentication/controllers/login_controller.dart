@@ -13,8 +13,8 @@ final loginControllerProvider =
 );
 
 class LoginStateNotifier extends AsyncNotifier<LoginState> {
-  late final RequestHandler _requestHandler;
-  late final AuthRepository _repository;
+  late RequestHandler _requestHandler;
+  late AuthRepository _repository;
 
   @override
   LoginState build() {

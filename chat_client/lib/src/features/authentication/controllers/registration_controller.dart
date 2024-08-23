@@ -13,15 +13,15 @@ final registrationControllerProvider =
 );
 
 class RegistrationStateNotifier extends AsyncNotifier<RegistrationState> {
-  late final RequestHandler _requestHandler = ref.read(requestHandlerProvider);
-  late final AuthRepository _repository = ref.read(
-    authRepositoryProvider(
-      _requestHandler,
-    ),
-  );
+  late AuthRepository _repository;
+  late RequestHandler _requestHandler;
 
   @override
-  RegistrationState build() => const RegistrationState();
+  RegistrationState build() {
+    _requestHandler = ref.watch(requestHandlerProvider);
+    _repository = ref.watch(authRepositoryProvider(_requestHandler));
+    return const RegistrationState();
+  }
 
   void removeMessage() {
     final currentState = state.requireValue;

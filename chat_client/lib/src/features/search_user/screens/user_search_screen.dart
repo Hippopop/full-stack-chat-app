@@ -2,9 +2,10 @@ import 'dart:developer';
 
 import 'package:chat_client/src/constants/design/border_radius.dart';
 import 'package:chat_client/src/constants/design/paddings.dart';
-import 'package:chat_client/src/features/homepage/screens/chats_page/components/chat_card.dart';
 import 'package:chat_client/src/features/messages/message_screen.dart';
+import 'package:chat_client/src/features/messages/models/personal_chat_query.dart';
 import 'package:chat_client/src/features/search_user/controller/user_search_controller.dart';
+import 'package:chat_client/src/features/search_user/screens/components/searched_user_card.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:chat_client/src/utilities/extensions/size_utilities.dart';
 import 'package:flutter/material.dart';
@@ -93,23 +94,24 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       final user = data[index];
-                      return ChatCard(
-                        timeText: "N/A",
+                      return SearchedUserCard(
                         name: user.name,
+                        uuid: user.uuid,
                         image: user.photoUrl,
                         lastMsg: user.email,
+                        connection: user.connection,
                         onTap: () {
                           context.pop();
                           context.push(
-                            Uri(
-                              queryParameters: {
-                                'name': user.name,
-                                'email': user.email,
-                                'phone': user.phone,
-                                'photo': user.photo,
-                              },
-                              path: PersonalChatScreen.route(uuid: user.uuid),
-                            ).toString(),
+                            PersonalChatScreen.route(
+                              uuid: user.uuid,
+                              queryParameters: PersonalChatQuery(
+                                name: user.name,
+                                email: user.email,
+                                phone: user.phone,
+                                photo: user.photo,
+                              ),
+                            ),
                           );
                         },
                       );
@@ -130,7 +132,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                   loading: () => ListView.builder(
                     itemCount: 8,
                     itemBuilder: (context, index) {
-                      return const ChatCardShimmer();
+                      return const SearchedUserCardShimmer();
                     },
                   ),
                 );

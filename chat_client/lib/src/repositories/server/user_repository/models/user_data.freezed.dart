@@ -25,6 +25,7 @@ mixin _$UserData {
   String? get birthdate => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
+  ConnectionData? get connection => throw _privateConstructorUsedError;
   String get uuid => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -46,9 +47,12 @@ abstract class $UserDataCopyWith<$Res> {
       String? birthdate,
       DateTime? createdAt,
       DateTime? updatedAt,
+      ConnectionData? connection,
       String uuid,
       String email,
       String name});
+
+  $ConnectionDataCopyWith<$Res>? get connection;
 }
 
 /// @nodoc
@@ -69,6 +73,7 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
     Object? birthdate = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? connection = freezed,
     Object? uuid = null,
     Object? email = null,
     Object? name = null,
@@ -94,6 +99,10 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      connection: freezed == connection
+          ? _value.connection
+          : connection // ignore: cast_nullable_to_non_nullable
+              as ConnectionData?,
       uuid: null == uuid
           ? _value.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
@@ -107,6 +116,18 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           : name // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ConnectionDataCopyWith<$Res>? get connection {
+    if (_value.connection == null) {
+      return null;
+    }
+
+    return $ConnectionDataCopyWith<$Res>(_value.connection!, (value) {
+      return _then(_value.copyWith(connection: value) as $Val);
+    });
   }
 }
 
@@ -124,9 +145,13 @@ abstract class _$$UserDataImplCopyWith<$Res>
       String? birthdate,
       DateTime? createdAt,
       DateTime? updatedAt,
+      ConnectionData? connection,
       String uuid,
       String email,
       String name});
+
+  @override
+  $ConnectionDataCopyWith<$Res>? get connection;
 }
 
 /// @nodoc
@@ -145,6 +170,7 @@ class __$$UserDataImplCopyWithImpl<$Res>
     Object? birthdate = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? connection = freezed,
     Object? uuid = null,
     Object? email = null,
     Object? name = null,
@@ -170,6 +196,10 @@ class __$$UserDataImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      connection: freezed == connection
+          ? _value.connection
+          : connection // ignore: cast_nullable_to_non_nullable
+              as ConnectionData?,
       uuid: null == uuid
           ? _value.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
@@ -195,6 +225,7 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
       this.birthdate,
       this.createdAt,
       this.updatedAt,
+      this.connection,
       required this.uuid,
       required this.email,
       required this.name})
@@ -214,6 +245,8 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
   @override
   final DateTime? updatedAt;
   @override
+  final ConnectionData? connection;
+  @override
   final String uuid;
   @override
   final String email;
@@ -222,7 +255,7 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserData(phone: $phone, photo: $photo, birthdate: $birthdate, createdAt: $createdAt, updatedAt: $updatedAt, uuid: $uuid, email: $email, name: $name)';
+    return 'UserData(phone: $phone, photo: $photo, birthdate: $birthdate, createdAt: $createdAt, updatedAt: $updatedAt, connection: $connection, uuid: $uuid, email: $email, name: $name)';
   }
 
   @override
@@ -235,6 +268,7 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('birthdate', birthdate))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('updatedAt', updatedAt))
+      ..add(DiagnosticsProperty('connection', connection))
       ..add(DiagnosticsProperty('uuid', uuid))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('name', name));
@@ -253,6 +287,8 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
+            (identical(other.connection, connection) ||
+                other.connection == connection) &&
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name));
@@ -261,7 +297,7 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, phone, photo, birthdate,
-      createdAt, updatedAt, uuid, email, name);
+      createdAt, updatedAt, connection, uuid, email, name);
 
   @JsonKey(ignore: true)
   @override
@@ -284,6 +320,7 @@ abstract class _UserData extends UserData {
       final String? birthdate,
       final DateTime? createdAt,
       final DateTime? updatedAt,
+      final ConnectionData? connection,
       required final String uuid,
       required final String email,
       required final String name}) = _$UserDataImpl;
@@ -302,6 +339,8 @@ abstract class _UserData extends UserData {
   DateTime? get createdAt;
   @override
   DateTime? get updatedAt;
+  @override
+  ConnectionData? get connection;
   @override
   String get uuid;
   @override

@@ -4,4 +4,8 @@ class APIConfig {
   static String login = const String.fromEnvironment("LOGIN");
   static String register = const String.fromEnvironment("REGISTER");
   static String searchUser = const String.fromEnvironment("SEARCH_USER");
+  static String requestConnection =
+      const String.fromEnvironment("REQUEST_CONNECTION");
+  static String updateConnection =
+      const String.fromEnvironment("UPDATE_CONNECTION");
 }

@@ -20,9 +20,9 @@ AuthenticationState _$AuthenticationStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AuthenticationState {
+  AppUser? get currentUser => throw _privateConstructorUsedError;
   ({String accessToken, String refreshToken})? get token =>
       throw _privateConstructorUsedError;
-  AppUser? get currentUser => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,8 +37,8 @@ abstract class $AuthenticationStateCopyWith<$Res> {
       _$AuthenticationStateCopyWithImpl<$Res, AuthenticationState>;
   @useResult
   $Res call(
-      {({String accessToken, String refreshToken})? token,
-      AppUser? currentUser});
+      {AppUser? currentUser,
+      ({String accessToken, String refreshToken})? token});
 
   $AppUserCopyWith<$Res>? get currentUser;
 }
@@ -56,18 +56,18 @@ class _$AuthenticationStateCopyWithImpl<$Res, $Val extends AuthenticationState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? token = freezed,
     Object? currentUser = freezed,
+    Object? token = freezed,
   }) {
     return _then(_value.copyWith(
-      token: freezed == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as ({String accessToken, String refreshToken})?,
       currentUser: freezed == currentUser
           ? _value.currentUser
           : currentUser // ignore: cast_nullable_to_non_nullable
               as AppUser?,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as ({String accessToken, String refreshToken})?,
     ) as $Val);
   }
 
@@ -93,8 +93,8 @@ abstract class _$$AuthenticationStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {({String accessToken, String refreshToken})? token,
-      AppUser? currentUser});
+      {AppUser? currentUser,
+      ({String accessToken, String refreshToken})? token});
 
   @override
   $AppUserCopyWith<$Res>? get currentUser;
@@ -111,18 +111,18 @@ class __$$AuthenticationStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? token = freezed,
     Object? currentUser = freezed,
+    Object? token = freezed,
   }) {
     return _then(_$AuthenticationStateImpl(
-      token: freezed == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as ({String accessToken, String refreshToken})?,
       currentUser: freezed == currentUser
           ? _value.currentUser
           : currentUser // ignore: cast_nullable_to_non_nullable
               as AppUser?,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as ({String accessToken, String refreshToken})?,
     ));
   }
 }
@@ -131,19 +131,19 @@ class __$$AuthenticationStateImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AuthenticationStateImpl extends _AuthenticationState
     with DiagnosticableTreeMixin {
-  const _$AuthenticationStateImpl({this.token, this.currentUser}) : super._();
+  const _$AuthenticationStateImpl({this.currentUser, this.token}) : super._();
 
   factory _$AuthenticationStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthenticationStateImplFromJson(json);
 
   @override
-  final ({String accessToken, String refreshToken})? token;
-  @override
   final AppUser? currentUser;
+  @override
+  final ({String accessToken, String refreshToken})? token;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthenticationState(token: $token, currentUser: $currentUser)';
+    return 'AuthenticationState(currentUser: $currentUser, token: $token)';
   }
 
   @override
@@ -151,8 +151,8 @@ class _$AuthenticationStateImpl extends _AuthenticationState
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'AuthenticationState'))
-      ..add(DiagnosticsProperty('token', token))
-      ..add(DiagnosticsProperty('currentUser', currentUser));
+      ..add(DiagnosticsProperty('currentUser', currentUser))
+      ..add(DiagnosticsProperty('token', token));
   }
 
   @override
@@ -160,14 +160,14 @@ class _$AuthenticationStateImpl extends _AuthenticationState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthenticationStateImpl &&
-            (identical(other.token, token) || other.token == token) &&
             (identical(other.currentUser, currentUser) ||
-                other.currentUser == currentUser));
+                other.currentUser == currentUser) &&
+            (identical(other.token, token) || other.token == token));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, token, currentUser);
+  int get hashCode => Object.hash(runtimeType, currentUser, token);
 
   @JsonKey(ignore: true)
   @override
@@ -186,17 +186,18 @@ class _$AuthenticationStateImpl extends _AuthenticationState
 
 abstract class _AuthenticationState extends AuthenticationState {
   const factory _AuthenticationState(
-      {final ({String accessToken, String refreshToken})? token,
-      final AppUser? currentUser}) = _$AuthenticationStateImpl;
+          {final AppUser? currentUser,
+          final ({String accessToken, String refreshToken})? token}) =
+      _$AuthenticationStateImpl;
   const _AuthenticationState._() : super._();
 
   factory _AuthenticationState.fromJson(Map<String, dynamic> json) =
       _$AuthenticationStateImpl.fromJson;
 
   @override
-  ({String accessToken, String refreshToken})? get token;
-  @override
   AppUser? get currentUser;
+  @override
+  ({String accessToken, String refreshToken})? get token;
   @override
   @JsonKey(ignore: true)
   _$$AuthenticationStateImplCopyWith<_$AuthenticationStateImpl> get copyWith =>

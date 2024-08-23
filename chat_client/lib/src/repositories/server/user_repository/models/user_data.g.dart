@@ -17,6 +17,9 @@ _$UserDataImpl _$$UserDataImplFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+      connection: json['connection'] == null
+          ? null
+          : ConnectionData.fromJson(json['connection'] as Map<String, dynamic>),
       uuid: json['uuid'] as String,
       email: json['email'] as String,
       name: json['name'] as String,
@@ -29,6 +32,7 @@ Map<String, dynamic> _$$UserDataImplToJson(_$UserDataImpl instance) =>
       'birthdate': instance.birthdate,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'connection': instance.connection,
       'uuid': instance.uuid,
       'email': instance.email,
       'name': instance.name,

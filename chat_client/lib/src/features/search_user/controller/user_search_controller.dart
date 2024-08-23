@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chat_client/src/data/user_provider/user_repository_provider.dart';
 import 'package:chat_client/src/repositories/repository.dart';
 import 'package:chat_client/src/repositories/server/source/config_provider.dart';
+import 'package:chat_client/src/repositories/server/user_repository/models/connection_data.dart';
 import 'package:chat_client/src/utilities/extensions/riverpod_ref_extensions.dart';
 import 'package:chat_client/src/utilities/scaffold_utils/snackbar_util.dart';
 import 'package:dio/dio.dart';
@@ -49,6 +50,71 @@ class UserSearchNotifier extends AutoDisposeAsyncNotifier<List<UserData>> {
       }
     } catch (e, s) {
       log("#GET_USERS", error: e, stackTrace: s);
+      if (e is RequestException) {
+        e.handleError(defaultMessage: "Unexpected error occurred!");
+      }
+      rethrow;
+    }
+  }
+
+  void updateConnectionRequest({
+    CancelToken? cancelToken,
+    required int connectionKey,
+    required ConnectionStatus status,
+  }) async {
+    try {
+      final baseState = state;
+      state = const AsyncValue.loading();
+      state = await AsyncValue.guard(
+        () async {
+          final response = await _repository.updateUserConnection(
+            connectionKey: connectionKey,
+            newStatus: status,
+          );
+          if (response.isError) throw response.msg;
+          showToastSuccess(response.msg);
+          return [
+            for (final user in baseState.requireValue)
+              if (user.connection?.key == connectionKey)
+                user.copyWith(connection: response.data)
+              else
+                user,
+          ];
+        },
+      );
+    } catch (e, s) {
+      log("#UPDATE_CONNECTION_REQUEST", error: e, stackTrace: s);
+      if (e is RequestException) {
+        e.handleError(defaultMessage: "Unexpected error occurred!");
+      }
+      rethrow;
+    }
+  }
+
+  void requestConnection({
+    CancelToken? cancelToken,
+    required String userUUID,
+  }) async {
+    try {
+      final baseState = state;
+      state = const AsyncValue.loading();
+      state = await AsyncValue.guard(
+        () async {
+          final response =
+              await _repository.requestConnection(userUUID: userUUID);
+          if (response.isError) throw response.msg;
+          showToastSuccess(response.msg);
+          return [
+            for (final user in baseState.requireValue)
+              if (user.uuid == userUUID)
+                user.copyWith(connection: response.data)
+              else
+                user,
+          ];
+        },
+      );
+    } catch (e, s) {
+      log("#REQUEST_CONNECTION", error: e, stackTrace: s);
       if (e is RequestException) {
         e.handleError(defaultMessage: "Unexpected error occurred!");
       }

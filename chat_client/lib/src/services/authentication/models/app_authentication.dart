@@ -8,8 +8,8 @@ part 'app_authentication.g.dart';
 @freezed
 class AuthenticationState with _$AuthenticationState {
   const factory AuthenticationState({
-    ({String accessToken, String refreshToken})? token,
     AppUser? currentUser,
+    ({String accessToken, String refreshToken})? token,
   }) = _AuthenticationState;
 
   const AuthenticationState._();
