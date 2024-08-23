@@ -24,7 +24,7 @@ export const DB_Media_Schema = createSelectSchema(medias, {
     updatedAt: (schema) => schema.updatedAt.optional(),
 });
 
-const DB_Media_Type_Schema = DB_Media_Schema.shape.type;
+export const DB_Media_Type_Schema = DB_Media_Schema.shape.type;
 export const DBN_Media_Schema = createInsertSchema(medias);
 
 

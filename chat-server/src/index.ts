@@ -33,6 +33,7 @@ app.get("/", (req, res, next) => {
     return res.sendFile(path.resolve("./public/index.html"));
 });
 app.all("*", (req, res, next) => {
+    console.log(`Trying to reach an unavailable path --> ${req.path}`);
     return res.send("<h1>Entered to a unknown World!</h1>");
 });
 
@@ -46,7 +47,11 @@ const io = new Server(server, {
     cors: { origin: "*" }
 });
 
-io.on("connection", (socket) => {
+io.use((socket, next) => {
+    socket.handshake.auth;
+});
+
+io.on("connection", async (socket) => {
     /// --- Start of connection processing!
     console.log(`   --- Connected ${socket.id} ---   `);
 

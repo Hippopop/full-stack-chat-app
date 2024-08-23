@@ -20,6 +20,7 @@ tokenRoute.post(
 
     businessLogic: async (req: Request, res: Response, next?: NextFunction) => {
       const { token, refreshToken } = req.body;
+      console.log("**REFRESHING TOKEN**")
       if (!refreshToken) throw noRefreshTokenError;
       const refreshTokenData = await tokenizer.verifyRefreshTokenWithData(
         refreshToken,
