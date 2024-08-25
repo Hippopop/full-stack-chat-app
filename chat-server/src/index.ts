@@ -6,8 +6,10 @@ import express from "express";
 import { Server } from "socket.io";
 import authRoute from "./routes/authentication/auth-apis";
 import tokenRoute from "./routes/token/token_apis";
-import { profilePath, publicPath } from "./constants/directories";
+import { publicPath } from "./constants/directories";
 import userRoute from "./routes/user/user_apis";
+import * as AuthorizationMiddleware from "./socket/authorization_process/socket_authorization";
+
 
 dotenv.config();
 const port = process.env.PORT ?? 8080;
@@ -47,16 +49,18 @@ const io = new Server(server, {
     cors: { origin: "*" }
 });
 
-io.use((socket, next) => {
-    socket.handshake.auth;
-});
+io.use(AuthorizationMiddleware.AuthorizeSocketUser);
 
 io.on("connection", async (socket) => {
+    ///
+    await AuthorizationMiddleware.verifyAndResignAuthorizationTokens(socket, io);
+
     /// --- Start of connection processing!
     console.log(`   --- Connected ${socket.id} ---   `);
 
     /// --- Beginning of functional processing!
     socket.emit("message", `Welcome connection! Your ID is -> ${socket.id}`);
+    socket.emit("message", `Maybe your name is -> ${socket.data.userData.name}`)
     socket.emit("message", `Current path is -> ${socket.handshake.url}`);
     socket.on("message", (message) => {
         console.log(`Message received: ${message}`);

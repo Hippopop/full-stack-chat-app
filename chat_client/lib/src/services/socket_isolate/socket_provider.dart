@@ -9,7 +9,7 @@ final socketProvider = FutureProvider<SocketIsolate>((ref) async {
   }
 
   final socket = SocketIsolate.factory();
-  await socket.initiate(authenticationState.token!);
+  await socket.initiate(authenticationState.token!, ref);
   ref.onDispose(() {
     socket.dispose();
   });

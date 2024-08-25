@@ -104,7 +104,7 @@ class SearchedUserCard extends StatelessWidget {
                 final myUUID =
                     ref.watch(authStateNotifierProvider).currentUser!.uuid;
                 final isSender = connection?.fromUser == myUUID;
-                final isReceiver = connection?.toUser == myUUID;
+                // final isReceiver = connection?.toUser == myUUID;
                 final isRequested =
                     connection?.connectionStatus == ConnectionStatus.requested;
                 final isAccepted =

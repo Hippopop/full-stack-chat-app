@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:chat_client/src/constants/assets/assets.dart';
 import 'package:chat_client/src/constants/server/api_config.dart';
 import 'package:chat_client/src/features/search_user/screens/user_search_screen.dart';
 import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import 'chats_page/chats_page.dart';
 
@@ -30,7 +31,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
           onPressed: () => context.push(UserSearchScreen.route),
           backgroundColor: context.color.primary,
           child: const Icon(
-            Icons.person_add_alt_1,
+            HugeIcons.strokeRoundedUserAdd02,
             color: Colors.white,
           ),
         ),
@@ -50,17 +51,29 @@ class _HomepageScreenState extends State<HomepageScreen> {
         });
       },
       items: [
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           label: "Chats",
-          icon: Icon(Icons.messenger),
+          icon: Builder(builder: (context) {
+            return const Icon(
+              HugeIcons.strokeRoundedBubbleChat,
+            );
+          }),
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           label: "People",
-          icon: Icon(Icons.people),
+          icon: Builder(builder: (context) {
+            return const Icon(
+              HugeIcons.strokeRoundedUserMultiple02,
+            );
+          }),
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           label: "Calls",
-          icon: Icon(Icons.call),
+          icon: Builder(builder: (context) {
+            return const Icon(
+              HugeIcons.strokeRoundedCall02,
+            );
+          }),
         ),
         BottomNavigationBarItem(
           icon: DecoratedBox(

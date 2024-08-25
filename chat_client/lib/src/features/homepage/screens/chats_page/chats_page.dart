@@ -71,13 +71,3 @@ class ChatsScreen extends StatelessWidget {
     });
   }
 }
-
-/* 
-
-HugeIcon(
-  icon: HugeIcons.strokeRoundedSearch02,
-  color: Colors.black,
-  size: 24.0,
-)
-
- */
