@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { createHash } from "node:crypto";
 import { AccessTokenModelSchema } from "./models/token";
 import { ResponseError } from "../../types/response/errors/error-z";
-import { unauthorized } from "../../constants/errors/error_codes";
+import { badRequest, unauthorized } from "../../constants/errors/error_codes";
 
 const accessTokenTime = "2h";
 const refreshTokenTime = "60 days";
@@ -50,9 +50,9 @@ function generateRefreshToken(data: _generateRefreshTokenType): [string, String]
 async function verifyRefreshTokenWithData<T>(
   token: string,
   schema: z.Schema<T>
-): Promise<T | undefined> {
+): Promise<T> {
   const tokenSecret = process.env.REFRESH_TOKEN as string;
-  return await new Promise<T | undefined>((resolve, reject) => {
+  return await new Promise<T>((resolve, reject) => {
     tokenizer.verify(token, tokenSecret, async (err, data) => {
       if (data) {
         const purifiedData = schema.safeParse(data);
@@ -61,7 +61,7 @@ async function verifyRefreshTokenWithData<T>(
         } else {
           reject(purifiedData.error);
         }
-      } else reject(err);
+      } else reject(new ResponseError(badRequest, "Invalid refresh token!"));
     })
   });
 
@@ -70,9 +70,9 @@ async function verifyRefreshTokenWithData<T>(
 async function verifyAccessTokenWithData<T>(
   token: string,
   schema: z.Schema<T>
-): Promise<T | undefined> {
+): Promise<T> {
   const tokenSecret = process.env.ACCESS_TOKEN as string;
-  return new Promise<T | undefined>((resolve, reject) => {
+  return new Promise<T>((resolve, reject) => {
     tokenizer.verify(token, tokenSecret, (err, data) => {
       if (data) {
         const purifiedData = schema.safeParse(data);
