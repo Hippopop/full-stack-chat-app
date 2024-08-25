@@ -1,7 +1,6 @@
 import 'package:chat_client/src/constants/assets/assets.dart';
 import 'package:chat_client/src/features/messages/components/message.dart';
 import 'package:chat_client/src/features/messages/models/personal_chat_query.dart';
-import 'package:chat_client/src/services/socket_isolate/socket_isolate.dart';
 
 import 'package:chat_client/src/constants/design/paddings.dart';
 import 'package:flutter/material.dart';
