@@ -5,7 +5,6 @@ CREATE TABLE `activities` (
 	`created_at` int DEFAULT (unix_timestamp()),
 	`updated_at` int,
 	CONSTRAINT `activities_user` PRIMARY KEY(`user`),
-	CONSTRAINT `activities_user_unique` UNIQUE(`user`),
 	CONSTRAINT `activities_socket_unique` UNIQUE(`socket`)
 );
 --> statement-breakpoint
@@ -30,7 +29,7 @@ CREATE TABLE `connections` (
 	`to_user` varchar(256) NOT NULL,
 	`from_user` varchar(256) NOT NULL,
 	`connection_status` enum('requested','accepted','rejected','blocked'),
-	`last_message` varchar(256),
+	`last_message` int,
 	`created_at` int DEFAULT (unix_timestamp()),
 	`updated_at` int,
 	CONSTRAINT `connections_key` PRIMARY KEY(`key`),
@@ -43,7 +42,7 @@ CREATE TABLE `medias` (
 	`key` int AUTO_INCREMENT NOT NULL,
 	`name` varchar(256) NOT NULL,
 	`extension` varchar(50) NOT NULL,
-	`message` varchar(256),
+	`message` int,
 	`type` enum('profile','photo','video','voice_note') NOT NULL,
 	`uuid` varchar(256) NOT NULL,
 	`created_at` int DEFAULT (unix_timestamp()),
@@ -55,11 +54,11 @@ CREATE TABLE `medias` (
 );
 --> statement-breakpoint
 CREATE TABLE `messages` (
-	`key` varchar(256) NOT NULL,
+	`key` int NOT NULL,
 	`text` text,
 	`voice_note` varchar(256),
 	`connection_ref` int NOT NULL,
-	`parent` varchar(256),
+	`parent` int,
 	`sender` varchar(256) NOT NULL,
 	`receiver` varchar(256) NOT NULL,
 	`attachment` json,
@@ -67,7 +66,7 @@ CREATE TABLE `messages` (
 	`seen_time` int,
 	`created_at` int DEFAULT (unix_timestamp()),
 	`updated_at` int,
-	CONSTRAINT `messages_key_unique` UNIQUE(`key`)
+	CONSTRAINT `messages_key` PRIMARY KEY(`key`)
 );
 --> statement-breakpoint
 CREATE TABLE `users` (

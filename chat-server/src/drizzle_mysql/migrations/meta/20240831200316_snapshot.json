@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "994f8372-82d4-4aca-8924-4d5dc0556eca",
+  "id": "1d400594-2229-4376-a83a-852ceab7bede",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "activities": {
@@ -70,12 +70,6 @@
         }
       },
       "uniqueConstraints": {
-        "activities_user_unique": {
-          "name": "activities_user_unique",
-          "columns": [
-            "user"
-          ]
-        },
         "activities_socket_unique": {
           "name": "activities_socket_unique",
           "columns": [
@@ -217,7 +211,7 @@
         },
         "last_message": {
           "name": "last_message",
-          "type": "varchar(256)",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -337,7 +331,7 @@
         },
         "message": {
           "name": "message",
-          "type": "varchar(256)",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -441,7 +435,7 @@
       "columns": {
         "key": {
           "name": "key",
-          "type": "varchar(256)",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -469,7 +463,7 @@
         },
         "parent": {
           "name": "parent",
-          "type": "varchar(256)",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -580,15 +574,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "messages_key_unique": {
-          "name": "messages_key_unique",
+      "compositePrimaryKeys": {
+        "messages_key": {
+          "name": "messages_key",
           "columns": [
             "key"
           ]
         }
-      }
+      },
+      "uniqueConstraints": {}
     },
     "users": {
       "name": "users",

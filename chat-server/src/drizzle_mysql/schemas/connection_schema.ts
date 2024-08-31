@@ -4,7 +4,6 @@ import { date, int, mysqlEnum, mysqlTable, text, timestamp, unique, varchar } fr
 import { drizzleTimeFields } from "../helpers/schema_snippets";
 import { authentication } from "./auth_schema";
 import { messages } from "./message_schema";
-import { sql } from "drizzle-orm";
 
 export const connections = mysqlTable('connections', {
     key: int("key").autoincrement().primaryKey(),
@@ -12,7 +11,7 @@ export const connections = mysqlTable('connections', {
     toUser: varchar('to_user', { length: 256 }).notNull().references(() => authentication.uuid),
     fromUser: varchar('from_user', { length: 256 }).notNull().references(() => authentication.uuid),
     connectionStatus: mysqlEnum('connection_status', ['requested', 'accepted', 'rejected', 'blocked']),
-    lastMessage: varchar('last_message', { length: 256 }).unique().references(() => messages.key),
+    lastMessage: int('last_message').unique().references(() => messages.key),
     ...drizzleTimeFields,
 }, (table) => ({
     uniqueItem: unique().on(table.toUser, table.fromUser),

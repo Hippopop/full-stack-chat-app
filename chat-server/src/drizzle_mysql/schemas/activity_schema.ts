@@ -5,7 +5,7 @@ import { drizzleTimeFields } from "../helpers/schema_snippets";
 import { authentication } from "./auth_schema";
 
 export const activities = mysqlTable('activities', {
-    user: varchar('user', { length: 256 }).notNull().unique().primaryKey().references(() => authentication.uuid),
+    user: varchar('user', { length: 256 }).notNull().primaryKey().references(() => authentication.uuid),
     socket: varchar('socket', { length: 256 }).unique(),
     isActive: boolean('is_active').notNull().default(false),
     ...drizzleTimeFields,

@@ -7,6 +7,7 @@ export const SocketEventKeys = {
 
 
 const tokenKey = "FRESH_TOKEN";
+const homieData = "HOMIE_DATA";
 export const SocketActionKeys = {
-    tokenKey
+    tokenKey, homieData
 }

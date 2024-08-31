@@ -8,6 +8,9 @@ import { connections, DB_Connection, DB_Connection_Status_Type, DBN_Connection }
 import { badRequest } from "../constants/errors/error_codes";
 import { ResponseError } from "../types/response/errors/error-z";
 import { getCurrentTimestampSeconds } from "../drizzle_mysql/helpers/schema_snippets";
+import { messages } from "../drizzle_mysql/schemas/message_schema";
+import { activities } from "../drizzle_mysql/schemas/activity_schema";
+import { HomieInfo } from "./models/homie_info";
 
 const createUser = async (data: DBN_User): Promise<DB_User> => {
   const response = await drizzleDatabase.insert(users).values({
@@ -117,17 +120,52 @@ const updateUserConnectionStatus = async (connectionKey: number, status: DB_Conn
   if (!isSender && !isReceiver) throw new ResponseError(400, "Trying to update an unrelated connection!");
   if (isSender) throw new ResponseError(400, "Sender can't update the connection status!");
 
-  const isAccepting = status == "accepted";
+  const isAccepting = (status === "accepted");
+  console.log(`isAccepting ${JSON.stringify(isAccepting ? { acceptedAt: getCurrentTimestampSeconds() } : {})}`);
   const response = await drizzleDatabase.update(connections).set({
     connectionStatus: status,
-    ...(isAccepting ? { acceptedAt: getCurrentTimestampSeconds() } : {}),
+    ...(isAccepting ? { acceptTimestamp: getCurrentTimestampSeconds() } : {}),
   }).where(eq(connections.key, connectionKey));
   return {
     ...(currentState.at(0)!),
-    ...(isAccepting ? { acceptedAt: Date.now() } : {}),
+    ...(isAccepting ? { acceptedAt: getCurrentTimestampSeconds() } : {}),
     connectionStatus: status,
   };
 };
 
-export { createUser, getUserData, searchUserData, searchUserWithFriendInfo, requestConnection, updateUserConnectionStatus };
+const getListOfMyHomies = async (uuid: string): Promise<HomieInfo[]> => {
+  return await drizzleDatabase.select(
+    {
+      homie: {
+        uuid: users.uuid,
+        name: users.name,
+        photo: users.photo,
+        isActive: activities.isActive,
+        lastActivity: activities.updatedAt,
+      },
+      connection: {
+        key: connections.key,
+        status: connections.connectionStatus,
+        acceptedAt: connections.acceptTimestamp,
+      },
+      message: messages,
+    }
+  ).from(connections)
+    .where(
+      and(
+        or(eq(connections.fromUser, uuid), eq(connections.toUser, uuid)),
+        eq(connections.connectionStatus, "accepted")
+      )
+    )
+    .innerJoin(users,
+      or(
+        and(eq(users.uuid, connections.fromUser), ne(connections.fromUser, uuid)),
+        and(eq(users.uuid, connections.toUser), ne(connections.toUser, uuid)),
+      )
+    )
+    .leftJoin(messages, eq(connections.lastMessage, messages.key))
+    .leftJoin(activities, eq(users.uuid, activities.user));
+}
+
+export { createUser, getUserData, searchUserData, searchUserWithFriendInfo, requestConnection, updateUserConnectionStatus, getListOfMyHomies, };
 

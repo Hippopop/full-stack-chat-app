@@ -11,11 +11,11 @@ type Attachment = {
 };
 
 export const messages = mysqlTable('messages', {
-    key: varchar('key', { length: 256 }).notNull().unique(),
+    key: int('key').notNull().primaryKey(),
     text: text('text'),
     voiceNote: varchar('voice_note', { length: 256 }),
     connection: int("connection_ref").notNull().references((): AnyMySqlColumn => connections.key),
-    parent: varchar('parent', { length: 256 }).references((): AnyMySqlColumn => messages.key),
+    parent: int('parent').references((): AnyMySqlColumn => messages.key),
     sender: varchar('sender', { length: 256 }).notNull().references(() => users.uuid),
     receiver: varchar('receiver', { length: 256 }).notNull().references(() => users.uuid),
     attachment: json('attachment').$type<Attachment>(),
