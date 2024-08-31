@@ -104,6 +104,8 @@ export const wrapperFunction =
         if (safeData.success) {
           return res.status(success).json(safeData.data);
         } else {
+          console.log(`Unmatched Data: ${JSON.stringify(data)}`);
+          console.log(`Formatted Error: ${JSON.stringify(safeData.error.format())}`);
           throw safeData.error;
         }
       } catch (error) {

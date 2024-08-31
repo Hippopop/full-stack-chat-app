@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "65045e49-3dea-484e-a8df-8535008bc7b0",
+  "id": "994f8372-82d4-4aca-8924-4d5dc0556eca",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "activities": {
@@ -14,6 +14,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "socket": {
+          "name": "socket",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "is_active": {
           "name": "is_active",
           "type": "boolean",
@@ -24,19 +31,18 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "(now())"
+          "default": "(unix_timestamp())"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -55,12 +61,25 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "activities_user": {
+          "name": "activities_user",
+          "columns": [
+            "user"
+          ]
+        }
+      },
       "uniqueConstraints": {
         "activities_user_unique": {
           "name": "activities_user_unique",
           "columns": [
             "user"
+          ]
+        },
+        "activities_socket_unique": {
+          "name": "activities_socket_unique",
+          "columns": [
+            "socket"
           ]
         }
       }
@@ -113,19 +132,18 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "(now())"
+          "default": "(unix_timestamp())"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -169,9 +187,9 @@
           "notNull": true,
           "autoincrement": true
         },
-        "accept_time": {
-          "name": "accept_time",
-          "type": "timestamp",
+        "accept_timestamp": {
+          "name": "accept_timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -206,19 +224,18 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "(now())"
+          "default": "(unix_timestamp())"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -278,18 +295,18 @@
             "last_message"
           ]
         },
-        "connections_from_user_to_user_unique": {
-          "name": "connections_from_user_to_user_unique",
+        "connections_to_user_from_user_unique": {
+          "name": "connections_to_user_from_user_unique",
           "columns": [
-            "from_user",
-            "to_user"
+            "to_user",
+            "from_user"
           ]
         },
         "unique_combination": {
           "name": "unique_combination",
           "columns": [
-            "from_user",
-            "to_user"
+            "to_user",
+            "from_user"
           ]
         }
       }
@@ -341,19 +358,18 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "(now())"
+          "default": "(unix_timestamp())"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -444,6 +460,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "connection_ref": {
+          "name": "connection_ref",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "parent": {
           "name": "parent",
           "type": "varchar(256)",
@@ -474,37 +497,49 @@
         },
         "deliver_time": {
           "name": "deliver_time",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "seen_time": {
           "name": "seen_time",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "(now())"
+          "default": "(unix_timestamp())"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {
+        "messages_connection_ref_connections_key_fk": {
+          "name": "messages_connection_ref_connections_key_fk",
+          "tableFrom": "messages",
+          "tableTo": "connections",
+          "columnsFrom": [
+            "connection_ref"
+          ],
+          "columnsTo": [
+            "key"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "messages_parent_messages_key_fk": {
           "name": "messages_parent_messages_key_fk",
           "tableFrom": "messages",
@@ -602,19 +637,18 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "(now())"
+          "default": "(unix_timestamp())"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": "CURRENT_TIMESTAMP(3) on update CURRENT_TIMESTAMP(3)"
+          "autoincrement": false
         }
       },
       "indexes": {},

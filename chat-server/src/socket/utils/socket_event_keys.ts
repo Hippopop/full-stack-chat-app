@@ -1,1 +1,0 @@
-export const tokenKey = "FRESH_TOKEN";

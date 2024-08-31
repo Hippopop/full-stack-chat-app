@@ -3,7 +3,7 @@ import z from "zod";
 export const AuthTokenSchema = z.object({
   token: z.string(),
   refreshToken: z.string(),
-  expiresAt: z.string().datetime({ offset: true }),
+  expiresAt: z.number(),
 });
 
 export type AuthToken = z.infer<typeof AuthTokenSchema>;

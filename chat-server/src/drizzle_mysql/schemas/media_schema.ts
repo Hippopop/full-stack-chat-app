@@ -21,7 +21,7 @@ export const medias = mysqlTable('medias', {
 export const DB_Media_Schema = createSelectSchema(medias, {
     message: (schema) => schema.message.optional(),
     createdAt: (schema) => schema.createdAt.optional(),
-    updatedAt: (schema) => schema.updatedAt.optional(),
+    updatedAt: (schema) => schema.updatedAt.nullish(),
 });
 
 export const DB_Media_Type_Schema = DB_Media_Schema.shape.type;

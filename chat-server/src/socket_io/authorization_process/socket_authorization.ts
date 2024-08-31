@@ -1,11 +1,11 @@
 import { Server, Socket } from "socket.io";
 import tokenizer from "../../utils/token/jwt_token";
-import { AuthTokenSchema } from "../../types/auth/token-z";
+import { AuthTokenSchema } from "../../types/authentication/token-z";
 import { User, UserSchema } from "../../types/user/user-z";
 import { ResponseError } from "../../types/response/errors/error-z";
 import { badRequest, unauthorized } from "../../constants/errors/error_codes";
 import { tokenSetFromRefreshToken } from "../../routes/token/token_apis";
-import { tokenKey } from "../utils/socket_event_keys";
+import { SocketActionKeys } from "../utils/socket_event_keys";
 
 
 let AuthorizeSocketUser = async (socket: Socket, next: (err?: Error) => void) => {
@@ -22,7 +22,6 @@ let AuthorizeSocketUser = async (socket: Socket, next: (err?: Error) => void) =>
                 console.log("SOCKET: (AUTHORIZATION_MIDDLEWARE) Access token expired!");
                 try {
                     let newTokenSet = await tokenSetFromRefreshToken(tokens.refreshToken);
-
                     socket.data.freshToken = newTokenSet;
                     authData = await tokenizer.verifyAccessTokenWithData(newTokenSet.token, UserSchema);
                     next();
@@ -40,11 +39,14 @@ let AuthorizeSocketUser = async (socket: Socket, next: (err?: Error) => void) =>
     } else next(new ResponseError(unauthorized, "User credential missing!"));
 };
 
-let verifyAndResignAuthorizationTokens = async function (socket: Socket, io: Server) {
+let verifyAndResignAuthorizationTokens = async function (socket: Socket, io: Server): Promise<User> {
     if (socket.data.freshToken) {
-        socket.emit(tokenKey, socket.data.freshToken);
+        socket.emit(SocketActionKeys.tokenKey, socket.data.freshToken);
         delete socket.data.freshToken;
     }
+    const pursedUser = UserSchema.safeParse(socket.data.userData);
+    if (pursedUser.error) socket.disconnect(true);
+    return pursedUser.data!;
 }
 
 export { AuthorizeSocketUser, verifyAndResignAuthorizationTokens }

@@ -7,6 +7,7 @@ import { SearchedUserData, SearchUserWithFriend } from "./models/search_user";
 import { connections, DB_Connection, DB_Connection_Status_Type, DBN_Connection } from "../drizzle_mysql/schemas/connection_schema";
 import { badRequest } from "../constants/errors/error_codes";
 import { ResponseError } from "../types/response/errors/error-z";
+import { getCurrentTimestampSeconds } from "../drizzle_mysql/helpers/schema_snippets";
 
 const createUser = async (data: DBN_User): Promise<DB_User> => {
   const response = await drizzleDatabase.insert(users).values({
@@ -119,7 +120,7 @@ const updateUserConnectionStatus = async (connectionKey: number, status: DB_Conn
   const isAccepting = status == "accepted";
   const response = await drizzleDatabase.update(connections).set({
     connectionStatus: status,
-    ...(isAccepting ? { acceptedAt: Date.now() } : {}),
+    ...(isAccepting ? { acceptedAt: getCurrentTimestampSeconds() } : {}),
   }).where(eq(connections.key, connectionKey));
   return {
     ...(currentState.at(0)!),
