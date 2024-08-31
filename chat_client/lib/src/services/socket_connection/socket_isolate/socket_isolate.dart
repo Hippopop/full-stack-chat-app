@@ -5,7 +5,8 @@ import 'dart:isolate';
 
 import 'package:chat_client/src/repositories/server/auth_repository/models/token/user_token.dart';
 import 'package:chat_client/src/services/authentication/authentication_service.dart';
-import 'package:chat_client/src/services/socket_isolate/utils/event_keys.dart';
+import 'package:chat_client/src/services/socket_connection/models/homie_data/homie_data.dart';
+import 'package:chat_client/src/services/socket_connection/socket_isolate/utils/event_keys.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -34,11 +35,20 @@ class SocketIsolate {
       _receivePort = ReceivePort();
       _receiveStream = StreamController.broadcast();
       _socketStatusStream = StreamController.broadcast();
+      _dataStream = StreamController.broadcast();
       _receivePort!.listen(
         (message) {
           print(message.toString());
           if (message case (:String key, :var value)) {
             print("Received from Isolate() : $key, $value");
+            if (key == SocketActionKeys.homieData) {
+              _dataStream?.add(
+                (value as List)
+                    .map((rawData) => HomieData.fromJson(rawData))
+                    .toList(),
+              );
+            }
+
             if (key == IsolateEventKeys.socketStatus) {
               _socketStatusStream?.add(value);
             }
@@ -103,12 +113,20 @@ class SocketIsolate {
 
   ReceivePort? _receivePort;
   StreamController? _receiveStream;
+  StreamController<List<HomieData>>? _dataStream;
   StreamController<SocketConnectionStatus>? _socketStatusStream;
   StreamController get receiveStreamController {
     if (_receiveStream == null) {
       throw _initializationError;
     }
     return _receiveStream!;
+  }
+
+  StreamController<List<HomieData>> get homieDataController {
+    if (_dataStream == null) {
+      throw _initializationError;
+    }
+    return _dataStream!;
   }
 }
 
@@ -143,8 +161,8 @@ __initIsolate(SendPort sendPort) async {
   });
 
   final wsUrl = (!kIsWeb && Platform.isAndroid)
-      ? ('http://10.0.2.2:8080/chat/fe88c2b6-91f3-469e-a710-d0291c6da493')
-      : ('http://localhost:8080/chat/fe88c2b6-91f3-469e-a710-d0291c6da493');
+      ? ('http://10.0.2.2:8080/users')
+      : ('http://localhost:8080/users');
 
   final option = OptionBuilder().setTransports(['websocket']).setAuth({
     'token': accessToken,

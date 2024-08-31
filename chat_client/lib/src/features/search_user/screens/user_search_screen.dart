@@ -101,18 +101,18 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
                         lastMsg: user.email,
                         connection: user.connection,
                         onTap: () {
-                          context.pop();
-                          context.push(
-                            PersonalChatScreen.route(
-                              uuid: user.uuid,
-                              queryParameters: PersonalChatQuery(
-                                name: user.name,
-                                email: user.email,
-                                phone: user.phone,
-                                photo: user.photo,
-                              ),
-                            ),
-                          );
+                          // context.pop();
+                          // context.push(
+                          //   PersonalChatScreen.route(
+                          //     uuid: user.uuid,
+                          //     queryParameters: PersonalChatQuery(
+                          //       name: user.name,
+                          //       email: user.email,
+                          //       phone: user.phone,
+                          //       photo: user.photo,
+                          //     ),
+                          //   ),
+                          // );
                         },
                       );
                     },

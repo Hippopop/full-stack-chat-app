@@ -20,15 +20,16 @@ ConnectionData _$ConnectionDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ConnectionData {
+  int? get lastMessage => throw _privateConstructorUsedError;
   String? get acceptTime => throw _privateConstructorUsedError;
-  @EpochSecondsDateTimeConverter()
-  DateTime? get createdAt => throw _privateConstructorUsedError;
-  @EpochSecondsDateTimeConverter()
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
   int get key => throw _privateConstructorUsedError;
   String get toUser => throw _privateConstructorUsedError;
   String get fromUser => throw _privateConstructorUsedError;
   ConnectionStatus get connectionStatus => throw _privateConstructorUsedError;
+  @EpochSecondsDateTimeConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @EpochSecondsDateTimeConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this ConnectionData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,13 +48,14 @@ abstract class $ConnectionDataCopyWith<$Res> {
       _$ConnectionDataCopyWithImpl<$Res, ConnectionData>;
   @useResult
   $Res call(
-      {String? acceptTime,
-      @EpochSecondsDateTimeConverter() DateTime? createdAt,
-      @EpochSecondsDateTimeConverter() DateTime? updatedAt,
+      {int? lastMessage,
+      String? acceptTime,
       int key,
       String toUser,
       String fromUser,
-      ConnectionStatus connectionStatus});
+      ConnectionStatus connectionStatus,
+      @EpochSecondsDateTimeConverter() DateTime? createdAt,
+      @EpochSecondsDateTimeConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -71,27 +73,24 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? lastMessage = freezed,
     Object? acceptTime = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
     Object? key = null,
     Object? toUser = null,
     Object? fromUser = null,
     Object? connectionStatus = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
+      lastMessage: freezed == lastMessage
+          ? _value.lastMessage
+          : lastMessage // ignore: cast_nullable_to_non_nullable
+              as int?,
       acceptTime: freezed == acceptTime
           ? _value.acceptTime
           : acceptTime // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       key: null == key
           ? _value.key
           : key // ignore: cast_nullable_to_non_nullable
@@ -108,6 +107,14 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
           ? _value.connectionStatus
           : connectionStatus // ignore: cast_nullable_to_non_nullable
               as ConnectionStatus,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -121,13 +128,14 @@ abstract class _$$ConnectionDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? acceptTime,
-      @EpochSecondsDateTimeConverter() DateTime? createdAt,
-      @EpochSecondsDateTimeConverter() DateTime? updatedAt,
+      {int? lastMessage,
+      String? acceptTime,
       int key,
       String toUser,
       String fromUser,
-      ConnectionStatus connectionStatus});
+      ConnectionStatus connectionStatus,
+      @EpochSecondsDateTimeConverter() DateTime? createdAt,
+      @EpochSecondsDateTimeConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -143,27 +151,24 @@ class __$$ConnectionDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? lastMessage = freezed,
     Object? acceptTime = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
     Object? key = null,
     Object? toUser = null,
     Object? fromUser = null,
     Object? connectionStatus = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$ConnectionDataImpl(
+      lastMessage: freezed == lastMessage
+          ? _value.lastMessage
+          : lastMessage // ignore: cast_nullable_to_non_nullable
+              as int?,
       acceptTime: freezed == acceptTime
           ? _value.acceptTime
           : acceptTime // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       key: null == key
           ? _value.key
           : key // ignore: cast_nullable_to_non_nullable
@@ -180,6 +185,14 @@ class __$$ConnectionDataImplCopyWithImpl<$Res>
           ? _value.connectionStatus
           : connectionStatus // ignore: cast_nullable_to_non_nullable
               as ConnectionStatus,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -189,26 +202,23 @@ class __$$ConnectionDataImplCopyWithImpl<$Res>
 class _$ConnectionDataImpl extends _ConnectionData
     with DiagnosticableTreeMixin {
   const _$ConnectionDataImpl(
-      {this.acceptTime,
-      @EpochSecondsDateTimeConverter() this.createdAt,
-      @EpochSecondsDateTimeConverter() this.updatedAt,
+      {this.lastMessage,
+      this.acceptTime,
       required this.key,
       required this.toUser,
       required this.fromUser,
-      required this.connectionStatus})
+      required this.connectionStatus,
+      @EpochSecondsDateTimeConverter() this.createdAt,
+      @EpochSecondsDateTimeConverter() this.updatedAt})
       : super._();
 
   factory _$ConnectionDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConnectionDataImplFromJson(json);
 
   @override
+  final int? lastMessage;
+  @override
   final String? acceptTime;
-  @override
-  @EpochSecondsDateTimeConverter()
-  final DateTime? createdAt;
-  @override
-  @EpochSecondsDateTimeConverter()
-  final DateTime? updatedAt;
   @override
   final int key;
   @override
@@ -217,10 +227,16 @@ class _$ConnectionDataImpl extends _ConnectionData
   final String fromUser;
   @override
   final ConnectionStatus connectionStatus;
+  @override
+  @EpochSecondsDateTimeConverter()
+  final DateTime? createdAt;
+  @override
+  @EpochSecondsDateTimeConverter()
+  final DateTime? updatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConnectionData(acceptTime: $acceptTime, createdAt: $createdAt, updatedAt: $updatedAt, key: $key, toUser: $toUser, fromUser: $fromUser, connectionStatus: $connectionStatus)';
+    return 'ConnectionData(lastMessage: $lastMessage, acceptTime: $acceptTime, key: $key, toUser: $toUser, fromUser: $fromUser, connectionStatus: $connectionStatus, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -228,13 +244,14 @@ class _$ConnectionDataImpl extends _ConnectionData
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ConnectionData'))
+      ..add(DiagnosticsProperty('lastMessage', lastMessage))
       ..add(DiagnosticsProperty('acceptTime', acceptTime))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt))
       ..add(DiagnosticsProperty('key', key))
       ..add(DiagnosticsProperty('toUser', toUser))
       ..add(DiagnosticsProperty('fromUser', fromUser))
-      ..add(DiagnosticsProperty('connectionStatus', connectionStatus));
+      ..add(DiagnosticsProperty('connectionStatus', connectionStatus))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
 
   @override
@@ -242,24 +259,26 @@ class _$ConnectionDataImpl extends _ConnectionData
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConnectionDataImpl &&
+            (identical(other.lastMessage, lastMessage) ||
+                other.lastMessage == lastMessage) &&
             (identical(other.acceptTime, acceptTime) ||
                 other.acceptTime == acceptTime) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
             (identical(other.key, key) || other.key == key) &&
             (identical(other.toUser, toUser) || other.toUser == toUser) &&
             (identical(other.fromUser, fromUser) ||
                 other.fromUser == fromUser) &&
             (identical(other.connectionStatus, connectionStatus) ||
-                other.connectionStatus == connectionStatus));
+                other.connectionStatus == connectionStatus) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, acceptTime, createdAt, updatedAt,
-      key, toUser, fromUser, connectionStatus);
+  int get hashCode => Object.hash(runtimeType, lastMessage, acceptTime, key,
+      toUser, fromUser, connectionStatus, createdAt, updatedAt);
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -280,26 +299,24 @@ class _$ConnectionDataImpl extends _ConnectionData
 
 abstract class _ConnectionData extends ConnectionData {
   const factory _ConnectionData(
-      {final String? acceptTime,
-      @EpochSecondsDateTimeConverter() final DateTime? createdAt,
-      @EpochSecondsDateTimeConverter() final DateTime? updatedAt,
-      required final int key,
-      required final String toUser,
-      required final String fromUser,
-      required final ConnectionStatus connectionStatus}) = _$ConnectionDataImpl;
+          {final int? lastMessage,
+          final String? acceptTime,
+          required final int key,
+          required final String toUser,
+          required final String fromUser,
+          required final ConnectionStatus connectionStatus,
+          @EpochSecondsDateTimeConverter() final DateTime? createdAt,
+          @EpochSecondsDateTimeConverter() final DateTime? updatedAt}) =
+      _$ConnectionDataImpl;
   const _ConnectionData._() : super._();
 
   factory _ConnectionData.fromJson(Map<String, dynamic> json) =
       _$ConnectionDataImpl.fromJson;
 
   @override
+  int? get lastMessage;
+  @override
   String? get acceptTime;
-  @override
-  @EpochSecondsDateTimeConverter()
-  DateTime? get createdAt;
-  @override
-  @EpochSecondsDateTimeConverter()
-  DateTime? get updatedAt;
   @override
   int get key;
   @override
@@ -308,6 +325,12 @@ abstract class _ConnectionData extends ConnectionData {
   String get fromUser;
   @override
   ConnectionStatus get connectionStatus;
+  @override
+  @EpochSecondsDateTimeConverter()
+  DateTime? get createdAt;
+  @override
+  @EpochSecondsDateTimeConverter()
+  DateTime? get updatedAt;
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.

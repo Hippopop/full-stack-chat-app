@@ -15,13 +15,14 @@ enum ConnectionStatus {
 @freezed
 class ConnectionData with _$ConnectionData {
   const factory ConnectionData({
+    int? lastMessage,
     String? acceptTime,
-    @EpochSecondsDateTimeConverter() DateTime? createdAt,
-    @EpochSecondsDateTimeConverter() DateTime? updatedAt,
     required int key,
     required String toUser,
     required String fromUser,
     required ConnectionStatus connectionStatus,
+    @EpochSecondsDateTimeConverter() DateTime? createdAt,
+    @EpochSecondsDateTimeConverter() DateTime? updatedAt,
   }) = _ConnectionData;
 
   const ConnectionData._();

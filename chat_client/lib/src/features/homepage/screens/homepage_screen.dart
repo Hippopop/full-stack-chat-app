@@ -1,3 +1,4 @@
+import 'package:chat_client/src/constants/design/paddings.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -44,6 +45,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     final state = ref.watch(authStateNotifierProvider);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
+      unselectedFontSize: 14,
       currentIndex: _selectedIndex,
       onTap: (value) {
         setState(() {
@@ -51,47 +53,47 @@ class _HomepageScreenState extends State<HomepageScreen> {
         });
       },
       items: [
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           label: "Chats",
-          icon: Builder(builder: (context) {
-            return const Icon(
+          icon: Padding(
+            padding: all4,
+            child: Icon(
               HugeIcons.strokeRoundedBubbleChat,
-            );
-          }),
-        ),
-        BottomNavigationBarItem(
-          label: "People",
-          icon: Builder(builder: (context) {
-            return const Icon(
-              HugeIcons.strokeRoundedUserMultiple02,
-            );
-          }),
-        ),
-        BottomNavigationBarItem(
-          label: "Calls",
-          icon: Builder(builder: (context) {
-            return const Icon(
-              HugeIcons.strokeRoundedCall02,
-            );
-          }),
-        ),
-        BottomNavigationBarItem(
-          icon: DecoratedBox(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: context.color.accent.withOpacity(0.5),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: CircleAvatar(
-                radius: 12,
-                backgroundImage: ((state.currentUser?.photo == null)
-                    ? const AssetImage(
-                        ImageAssets.profile,
-                      )
-                    : NetworkImage(
-                        APIConfig.baseURL + state.currentUser!.photo!,
-                      )) as ImageProvider,
+          ),
+        ),
+        const BottomNavigationBarItem(
+          label: "People",
+          icon: Padding(
+            padding: all4,
+            child: Icon(
+              HugeIcons.strokeRoundedUserMultiple02,
+            ),
+          ),
+        ),
+        const BottomNavigationBarItem(
+          label: "Calls",
+          icon: Padding(
+            padding: all4,
+            child: Icon(
+              HugeIcons.strokeRoundedCall02,
+            ),
+          ),
+        ),
+        BottomNavigationBarItem(
+          icon: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: context.color.accent.withOpacity(0.5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: CircleAvatar(
+                  radius: 10,
+                  backgroundImage: _getProfileImage(state.currentUser?.photo),
+                ),
               ),
             ),
           ),
@@ -99,6 +101,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
         ),
       ],
     );
+  }
+
+  ImageProvider _getProfileImage(String? path) {
+    if (path == null) {
+      const AssetImage(ImageAssets.profile);
+    }
+    return NetworkImage(APIConfig.baseURL + path!);
   }
 
   AppBar buildAppBar(WidgetRef ref) {

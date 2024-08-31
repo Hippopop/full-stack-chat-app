@@ -5,5 +5,6 @@
     "SEARCH_USER":"/users/search",
     "REQUEST_CONNECTION":"/users/request_connection/",
     "UPDATE_CONNECTION":"/users/update_connection/",
-    "BASE_URL":"http://10.0.2.2:8080"
+    "BASE_URL":"http://localhost:8080",
+    "BASE_URL_ANDROID":"http://10.0.2.2:8080"
 }
