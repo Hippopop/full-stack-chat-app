@@ -10,11 +10,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
-typedef TransactionMsg = ({String key, String msg});
-
 enum SocketConnectionStatus {
   loading,
   connected,
+  disconnected,
   error,
 }
 
@@ -37,14 +36,14 @@ class SocketIsolate {
       _socketStatusStream = StreamController.broadcast();
       _receivePort!.listen(
         (message) {
+          print(message.toString());
           if (message case (:String key, :var value)) {
             print("Received from Isolate() : $key, $value");
             if (key == IsolateEventKeys.socketStatus) {
               _socketStatusStream?.add(value);
             }
 
-            if (key == SocketEventKeys.freshToken) {
-              print("SETTING UP NEW TOKENS!");
+            if (key == SocketActionKeys.freshToken) {
               final newToken = UserToken.fromJson(value);
               riverpodRef
                   .read(authStateNotifierProvider.notifier)
@@ -144,8 +143,8 @@ __initIsolate(SendPort sendPort) async {
   });
 
   final wsUrl = (!kIsWeb && Platform.isAndroid)
-      ? ('http://10.0.2.2:8080/')
-      : ('http://localhost:8080/');
+      ? ('http://10.0.2.2:8080/chat/fe88c2b6-91f3-469e-a710-d0291c6da493')
+      : ('http://localhost:8080/chat/fe88c2b6-91f3-469e-a710-d0291c6da493');
 
   final option = OptionBuilder().setTransports(['websocket']).setAuth({
     'token': accessToken,
@@ -171,6 +170,14 @@ __initIsolate(SendPort sendPort) async {
   websocket.on("message", (message) {
     sendPort.send(message.toString());
   });
+
+  websocket.on(
+    'disconnect',
+    (data) => sendPort.send((
+      key: IsolateEventKeys.socketStatus,
+      value: SocketConnectionStatus.disconnected
+    )),
+  );
 
   websocket.on(
     "connection_error",

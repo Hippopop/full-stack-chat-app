@@ -29,8 +29,12 @@ mixin _$PersonalChatQuery {
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   String? get activityStatus => throw _privateConstructorUsedError;
 
+  /// Serializes this PersonalChatQuery to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PersonalChatQueryCopyWith<PersonalChatQuery> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -62,6 +66,8 @@ class _$PersonalChatQueryCopyWithImpl<$Res, $Val extends PersonalChatQuery>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -138,6 +144,8 @@ class __$$PersonalChatQueryImplCopyWithImpl<$Res>
       $Res Function(_$PersonalChatQueryImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -261,12 +269,14 @@ class _$PersonalChatQueryImpl extends _PersonalChatQuery
                 other.activityStatus == activityStatus));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, email, phone, name, photo,
       birthdate, createdAt, updatedAt, activityStatus);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PersonalChatQueryImplCopyWith<_$PersonalChatQueryImpl> get copyWith =>
@@ -312,8 +322,11 @@ abstract class _PersonalChatQuery extends PersonalChatQuery {
   DateTime? get updatedAt;
   @override
   String? get activityStatus;
+
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PersonalChatQueryImplCopyWith<_$PersonalChatQueryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

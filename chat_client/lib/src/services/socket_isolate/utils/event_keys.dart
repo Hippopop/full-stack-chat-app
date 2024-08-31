@@ -3,6 +3,6 @@ class IsolateEventKeys {
   static const socketStatus = "SOCKET_STATUS";
 }
 
-class SocketEventKeys {
+class SocketActionKeys {
   static const freshToken = "FRESH_TOKEN";
 }

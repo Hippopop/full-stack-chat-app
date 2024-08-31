@@ -22,10 +22,15 @@ UserToken _$UserTokenFromJson(Map<String, dynamic> json) {
 mixin _$UserToken {
   String get token => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
+  @EpochSecondsDateTimeConverter()
   DateTime get expiresAt => throw _privateConstructorUsedError;
 
+  /// Serializes this UserToken to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserToken
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserTokenCopyWith<UserToken> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -35,7 +40,10 @@ abstract class $UserTokenCopyWith<$Res> {
   factory $UserTokenCopyWith(UserToken value, $Res Function(UserToken) then) =
       _$UserTokenCopyWithImpl<$Res, UserToken>;
   @useResult
-  $Res call({String token, String refreshToken, DateTime expiresAt});
+  $Res call(
+      {String token,
+      String refreshToken,
+      @EpochSecondsDateTimeConverter() DateTime expiresAt});
 }
 
 /// @nodoc
@@ -48,6 +56,8 @@ class _$UserTokenCopyWithImpl<$Res, $Val extends UserToken>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserToken
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,7 +90,10 @@ abstract class _$$UserTokenImplCopyWith<$Res>
       __$$UserTokenImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String token, String refreshToken, DateTime expiresAt});
+  $Res call(
+      {String token,
+      String refreshToken,
+      @EpochSecondsDateTimeConverter() DateTime expiresAt});
 }
 
 /// @nodoc
@@ -91,6 +104,8 @@ class __$$UserTokenImplCopyWithImpl<$Res>
       _$UserTokenImpl _value, $Res Function(_$UserTokenImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserToken
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -121,7 +136,7 @@ class _$UserTokenImpl extends _UserToken with DiagnosticableTreeMixin {
   const _$UserTokenImpl(
       {required this.token,
       required this.refreshToken,
-      required this.expiresAt})
+      @EpochSecondsDateTimeConverter() required this.expiresAt})
       : super._();
 
   factory _$UserTokenImpl.fromJson(Map<String, dynamic> json) =>
@@ -132,6 +147,7 @@ class _$UserTokenImpl extends _UserToken with DiagnosticableTreeMixin {
   @override
   final String refreshToken;
   @override
+  @EpochSecondsDateTimeConverter()
   final DateTime expiresAt;
 
   @override
@@ -161,11 +177,13 @@ class _$UserTokenImpl extends _UserToken with DiagnosticableTreeMixin {
                 other.expiresAt == expiresAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, token, refreshToken, expiresAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserToken
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserTokenImplCopyWith<_$UserTokenImpl> get copyWith =>
@@ -181,9 +199,10 @@ class _$UserTokenImpl extends _UserToken with DiagnosticableTreeMixin {
 
 abstract class _UserToken extends UserToken {
   const factory _UserToken(
-      {required final String token,
-      required final String refreshToken,
-      required final DateTime expiresAt}) = _$UserTokenImpl;
+          {required final String token,
+          required final String refreshToken,
+          @EpochSecondsDateTimeConverter() required final DateTime expiresAt}) =
+      _$UserTokenImpl;
   const _UserToken._() : super._();
 
   factory _UserToken.fromJson(Map<String, dynamic> json) =
@@ -194,9 +213,13 @@ abstract class _UserToken extends UserToken {
   @override
   String get refreshToken;
   @override
+  @EpochSecondsDateTimeConverter()
   DateTime get expiresAt;
+
+  /// Create a copy of UserToken
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserTokenImplCopyWith<_$UserTokenImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

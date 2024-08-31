@@ -1,3 +1,4 @@
+import 'package:chat_client/src/constants/utils/json_date_convert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:fresh_dio/fresh_dio.dart';
@@ -10,7 +11,7 @@ class UserToken with _$UserToken {
   const factory UserToken({
     required String token,
     required String refreshToken,
-    required DateTime expiresAt,
+    @EpochSecondsDateTimeConverter() required DateTime expiresAt,
   }) = _UserToken;
 
   const UserToken._();

@@ -10,12 +10,14 @@ _$UserTokenImpl _$$UserTokenImplFromJson(Map<String, dynamic> json) =>
     _$UserTokenImpl(
       token: json['token'] as String,
       refreshToken: json['refreshToken'] as String,
-      expiresAt: DateTime.parse(json['expiresAt'] as String),
+      expiresAt: const EpochSecondsDateTimeConverter()
+          .fromJson((json['expiresAt'] as num).toInt()),
     );
 
 Map<String, dynamic> _$$UserTokenImplToJson(_$UserTokenImpl instance) =>
     <String, dynamic>{
       'token': instance.token,
       'refreshToken': instance.refreshToken,
-      'expiresAt': instance.expiresAt.toIso8601String(),
+      'expiresAt':
+          const EpochSecondsDateTimeConverter().toJson(instance.expiresAt),
     };

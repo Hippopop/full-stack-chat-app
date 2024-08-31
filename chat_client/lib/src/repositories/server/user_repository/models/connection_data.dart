@@ -1,3 +1,4 @@
+import 'package:chat_client/src/constants/utils/json_date_convert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -15,8 +16,8 @@ enum ConnectionStatus {
 class ConnectionData with _$ConnectionData {
   const factory ConnectionData({
     String? acceptTime,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    @EpochSecondsDateTimeConverter() DateTime? createdAt,
+    @EpochSecondsDateTimeConverter() DateTime? updatedAt,
     required int key,
     required String toUser,
     required String fromUser,

@@ -21,15 +21,21 @@ ConnectionData _$ConnectionDataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ConnectionData {
   String? get acceptTime => throw _privateConstructorUsedError;
+  @EpochSecondsDateTimeConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  @EpochSecondsDateTimeConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   int get key => throw _privateConstructorUsedError;
   String get toUser => throw _privateConstructorUsedError;
   String get fromUser => throw _privateConstructorUsedError;
   ConnectionStatus get connectionStatus => throw _privateConstructorUsedError;
 
+  /// Serializes this ConnectionData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConnectionDataCopyWith<ConnectionData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -42,8 +48,8 @@ abstract class $ConnectionDataCopyWith<$Res> {
   @useResult
   $Res call(
       {String? acceptTime,
-      DateTime? createdAt,
-      DateTime? updatedAt,
+      @EpochSecondsDateTimeConverter() DateTime? createdAt,
+      @EpochSecondsDateTimeConverter() DateTime? updatedAt,
       int key,
       String toUser,
       String fromUser,
@@ -60,6 +66,8 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -114,8 +122,8 @@ abstract class _$$ConnectionDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? acceptTime,
-      DateTime? createdAt,
-      DateTime? updatedAt,
+      @EpochSecondsDateTimeConverter() DateTime? createdAt,
+      @EpochSecondsDateTimeConverter() DateTime? updatedAt,
       int key,
       String toUser,
       String fromUser,
@@ -130,6 +138,8 @@ class __$$ConnectionDataImplCopyWithImpl<$Res>
       _$ConnectionDataImpl _value, $Res Function(_$ConnectionDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -180,8 +190,8 @@ class _$ConnectionDataImpl extends _ConnectionData
     with DiagnosticableTreeMixin {
   const _$ConnectionDataImpl(
       {this.acceptTime,
-      this.createdAt,
-      this.updatedAt,
+      @EpochSecondsDateTimeConverter() this.createdAt,
+      @EpochSecondsDateTimeConverter() this.updatedAt,
       required this.key,
       required this.toUser,
       required this.fromUser,
@@ -194,8 +204,10 @@ class _$ConnectionDataImpl extends _ConnectionData
   @override
   final String? acceptTime;
   @override
+  @EpochSecondsDateTimeConverter()
   final DateTime? createdAt;
   @override
+  @EpochSecondsDateTimeConverter()
   final DateTime? updatedAt;
   @override
   final int key;
@@ -244,12 +256,14 @@ class _$ConnectionDataImpl extends _ConnectionData
                 other.connectionStatus == connectionStatus));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, acceptTime, createdAt, updatedAt,
       key, toUser, fromUser, connectionStatus);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConnectionDataImplCopyWith<_$ConnectionDataImpl> get copyWith =>
@@ -267,8 +281,8 @@ class _$ConnectionDataImpl extends _ConnectionData
 abstract class _ConnectionData extends ConnectionData {
   const factory _ConnectionData(
       {final String? acceptTime,
-      final DateTime? createdAt,
-      final DateTime? updatedAt,
+      @EpochSecondsDateTimeConverter() final DateTime? createdAt,
+      @EpochSecondsDateTimeConverter() final DateTime? updatedAt,
       required final int key,
       required final String toUser,
       required final String fromUser,
@@ -281,8 +295,10 @@ abstract class _ConnectionData extends ConnectionData {
   @override
   String? get acceptTime;
   @override
+  @EpochSecondsDateTimeConverter()
   DateTime? get createdAt;
   @override
+  @EpochSecondsDateTimeConverter()
   DateTime? get updatedAt;
   @override
   int get key;
@@ -292,8 +308,11 @@ abstract class _ConnectionData extends ConnectionData {
   String get fromUser;
   @override
   ConnectionStatus get connectionStatus;
+
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConnectionDataImplCopyWith<_$ConnectionDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

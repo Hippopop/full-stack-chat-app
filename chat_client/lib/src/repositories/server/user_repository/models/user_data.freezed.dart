@@ -23,15 +23,21 @@ mixin _$UserData {
   String? get phone => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
   String? get birthdate => throw _privateConstructorUsedError;
-  DateTime? get createdAt => throw _privateConstructorUsedError;
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
   ConnectionData? get connection => throw _privateConstructorUsedError;
   String get uuid => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  @EpochSecondsDateTimeConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @EpochSecondsDateTimeConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this UserData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserDataCopyWith<UserData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,12 +51,12 @@ abstract class $UserDataCopyWith<$Res> {
       {String? phone,
       String? photo,
       String? birthdate,
-      DateTime? createdAt,
-      DateTime? updatedAt,
       ConnectionData? connection,
       String uuid,
       String email,
-      String name});
+      String name,
+      @EpochSecondsDateTimeConverter() DateTime? createdAt,
+      @EpochSecondsDateTimeConverter() DateTime? updatedAt});
 
   $ConnectionDataCopyWith<$Res>? get connection;
 }
@@ -65,18 +71,20 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? phone = freezed,
     Object? photo = freezed,
     Object? birthdate = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
     Object? connection = freezed,
     Object? uuid = null,
     Object? email = null,
     Object? name = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
       phone: freezed == phone
@@ -91,14 +99,6 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           ? _value.birthdate
           : birthdate // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       connection: freezed == connection
           ? _value.connection
           : connection // ignore: cast_nullable_to_non_nullable
@@ -115,9 +115,19 @@ class _$UserDataCopyWithImpl<$Res, $Val extends UserData>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ConnectionDataCopyWith<$Res>? get connection {
@@ -143,12 +153,12 @@ abstract class _$$UserDataImplCopyWith<$Res>
       {String? phone,
       String? photo,
       String? birthdate,
-      DateTime? createdAt,
-      DateTime? updatedAt,
       ConnectionData? connection,
       String uuid,
       String email,
-      String name});
+      String name,
+      @EpochSecondsDateTimeConverter() DateTime? createdAt,
+      @EpochSecondsDateTimeConverter() DateTime? updatedAt});
 
   @override
   $ConnectionDataCopyWith<$Res>? get connection;
@@ -162,18 +172,20 @@ class __$$UserDataImplCopyWithImpl<$Res>
       _$UserDataImpl _value, $Res Function(_$UserDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? phone = freezed,
     Object? photo = freezed,
     Object? birthdate = freezed,
-    Object? createdAt = freezed,
-    Object? updatedAt = freezed,
     Object? connection = freezed,
     Object? uuid = null,
     Object? email = null,
     Object? name = null,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$UserDataImpl(
       phone: freezed == phone
@@ -188,14 +200,6 @@ class __$$UserDataImplCopyWithImpl<$Res>
           ? _value.birthdate
           : birthdate // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       connection: freezed == connection
           ? _value.connection
           : connection // ignore: cast_nullable_to_non_nullable
@@ -212,6 +216,14 @@ class __$$UserDataImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -223,12 +235,12 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
       {this.phone,
       this.photo,
       this.birthdate,
-      this.createdAt,
-      this.updatedAt,
       this.connection,
       required this.uuid,
       required this.email,
-      required this.name})
+      required this.name,
+      @EpochSecondsDateTimeConverter() this.createdAt,
+      @EpochSecondsDateTimeConverter() this.updatedAt})
       : super._();
 
   factory _$UserDataImpl.fromJson(Map<String, dynamic> json) =>
@@ -241,10 +253,6 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
   @override
   final String? birthdate;
   @override
-  final DateTime? createdAt;
-  @override
-  final DateTime? updatedAt;
-  @override
   final ConnectionData? connection;
   @override
   final String uuid;
@@ -252,10 +260,16 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
   final String email;
   @override
   final String name;
+  @override
+  @EpochSecondsDateTimeConverter()
+  final DateTime? createdAt;
+  @override
+  @EpochSecondsDateTimeConverter()
+  final DateTime? updatedAt;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserData(phone: $phone, photo: $photo, birthdate: $birthdate, createdAt: $createdAt, updatedAt: $updatedAt, connection: $connection, uuid: $uuid, email: $email, name: $name)';
+    return 'UserData(phone: $phone, photo: $photo, birthdate: $birthdate, connection: $connection, uuid: $uuid, email: $email, name: $name, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -266,12 +280,12 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('phone', phone))
       ..add(DiagnosticsProperty('photo', photo))
       ..add(DiagnosticsProperty('birthdate', birthdate))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt))
       ..add(DiagnosticsProperty('connection', connection))
       ..add(DiagnosticsProperty('uuid', uuid))
       ..add(DiagnosticsProperty('email', email))
-      ..add(DiagnosticsProperty('name', name));
+      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
 
   @override
@@ -283,23 +297,25 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
             (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.birthdate, birthdate) ||
                 other.birthdate == birthdate) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
             (identical(other.connection, connection) ||
                 other.connection == connection) &&
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, phone, photo, birthdate,
-      createdAt, updatedAt, connection, uuid, email, name);
+      connection, uuid, email, name, createdAt, updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>
@@ -315,15 +331,16 @@ class _$UserDataImpl extends _UserData with DiagnosticableTreeMixin {
 
 abstract class _UserData extends UserData {
   const factory _UserData(
-      {final String? phone,
-      final String? photo,
-      final String? birthdate,
-      final DateTime? createdAt,
-      final DateTime? updatedAt,
-      final ConnectionData? connection,
-      required final String uuid,
-      required final String email,
-      required final String name}) = _$UserDataImpl;
+          {final String? phone,
+          final String? photo,
+          final String? birthdate,
+          final ConnectionData? connection,
+          required final String uuid,
+          required final String email,
+          required final String name,
+          @EpochSecondsDateTimeConverter() final DateTime? createdAt,
+          @EpochSecondsDateTimeConverter() final DateTime? updatedAt}) =
+      _$UserDataImpl;
   const _UserData._() : super._();
 
   factory _UserData.fromJson(Map<String, dynamic> json) =
@@ -336,10 +353,6 @@ abstract class _UserData extends UserData {
   @override
   String? get birthdate;
   @override
-  DateTime? get createdAt;
-  @override
-  DateTime? get updatedAt;
-  @override
   ConnectionData? get connection;
   @override
   String get uuid;
@@ -348,7 +361,16 @@ abstract class _UserData extends UserData {
   @override
   String get name;
   @override
-  @JsonKey(ignore: true)
+  @EpochSecondsDateTimeConverter()
+  DateTime? get createdAt;
+  @override
+  @EpochSecondsDateTimeConverter()
+  DateTime? get updatedAt;
+
+  /// Create a copy of UserData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserDataImplCopyWith<_$UserDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

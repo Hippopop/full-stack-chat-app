@@ -1,4 +1,5 @@
 import 'package:chat_client/src/constants/server/api_config.dart';
+import 'package:chat_client/src/constants/utils/json_date_convert.dart';
 import 'package:chat_client/src/repositories/server/user_repository/models/connection_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,12 +13,12 @@ class UserData with _$UserData {
     String? phone,
     String? photo,
     String? birthdate,
-    DateTime? createdAt,
-    DateTime? updatedAt,
     ConnectionData? connection,
     required String uuid,
     required String email,
     required String name,
+    @EpochSecondsDateTimeConverter() DateTime? createdAt,
+    @EpochSecondsDateTimeConverter() DateTime? updatedAt,
   }) = _UserData;
 
   const UserData._();
