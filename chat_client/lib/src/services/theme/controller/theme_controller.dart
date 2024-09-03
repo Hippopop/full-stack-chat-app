@@ -18,7 +18,7 @@ class ThemeController extends Notifier<AppThemeState> {
   @override
   AppThemeState build() {
     return AppThemeState(
-      currentTheme: _themeStorage.currentTheme(),
+      currentTheme: _themeStorage.currentTheme,
       availableThemeSet: _themeStorage.availableThemeList(),
     );
   }

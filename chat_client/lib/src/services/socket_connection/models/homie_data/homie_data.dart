@@ -26,7 +26,7 @@ class HomieInfo with _$HomieInfo {
     required String uuid,
     required String name,
     String? photo,
-    bool? isActive,
+    @Default(false) bool isActive,
     @EpochSecondsDateTimeConverter() DateTime? lastActivity,
   }) = _HomieInfo;
 

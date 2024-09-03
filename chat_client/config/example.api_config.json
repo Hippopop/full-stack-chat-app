@@ -1,0 +1,12 @@
+{
+    "LOGIN":"",
+    "REGISTER":"",
+    "REFRESH":"",
+    "SEARCH_USER":"",
+    "REQUEST_CONNECTION":"",
+    "UPDATE_CONNECTION":"",
+    "WS_USERS":"",
+    "WS_CHAT":"",
+    "BASE_URL":"",
+    "BASE_URL_ANDROID":""
+}

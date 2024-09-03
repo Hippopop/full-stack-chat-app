@@ -1,80 +1,91 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
 import 'dart:isolate';
 
 import 'package:chat_client/src/repositories/server/auth_repository/models/token/user_token.dart';
 import 'package:chat_client/src/services/authentication/authentication_service.dart';
-import 'package:chat_client/src/services/socket_connection/models/homie_data/homie_data.dart';
+import 'package:chat_client/src/services/socket_connection/socket_isolate/isolated_socket_state.dart';
 import 'package:chat_client/src/services/socket_connection/socket_isolate/utils/event_keys.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
-enum SocketConnectionStatus {
-  loading,
-  connected,
-  disconnected,
-  error,
-}
+class SocketIsolate<T> {
+  final String connectionPath;
+  final ({String accessToken, String refreshToken}) tokenSet;
 
-class SocketIsolate {
-  SocketIsolate._internal();
-  factory SocketIsolate.factory() => _shared;
-  static final SocketIsolate _shared = SocketIsolate._internal();
+  SocketIsolate({
+    required this.tokenSet,
+    required this.connectionPath,
+  });
 
-  final _initializationError = UnimplementedError(
-    "Please call the initiate function before using the class!",
-  );
+  IsolatedSocketState<T>? _currentState;
+  IsolatedSocketState<T> get state {
+    if (_currentState == null) {
+      throw UnimplementedError(
+        "$SocketIsolate hasn't been initialized yet!",
+      );
+    }
+    return _currentState!;
+  }
 
-  Future<void> initiate(
-    ({String accessToken, String refreshToken}) tokens,
-    FutureProviderRef<SocketIsolate> riverpodRef,
-  ) async {
+  Future<void> dispose() async => await _currentState?.dispose();
+
+  Future<void> initiate({
+    required T Function(dynamic value) dataPurser,
+    required FutureProviderRef<SocketIsolate> riverpodRef,
+  }) async {
     try {
-      _receivePort = ReceivePort();
-      _receiveStream = StreamController.broadcast();
-      _socketStatusStream = StreamController.broadcast();
-      _dataStream = StreamController.broadcast();
-      _receivePort!.listen(
+      final receivePort = ReceivePort();
+      final dataStream = StreamController<T>.broadcast();
+      final receiveStream = StreamController.broadcast();
+      final socketStatusStream =
+          StreamController<SocketConnectionStatus>.broadcast();
+
+      receivePort.listen(
         (message) {
           print(message.toString());
           if (message case (:String key, :var value)) {
             print("Received from Isolate() : $key, $value");
             if (key == SocketActionKeys.homieData) {
-              _dataStream?.add(
-                (value as List)
-                    .map((rawData) => HomieData.fromJson(rawData))
-                    .toList(),
-              );
+              dataStream.add(dataPurser(value));
             }
-
             if (key == IsolateEventKeys.socketStatus) {
-              _socketStatusStream?.add(value);
+              socketStatusStream.add(value);
             }
-
             if (key == SocketActionKeys.freshToken) {
-              final newToken = UserToken.fromJson(value);
               riverpodRef
                   .read(authStateNotifierProvider.notifier)
-                  .saveUserToken(newToken);
+                  .saveUserToken(UserToken.fromJson(value));
             }
           }
-          _receiveStream!.add(message);
+          receiveStream.add(message);
         },
       );
 
-      _currentIsolate = await Isolate.spawn(
+      final isolate = await Isolate.spawn(
         __initIsolate,
-        _receivePort!.sendPort,
-        onExit: _receivePort!.sendPort,
-        onError: _receivePort!.sendPort,
+        (sendPort: receivePort.sendPort, connectionPath: connectionPath),
+        onExit: receivePort.sendPort,
+        onError: receivePort.sendPort,
       );
-      _sendPort = (await _receiveStream!.stream
-          .firstWhere((port) => port is SendPort)) as SendPort;
-      sendPort.send(tokens);
-      await _socketStatusStream!.stream.first;
-      _sendPort?.send((key: "Connection", "User connected with the client!"));
+
+      final sendPort =
+          await receiveStream.stream.firstWhere((i) => i is SendPort);
+
+      sendPort.send(tokenSet);
+      await socketStatusStream.stream.first;
+      sendPort.send(
+        (key: "Connection", value: "User connected with the client!"),
+      );
+
+      _currentState = IsolatedSocketState(
+        isolate: isolate,
+        isolatesSendPort: sendPort,
+        myReceivePort: receivePort,
+        dataStreamController: dataStream,
+        unfilteredReceiveStream: receiveStream,
+        socketStatusStreamController: socketStatusStream,
+      );
     } catch (e, s) {
       log(
         error: e,
@@ -84,49 +95,6 @@ class SocketIsolate {
       );
       rethrow;
     }
-  }
-
-  bool get isInitialized =>
-      _sendPort != null && _receivePort != null && _currentIsolate != null;
-
-  void dispose() {
-    _receiveStream?.close();
-    _receivePort?.close();
-    _currentIsolate?.kill();
-  }
-
-  SendPort? _sendPort;
-  SendPort get sendPort {
-    if (_sendPort == null) {
-      throw _initializationError;
-    }
-    return _sendPort!;
-  }
-
-  Isolate? _currentIsolate;
-  Isolate get isolate {
-    if (_currentIsolate == null) {
-      throw _initializationError;
-    }
-    return _currentIsolate!;
-  }
-
-  ReceivePort? _receivePort;
-  StreamController? _receiveStream;
-  StreamController<List<HomieData>>? _dataStream;
-  StreamController<SocketConnectionStatus>? _socketStatusStream;
-  StreamController get receiveStreamController {
-    if (_receiveStream == null) {
-      throw _initializationError;
-    }
-    return _receiveStream!;
-  }
-
-  StreamController<List<HomieData>> get homieDataController {
-    if (_dataStream == null) {
-      throw _initializationError;
-    }
-    return _dataStream!;
   }
 }
 
@@ -140,72 +108,57 @@ class SocketIsolate {
 ///
 ///
 ///
-__initIsolate(SendPort sendPort) async {
+__initIsolate(({SendPort sendPort, String connectionPath}) config) async {
+  final (:sendPort, :connectionPath) = config;
   final ReceivePort receivePort = ReceivePort();
-  sendPort.send(receivePort.sendPort);
   final StreamController receiverController = StreamController.broadcast();
-  receivePort.listen(
-    (message) {
-      print("Inside ISOLATE: ${message.toString()}");
-      receiverController.add(message);
-    },
-  );
+
+  sendPort.send(receivePort.sendPort);
+  receivePort.listen(receiverController.add);
 
   final (:accessToken, :refreshToken) =
       await receiverController.stream.firstWhere((port) {
     if (port case (accessToken: String _, refreshToken: String _)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   });
 
-  final wsUrl = (!kIsWeb && Platform.isAndroid)
-      ? ('http://10.0.2.2:8080/users')
-      : ('http://localhost:8080/users');
-
-  final option = OptionBuilder().setTransports(['websocket']).setAuth({
-    'token': accessToken,
-    'refreshToken': refreshToken,
-  }).build();
-
-  final Socket websocket = io(wsUrl, option);
+  final option = OptionBuilder()
+      .setTransports(['websocket'])
+      .setReconnectionDelay(1000)
+      .setReconnectionAttempts(100)
+      .setReconnectionDelayMax(1000 * 60)
+      .setAuth({
+        'token': accessToken,
+        'refreshToken': refreshToken,
+      })
+      .build();
+  final Socket websocket = io(connectionPath, option);
 
   websocket.onConnect(
-    (event) {
-      sendPort.send((
-        key: IsolateEventKeys.socketStatus,
-        value: SocketConnectionStatus.connected,
-      ));
-      sendPort.send("Connection has been established!");
-    },
+    (event) => sendPort.send((
+      key: IsolateEventKeys.socketStatus,
+      value: SocketConnectionStatus.connected,
+    )),
+  );
+
+  websocket.onDisconnect(
+    (data) => sendPort.send((
+      key: IsolateEventKeys.socketStatus,
+      value: SocketConnectionStatus.disconnected,
+    )),
+  );
+
+  websocket.onConnectError(
+    (data) => sendPort.send((
+      key: IsolateEventKeys.socketStatus,
+      value: SocketConnectionStatus.error,
+    )),
   );
 
   websocket.onAny(
     (event, data) => sendPort.send((key: event, value: data)),
-  );
-
-  websocket.on("message", (message) {
-    sendPort.send(message.toString());
-  });
-
-  websocket.on(
-    'disconnect',
-    (data) => sendPort.send((
-      key: IsolateEventKeys.socketStatus,
-      value: SocketConnectionStatus.disconnected
-    )),
-  );
-
-  websocket.on(
-    "connection_error",
-    (data) {
-      sendPort.send(("connection_error", data.toString()));
-      sendPort.send((
-        key: IsolateEventKeys.socketStatus,
-        value: SocketConnectionStatus.error,
-      ));
-    },
   );
 
   receiverController.stream.listen(

@@ -28,7 +28,7 @@ _$HomieInfoImpl _$$HomieInfoImplFromJson(Map<String, dynamic> json) =>
       uuid: json['uuid'] as String,
       name: json['name'] as String,
       photo: json['photo'] as String?,
-      isActive: json['isActive'] as bool?,
+      isActive: json['isActive'] as bool? ?? false,
       lastActivity: _$JsonConverterFromJson<int, DateTime>(
           json['lastActivity'], const EpochSecondsDateTimeConverter().fromJson),
     );

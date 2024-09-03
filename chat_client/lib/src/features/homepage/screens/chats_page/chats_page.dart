@@ -1,8 +1,8 @@
 import 'package:chat_client/src/constants/utils/date_utils.dart';
 import 'package:chat_client/src/services/socket_connection/providers/homie_data_provider.dart';
-import 'package:chat_client/src/services/socket_connection/socket_isolate/socket_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
+import 'package:chat_client/src/utilities/extensions/date_time_extensions.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../constants/design/paddings.dart';
@@ -15,9 +15,8 @@ class ChatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      final socket = ref.watch(homieDataProvider);
-
-      return socket.when(
+      final homieListProvider = ref.watch(homieDataProvider);
+      return homieListProvider.when(
         data: (data) => Column(
           children: [
             Container(
@@ -31,11 +30,7 @@ class ChatsScreen extends StatelessWidget {
               child: Row(
                 children: [
                   FillOutlineButton(
-                    press: () {
-                      // data.sendPort.send(
-                      //   ("message", "Hi, I am a mobile user!"),
-                      // );
-                    },
+                    press: () {},
                     text: "Recent Message",
                   ),
                   const SizedBox(width: defaultPaddingSpace),
@@ -51,16 +46,17 @@ class ChatsScreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: data.length,
                 itemBuilder: (context, index) {
-                  final homie = data[index];
+                  final userData = data[index];
 
                   return ChatCard(
-                    name: homie.homie.name,
-                    isActive: homie.homie.isActive ?? false,
-                    timeText: (homie.homie.isActive ?? false)
-                        ? ""
-                        : "${DateTime.now().difference(homie.homie.lastActivity!).inMinutes} min ago",
-                    lastMsg: homie.message?.text ??
-                        "Connected at ${homie.connection.acceptedAt == null ? "" : timeDate.format(homie.connection.acceptedAt!)}.",
+                    name: userData.homie.name,
+                    isActive: userData.homie.isActive,
+                    timeText: _getMessageText(
+                      userData.homie.isActive,
+                      userData.homie.lastActivity,
+                    ),
+                    lastMsg: userData.message?.text ??
+                        "Connected at ${userData.connection.acceptedAt == null ? "" : timeDate.format(userData.connection.acceptedAt!)}.",
                     onTap: () {},
                   );
                 },
@@ -78,5 +74,11 @@ class ChatsScreen extends StatelessWidget {
         ),
       );
     });
+  }
+
+  String _getMessageText(bool activeStatus, DateTime? lastActivity) {
+    if (activeStatus || lastActivity == null) return "";
+    final text = DateTime.now().difference(lastActivity).adaptiveDurationString;
+    return text == "Just now" ? text : "$text ago";
   }
 }

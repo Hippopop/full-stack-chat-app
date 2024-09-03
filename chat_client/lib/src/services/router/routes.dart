@@ -68,8 +68,8 @@ final goRouterProvider = Provider<GoRouter>(
         final inAuthenticationPages = [
           LoginScreen.route,
           WelcomeScreen.route,
-          AuthenticationScreen.route,
           RegistrationScreen.route,
+          AuthenticationScreen.route,
         ].contains(state.matchedLocation);
         if (inAuthenticationPages && authState.isAuthenticated) {
           return HomepageScreen.path;
@@ -77,6 +77,7 @@ final goRouterProvider = Provider<GoRouter>(
         if (!inAuthenticationPages && !authState.isAuthenticated) {
           return WelcomeScreen.path;
         }
+        return null;
       },
     );
   },

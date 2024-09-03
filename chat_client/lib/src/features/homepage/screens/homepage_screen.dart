@@ -22,6 +22,7 @@ class HomepageScreen extends StatefulWidget {
 
 class _HomepageScreenState extends State<HomepageScreen> {
   int _selectedIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
@@ -81,6 +82,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
           ),
         ),
         BottomNavigationBarItem(
+          label: "Profile",
           icon: Padding(
             padding: const EdgeInsets.all(2.0),
             child: DecoratedBox(
@@ -97,7 +99,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
               ),
             ),
           ),
-          label: "Profile",
         ),
       ],
     );

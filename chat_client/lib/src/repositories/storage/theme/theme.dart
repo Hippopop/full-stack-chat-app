@@ -15,7 +15,7 @@ class ThemeStorage {
     await _myBox.put(key, newThemeKey);
   }
 
-  ThemeData currentTheme() {
+  ThemeData get currentTheme {
     final currentThemeKey = _myBox.get(key);
     if (currentThemeKey == null) return ThemeConfiguration.initialTheme;
     return ThemeConfiguration.availableThemeList[currentThemeKey]!;

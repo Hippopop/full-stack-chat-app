@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:chat_client/src/constants/design/border_radius.dart';
 import 'package:chat_client/src/constants/design/paddings.dart';
-import 'package:chat_client/src/features/messages/message_screen.dart';
-import 'package:chat_client/src/features/messages/models/personal_chat_query.dart';
 import 'package:chat_client/src/features/search_user/controller/user_search_controller.dart';
 import 'package:chat_client/src/features/search_user/screens/components/searched_user_card.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';

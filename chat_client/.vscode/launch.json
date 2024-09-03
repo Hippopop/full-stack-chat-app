@@ -7,9 +7,8 @@
             "name": "chat_client",
             "args": [
                 "--dart-define-from-file",
-                "config.json",
+                "config/api_config.json",
             ],
-            // "preLaunchTask": "RUN_SERVER_PYTHON",
         },
         {
             "type": "dart",

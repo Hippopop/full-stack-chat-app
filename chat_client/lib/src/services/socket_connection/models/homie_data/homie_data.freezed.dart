@@ -263,7 +263,7 @@ mixin _$HomieInfo {
   String get uuid => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
-  bool? get isActive => throw _privateConstructorUsedError;
+  bool get isActive => throw _privateConstructorUsedError;
   @EpochSecondsDateTimeConverter()
   DateTime? get lastActivity => throw _privateConstructorUsedError;
 
@@ -286,7 +286,7 @@ abstract class $HomieInfoCopyWith<$Res> {
       {String uuid,
       String name,
       String? photo,
-      bool? isActive,
+      bool isActive,
       @EpochSecondsDateTimeConverter() DateTime? lastActivity});
 }
 
@@ -308,7 +308,7 @@ class _$HomieInfoCopyWithImpl<$Res, $Val extends HomieInfo>
     Object? uuid = null,
     Object? name = null,
     Object? photo = freezed,
-    Object? isActive = freezed,
+    Object? isActive = null,
     Object? lastActivity = freezed,
   }) {
     return _then(_value.copyWith(
@@ -324,10 +324,10 @@ class _$HomieInfoCopyWithImpl<$Res, $Val extends HomieInfo>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
-      isActive: freezed == isActive
+      isActive: null == isActive
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       lastActivity: freezed == lastActivity
           ? _value.lastActivity
           : lastActivity // ignore: cast_nullable_to_non_nullable
@@ -348,7 +348,7 @@ abstract class _$$HomieInfoImplCopyWith<$Res>
       {String uuid,
       String name,
       String? photo,
-      bool? isActive,
+      bool isActive,
       @EpochSecondsDateTimeConverter() DateTime? lastActivity});
 }
 
@@ -368,7 +368,7 @@ class __$$HomieInfoImplCopyWithImpl<$Res>
     Object? uuid = null,
     Object? name = null,
     Object? photo = freezed,
-    Object? isActive = freezed,
+    Object? isActive = null,
     Object? lastActivity = freezed,
   }) {
     return _then(_$HomieInfoImpl(
@@ -384,10 +384,10 @@ class __$$HomieInfoImplCopyWithImpl<$Res>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
-      isActive: freezed == isActive
+      isActive: null == isActive
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       lastActivity: freezed == lastActivity
           ? _value.lastActivity
           : lastActivity // ignore: cast_nullable_to_non_nullable
@@ -403,7 +403,7 @@ class _$HomieInfoImpl extends _HomieInfo with DiagnosticableTreeMixin {
       {required this.uuid,
       required this.name,
       this.photo,
-      this.isActive,
+      this.isActive = false,
       @EpochSecondsDateTimeConverter() this.lastActivity})
       : super._();
 
@@ -417,7 +417,8 @@ class _$HomieInfoImpl extends _HomieInfo with DiagnosticableTreeMixin {
   @override
   final String? photo;
   @override
-  final bool? isActive;
+  @JsonKey()
+  final bool isActive;
   @override
   @EpochSecondsDateTimeConverter()
   final DateTime? lastActivity;
@@ -479,7 +480,7 @@ abstract class _HomieInfo extends HomieInfo {
           {required final String uuid,
           required final String name,
           final String? photo,
-          final bool? isActive,
+          final bool isActive,
           @EpochSecondsDateTimeConverter() final DateTime? lastActivity}) =
       _$HomieInfoImpl;
   const _HomieInfo._() : super._();
@@ -494,7 +495,7 @@ abstract class _HomieInfo extends HomieInfo {
   @override
   String? get photo;
   @override
-  bool? get isActive;
+  bool get isActive;
   @override
   @EpochSecondsDateTimeConverter()
   DateTime? get lastActivity;
