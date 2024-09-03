@@ -29,7 +29,7 @@ let AuthorizeSocketUser = async (socket: Socket, next: (err?: Error) => void) =>
                     if (error instanceof ResponseError) next(error);
                     else next(new ResponseError(badRequest, "Refresh token is corrupted!"));
                 }
-            }
+            } else next(new ResponseError(badRequest, "Error verifying access token"));
         }
         if (authData) {
             socket.data.userData = authData;

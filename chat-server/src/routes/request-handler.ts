@@ -62,19 +62,19 @@ export const wrapperFunction =
         var userData: User | undefined;
         if (authenticate) {
           const { authorization } = req.headers;
-          if (!authorization)
+          const token = authorization?.split(" ").pop();
+          if (!token) {
             throw new ResponseError(
               badRequest,
               "Attempting Unauthorized Access!"
             );
-          const token = authorization.split(" ")[1];
+          }
+
           const authData = await tokenizer.verifyAccessTokenWithData(
-            token!,
-            UserSchema,
+            token, UserSchema
           );
           if (authData) {
             userData = authData;
-            console.log(`** ${userData.uuid} **`);
           } else throw new ResponseError(unauthorized, "Invalid access token!");
         }
 

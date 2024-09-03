@@ -12,9 +12,8 @@ let processUserList = async (io: Server): Promise<Namespace> => {
     usersConnection.on(SocketEventKeys.initialConnection, async (socket: Socket) => {
         /// Authorize and reassure user tokens!
         const userData = await AuthorizationMiddleware.verifyAndResignAuthorizationTokens(socket, io);
-        await createActivityEntry(userData.uuid);
-        await switchActivityState(userData.uuid, socket.id);
         /// Update user activity status!
+        await switchActivityState(userData.uuid, socket.id);
 
 
         console.log(`   --- Connected ${socket.id} + ${userData.name} ---   `);

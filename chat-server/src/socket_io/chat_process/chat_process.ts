@@ -14,6 +14,9 @@ let processP2PChats = async (io: Server) => {
         console.log(`   --- Connected ${socket.id} + ${userData.name} ---   `);
         console.log(`Name -> ${socket.nsp.name}`);
 
+        // Extract UUID from namespace name
+        const uuid = socket.nsp.name.split('/').pop();
+
 
         /// Signal Disconnect!
         socket.on(SocketEventKeys.disconnectKey, () => {
