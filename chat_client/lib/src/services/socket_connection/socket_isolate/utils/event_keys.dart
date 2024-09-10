@@ -5,5 +5,5 @@ class IsolateEventKeys {
 
 class SocketActionKeys {
   static const freshToken = "FRESH_TOKEN";
-  static const homieData = "HOMIE_DATA";
+  static const data = "DATA";
 }

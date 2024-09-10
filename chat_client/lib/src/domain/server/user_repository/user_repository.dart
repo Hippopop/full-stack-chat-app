@@ -1,4 +1,4 @@
-import 'package:chat_client/src/repositories/server/user_repository/models/connection_data.dart';
+import 'package:chat_client/src/domain/server/user_repository/models/connection_data.dart';
 
 import '../../repository.dart';
 export 'models/user_data.dart';

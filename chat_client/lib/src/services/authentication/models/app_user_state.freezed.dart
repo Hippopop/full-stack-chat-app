@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'app_authentication.dart';
+part of 'app_user_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,31 +14,31 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-AuthenticationState _$AuthenticationStateFromJson(Map<String, dynamic> json) {
-  return _AuthenticationState.fromJson(json);
+AppUserState _$AppUserStateFromJson(Map<String, dynamic> json) {
+  return _AppUserState.fromJson(json);
 }
 
 /// @nodoc
-mixin _$AuthenticationState {
+mixin _$AppUserState {
   AppUser? get currentUser => throw _privateConstructorUsedError;
   ({String accessToken, String refreshToken})? get token =>
       throw _privateConstructorUsedError;
 
-  /// Serializes this AuthenticationState to a JSON map.
+  /// Serializes this AppUserState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of AuthenticationState
+  /// Create a copy of AppUserState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $AuthenticationStateCopyWith<AuthenticationState> get copyWith =>
+  $AppUserStateCopyWith<AppUserState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AuthenticationStateCopyWith<$Res> {
-  factory $AuthenticationStateCopyWith(
-          AuthenticationState value, $Res Function(AuthenticationState) then) =
-      _$AuthenticationStateCopyWithImpl<$Res, AuthenticationState>;
+abstract class $AppUserStateCopyWith<$Res> {
+  factory $AppUserStateCopyWith(
+          AppUserState value, $Res Function(AppUserState) then) =
+      _$AppUserStateCopyWithImpl<$Res, AppUserState>;
   @useResult
   $Res call(
       {AppUser? currentUser,
@@ -48,16 +48,16 @@ abstract class $AuthenticationStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$AuthenticationStateCopyWithImpl<$Res, $Val extends AuthenticationState>
-    implements $AuthenticationStateCopyWith<$Res> {
-  _$AuthenticationStateCopyWithImpl(this._value, this._then);
+class _$AppUserStateCopyWithImpl<$Res, $Val extends AppUserState>
+    implements $AppUserStateCopyWith<$Res> {
+  _$AppUserStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of AuthenticationState
+  /// Create a copy of AppUserState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -77,7 +77,7 @@ class _$AuthenticationStateCopyWithImpl<$Res, $Val extends AuthenticationState>
     ) as $Val);
   }
 
-  /// Create a copy of AuthenticationState
+  /// Create a copy of AppUserState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -93,11 +93,11 @@ class _$AuthenticationStateCopyWithImpl<$Res, $Val extends AuthenticationState>
 }
 
 /// @nodoc
-abstract class _$$AuthenticationStateImplCopyWith<$Res>
-    implements $AuthenticationStateCopyWith<$Res> {
-  factory _$$AuthenticationStateImplCopyWith(_$AuthenticationStateImpl value,
-          $Res Function(_$AuthenticationStateImpl) then) =
-      __$$AuthenticationStateImplCopyWithImpl<$Res>;
+abstract class _$$AppUserStateImplCopyWith<$Res>
+    implements $AppUserStateCopyWith<$Res> {
+  factory _$$AppUserStateImplCopyWith(
+          _$AppUserStateImpl value, $Res Function(_$AppUserStateImpl) then) =
+      __$$AppUserStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -109,14 +109,14 @@ abstract class _$$AuthenticationStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$AuthenticationStateImplCopyWithImpl<$Res>
-    extends _$AuthenticationStateCopyWithImpl<$Res, _$AuthenticationStateImpl>
-    implements _$$AuthenticationStateImplCopyWith<$Res> {
-  __$$AuthenticationStateImplCopyWithImpl(_$AuthenticationStateImpl _value,
-      $Res Function(_$AuthenticationStateImpl) _then)
+class __$$AppUserStateImplCopyWithImpl<$Res>
+    extends _$AppUserStateCopyWithImpl<$Res, _$AppUserStateImpl>
+    implements _$$AppUserStateImplCopyWith<$Res> {
+  __$$AppUserStateImplCopyWithImpl(
+      _$AppUserStateImpl _value, $Res Function(_$AppUserStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthenticationState
+  /// Create a copy of AppUserState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -124,7 +124,7 @@ class __$$AuthenticationStateImplCopyWithImpl<$Res>
     Object? currentUser = freezed,
     Object? token = freezed,
   }) {
-    return _then(_$AuthenticationStateImpl(
+    return _then(_$AppUserStateImpl(
       currentUser: freezed == currentUser
           ? _value.currentUser
           : currentUser // ignore: cast_nullable_to_non_nullable
@@ -139,12 +139,11 @@ class __$$AuthenticationStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AuthenticationStateImpl extends _AuthenticationState
-    with DiagnosticableTreeMixin {
-  const _$AuthenticationStateImpl({this.currentUser, this.token}) : super._();
+class _$AppUserStateImpl extends _AppUserState with DiagnosticableTreeMixin {
+  const _$AppUserStateImpl({this.currentUser, this.token}) : super._();
 
-  factory _$AuthenticationStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$AuthenticationStateImplFromJson(json);
+  factory _$AppUserStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AppUserStateImplFromJson(json);
 
   @override
   final AppUser? currentUser;
@@ -153,14 +152,14 @@ class _$AuthenticationStateImpl extends _AuthenticationState
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthenticationState(currentUser: $currentUser, token: $token)';
+    return 'AppUserState(currentUser: $currentUser, token: $token)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'AuthenticationState'))
+      ..add(DiagnosticsProperty('type', 'AppUserState'))
       ..add(DiagnosticsProperty('currentUser', currentUser))
       ..add(DiagnosticsProperty('token', token));
   }
@@ -169,7 +168,7 @@ class _$AuthenticationStateImpl extends _AuthenticationState
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthenticationStateImpl &&
+            other is _$AppUserStateImpl &&
             (identical(other.currentUser, currentUser) ||
                 other.currentUser == currentUser) &&
             (identical(other.token, token) || other.token == token));
@@ -179,42 +178,41 @@ class _$AuthenticationStateImpl extends _AuthenticationState
   @override
   int get hashCode => Object.hash(runtimeType, currentUser, token);
 
-  /// Create a copy of AuthenticationState
+  /// Create a copy of AppUserState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$AuthenticationStateImplCopyWith<_$AuthenticationStateImpl> get copyWith =>
-      __$$AuthenticationStateImplCopyWithImpl<_$AuthenticationStateImpl>(
-          this, _$identity);
+  _$$AppUserStateImplCopyWith<_$AppUserStateImpl> get copyWith =>
+      __$$AppUserStateImplCopyWithImpl<_$AppUserStateImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AuthenticationStateImplToJson(
+    return _$$AppUserStateImplToJson(
       this,
     );
   }
 }
 
-abstract class _AuthenticationState extends AuthenticationState {
-  const factory _AuthenticationState(
+abstract class _AppUserState extends AppUserState {
+  const factory _AppUserState(
           {final AppUser? currentUser,
           final ({String accessToken, String refreshToken})? token}) =
-      _$AuthenticationStateImpl;
-  const _AuthenticationState._() : super._();
+      _$AppUserStateImpl;
+  const _AppUserState._() : super._();
 
-  factory _AuthenticationState.fromJson(Map<String, dynamic> json) =
-      _$AuthenticationStateImpl.fromJson;
+  factory _AppUserState.fromJson(Map<String, dynamic> json) =
+      _$AppUserStateImpl.fromJson;
 
   @override
   AppUser? get currentUser;
   @override
   ({String accessToken, String refreshToken})? get token;
 
-  /// Create a copy of AuthenticationState
+  /// Create a copy of AppUserState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AuthenticationStateImplCopyWith<_$AuthenticationStateImpl> get copyWith =>
+  _$$AppUserStateImplCopyWith<_$AppUserStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

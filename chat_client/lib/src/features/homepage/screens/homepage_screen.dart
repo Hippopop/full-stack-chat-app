@@ -43,7 +43,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 
   BottomNavigationBar buildBottomNavigationBar(WidgetRef ref) {
-    final state = ref.watch(authStateNotifierProvider);
+    final state = ref.watch(userStateNotifierProvider);
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       unselectedFontSize: 14,
@@ -120,7 +120,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
         IconButton(
           icon: const Icon(Icons.logout),
           onPressed: () async {
-            await ref.watch(authStateNotifierProvider.notifier).logout();
+            await ref.watch(userStateNotifierProvider.notifier).logout();
           },
         ),
       ],

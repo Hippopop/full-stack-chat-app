@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'app_authentication.dart';
+part of 'app_user_state.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$AuthenticationStateImpl _$$AuthenticationStateImplFromJson(
-        Map<String, dynamic> json) =>
-    _$AuthenticationStateImpl(
+_$AppUserStateImpl _$$AppUserStateImplFromJson(Map<String, dynamic> json) =>
+    _$AppUserStateImpl(
       currentUser: json['currentUser'] == null
           ? null
           : AppUser.fromJson(json['currentUser'] as Map<String, dynamic>),
@@ -21,8 +20,7 @@ _$AuthenticationStateImpl _$$AuthenticationStateImplFromJson(
       ),
     );
 
-Map<String, dynamic> _$$AuthenticationStateImplToJson(
-        _$AuthenticationStateImpl instance) =>
+Map<String, dynamic> _$$AppUserStateImplToJson(_$AppUserStateImpl instance) =>
     <String, dynamic>{
       'currentUser': instance.currentUser,
       'token': instance.token == null

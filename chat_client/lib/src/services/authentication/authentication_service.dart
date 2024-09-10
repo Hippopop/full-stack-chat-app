@@ -1,17 +1,29 @@
-import 'package:chat_client/src/repositories/storage/auth_repository/auth_storage.dart';
-import 'package:chat_client/src/services/authentication/models/app_authentication.dart';
+import 'package:chat_client/src/domain/storage/auth_repository/auth_storage.dart';
+import 'package:chat_client/src/services/authentication/models/app_user_state.dart';
 import 'package:chat_client/src/utilities/scaffold_utils/snackbar_util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fresh_dio/fresh_dio.dart';
 
-import '../../repositories/server/auth_repository/auth_repository.dart';
+import '../../domain/server/auth_repository/auth_repository.dart';
 
-final authStateNotifierProvider =
-    NotifierProvider<AuthenticationStateNotifier, AuthenticationState>(
+typedef _AuthorizationState = ({String? currentUuid, bool isAuthorized});
+final authorizationProvider = StateProvider<_AuthorizationState>((ref) {
+  final uuid = ref.watch(
+    userStateNotifierProvider.select((value) => value.currentUser?.uuid),
+  );
+  final isAuthorized = ref.watch(
+    userStateNotifierProvider.select((value) => value.isAuthenticated),
+  );
+  return (currentUuid: uuid, isAuthorized: isAuthorized);
+});
+
+/// Provides the all the info related to the current [AppUser].
+final userStateNotifierProvider =
+    NotifierProvider<AuthenticationStateNotifier, AppUserState>(
   AuthenticationStateNotifier.new,
 );
 
-class AuthenticationStateNotifier extends Notifier<AuthenticationState>
+class AuthenticationStateNotifier extends Notifier<AppUserState>
     implements TokenStorage<OAuth2Token> {
   late final AuthenticationStorage _storage = const AuthenticationStorage();
 
@@ -19,7 +31,7 @@ class AuthenticationStateNotifier extends Notifier<AuthenticationState>
   build() {
     final tokens = _storage.getUserToken();
     final user = _storage.getCurrentUser();
-    return AuthenticationState(token: tokens, currentUser: user);
+    return AppUserState(token: tokens, currentUser: user);
   }
 
   logout() async {
@@ -47,7 +59,9 @@ class AuthenticationStateNotifier extends Notifier<AuthenticationState>
     final tokenSet = _storage.getUserToken();
     if (tokenSet == null) return null;
     return OAuth2Token(
-        accessToken: tokenSet.accessToken, refreshToken: tokenSet.refreshToken);
+      accessToken: tokenSet.accessToken,
+      refreshToken: tokenSet.refreshToken,
+    );
   }
 
   @override

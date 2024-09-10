@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chat_client/src/repositories/repository.dart';
+import 'package:chat_client/src/domain/repository.dart';
 import 'package:hive/hive.dart';
 
 import '../source/hive_config.dart';

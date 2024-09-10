@@ -1,6 +1,6 @@
 import 'package:chat_client/src/constants/server/api_config.dart';
-import 'package:chat_client/src/repositories/server/auth_repository/auth_repository.dart';
-import 'package:chat_client/src/repositories/server/source/helpers/response_wrapper.dart';
+import 'package:chat_client/src/domain/server/auth_repository/auth_repository.dart';
+import 'package:chat_client/src/domain/server/source/helpers/response_wrapper.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
 

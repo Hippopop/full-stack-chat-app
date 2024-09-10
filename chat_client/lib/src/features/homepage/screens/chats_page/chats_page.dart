@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:chat_client/src/constants/utils/date_utils.dart';
-import 'package:chat_client/src/services/socket_connection/providers/homie_data_provider.dart';
+import 'package:chat_client/src/features/messages/message_screen.dart';
+import 'package:chat_client/src/features/messages/models/personal_chat_query.dart';
+import 'package:chat_client/src/services/socket_connection/data/homie_data_provider.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:chat_client/src/utilities/extensions/date_time_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../constants/design/paddings.dart';
 import '../../../global/widgets/filled_outline_button.dart';
@@ -57,18 +62,33 @@ class ChatsScreen extends StatelessWidget {
                     ),
                     lastMsg: userData.message?.text ??
                         "Connected at ${userData.connection.acceptedAt == null ? "" : timeDate.format(userData.connection.acceptedAt!)}.",
-                    onTap: () {},
+                    onTap: () {
+                      context.push(
+                        PersonalChatScreen.route(
+                          uuid: userData.homie.uuid,
+                          queryParameters: PersonalChatQuery(
+                            name: userData.homie.name,
+                            photo: userData.homie.photo,
+                            isActive: userData.homie.isActive,
+                            updatedAt: userData.homie.lastActivity,
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
             ),
           ],
         ),
-        error: (error, stackTrace) => Center(
-          child: Text(
-            error.toString(),
-          ),
-        ),
+        error: (error, stackTrace) {
+          log("UserListError", error: error, stackTrace: stackTrace);
+          return Center(
+            child: Text(
+              error.toString(),
+            ),
+          );
+        },
         loading: () => const Center(
           child: CircularProgressIndicator(),
         ),

@@ -1,6 +1,6 @@
 import 'package:chat_client/src/constants/server/api_config.dart';
 import 'package:chat_client/src/constants/utils/json_date_convert.dart';
-import 'package:chat_client/src/repositories/server/user_repository/models/connection_data.dart';
+import 'package:chat_client/src/domain/server/user_repository/models/connection_data.dart';
 import 'package:chat_client/src/services/socket_connection/models/message/user_message.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

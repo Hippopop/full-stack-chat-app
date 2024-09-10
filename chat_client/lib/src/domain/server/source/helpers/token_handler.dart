@@ -1,6 +1,6 @@
 import 'package:chat_client/src/constants/server/api_config.dart';
-import 'package:chat_client/src/repositories/server/auth_repository/auth_repository.dart';
-import 'package:chat_client/src/repositories/server/source/helpers/response_wrapper.dart';
+import 'package:chat_client/src/domain/server/auth_repository/auth_repository.dart';
+import 'package:chat_client/src/domain/server/source/helpers/response_wrapper.dart';
 import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,8 +14,8 @@ final tokenInterceptorProvider =
 class TokenInterceptorNotifier extends Notifier<Interceptor> {
   @override
   Interceptor build() {
-    ref.watch(authStateNotifierProvider);
-    final storage = ref.watch(authStateNotifierProvider.notifier);
+    ref.watch(userStateNotifierProvider);
+    final storage = ref.watch(userStateNotifierProvider.notifier);
     return Fresh.oAuth2(
       tokenStorage: storage,
       shouldRefresh: (response) => response?.statusCode == 401,
@@ -41,7 +41,7 @@ class TokenInterceptorNotifier extends Notifier<Interceptor> {
   }
 
   Future<void> saveNewUserToken(UserToken token) async {
-    final storage = ref.read(authStateNotifierProvider.notifier);
+    final storage = ref.read(userStateNotifierProvider.notifier);
     await storage.saveUserToken(token);
     ref.invalidateSelf();
   }

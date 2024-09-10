@@ -8,7 +8,7 @@ enum SocketConnectionStatus {
   disconnected,
 }
 
-final class IsolatedSocketState<T> {
+final class IsolateManagerState<T> {
   final Isolate isolate;
   final SendPort isolatesSendPort;
   final ReceivePort myReceivePort;
@@ -16,7 +16,7 @@ final class IsolatedSocketState<T> {
   final StreamController<T> dataStreamController;
   final StreamController<SocketConnectionStatus> socketStatusStreamController;
 
-  IsolatedSocketState({
+  IsolateManagerState({
     required this.isolate,
     required this.isolatesSendPort,
     required this.myReceivePort,
