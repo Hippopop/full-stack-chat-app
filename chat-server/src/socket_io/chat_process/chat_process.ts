@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { SocketEventKeys } from "../utils/socket_event_keys";
+import { SocketActionKeys, SocketEventKeys } from "../utils/socket_event_keys";
 import * as AuthorizationMiddleware from "../authorization_process/socket_authorization";
 
 let processP2PChats = async (io: Server) => {
@@ -10,17 +10,15 @@ let processP2PChats = async (io: Server) => {
     usersConnection.on(SocketEventKeys.initialConnection, async (socket: Socket) => {
         /// Authorize and reassure user tokens!
         const userData = await AuthorizationMiddleware.verifyAndResignAuthorizationTokens(socket, io);
-
-        console.log(`   --- Connected ${socket.id} + ${userData.name} ---   `);
-        console.log(`Name -> ${socket.nsp.name}`);
-
         // Extract UUID from namespace name
-        const uuid = socket.nsp.name.split('/').pop();
+        const receiver = socket.nsp.name.split('/').pop();
+        console.log(`  ${userData.name} -> ${receiver} : Connected!   `);
+        socket.emit(SocketActionKeys.data, []);
 
 
         /// Signal Disconnect!
         socket.on(SocketEventKeys.disconnectKey, () => {
-            console.log(`   --- Disconnected ${socket.id} + ${userData.name} ---   `);
+            console.log(`  ${userData.name} -> ${receiver} : Disconnected!   `);
         });
     });
 }

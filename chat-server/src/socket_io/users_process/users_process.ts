@@ -19,7 +19,7 @@ let processUserList = async (io: Server): Promise<Namespace> => {
         console.log(`   --- Connected ${socket.id} + ${userData.name} ---   `);
         console.log(`Name -> ${socket.nsp.name}`);
 
-        socket.emit(SocketActionKeys.homieData, await getListOfMyHomies(userData.uuid));
+        socket.emit(SocketActionKeys.data, await getListOfMyHomies(userData.uuid));
 
         /// Signal Disconnect!
         socket.on(SocketEventKeys.disconnectKey, async () => {
