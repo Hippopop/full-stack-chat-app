@@ -5,8 +5,8 @@ export const RefreshTokenSchema = z.object({
     sha256: z.string(),
     uuid: z.string().uuid(),
     email: z.string().email(),
-    expire: z.string().datetime({ offset: true }),
-    timestamp: z.string().datetime({ offset: true }),
+    expire: z.number(),
+    timestamp: z.number(),
 });
 
 export type RefreshTokenModel = z.infer<typeof RefreshTokenSchema>;

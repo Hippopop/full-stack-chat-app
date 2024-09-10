@@ -15,7 +15,7 @@ import '../initializer/views/error_screen.dart';
 final _navigatorKey = GlobalKey<NavigatorState>(debugLabel: '#root');
 final goRouterProvider = Provider<GoRouter>(
   (ref) {
-    final authState = ref.watch(authStateNotifierProvider);
+    final authState = ref.watch(authorizationProvider);
     return GoRouter(
       debugLogDiagnostics: true,
       navigatorKey: _navigatorKey,
@@ -68,15 +68,16 @@ final goRouterProvider = Provider<GoRouter>(
         final inAuthenticationPages = [
           LoginScreen.route,
           WelcomeScreen.route,
-          AuthenticationScreen.route,
           RegistrationScreen.route,
+          AuthenticationScreen.route,
         ].contains(state.matchedLocation);
-        if (inAuthenticationPages && authState.isAuthenticated) {
+        if (inAuthenticationPages && authState.isAuthorized) {
           return HomepageScreen.path;
         }
-        if (!inAuthenticationPages && !authState.isAuthenticated) {
+        if (!inAuthenticationPages && !authState.isAuthorized) {
           return WelcomeScreen.path;
         }
+        return null;
       },
     );
   },

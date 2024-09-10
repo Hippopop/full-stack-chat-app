@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:chat_client/src/repositories/repository.dart';
+import 'package:chat_client/src/domain/repository.dart';
 import 'package:chat_client/src/constants/server/api_config.dart';
-import 'package:chat_client/src/repositories/server/user_repository/models/connection_data.dart';
+import 'package:chat_client/src/domain/server/user_repository/models/connection_data.dart';
 
 class UserProvider extends UserRepository {
   UserProvider({required super.requestHandler});

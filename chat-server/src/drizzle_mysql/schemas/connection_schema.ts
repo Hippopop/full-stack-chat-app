@@ -7,11 +7,11 @@ import { messages } from "./message_schema";
 
 export const connections = mysqlTable('connections', {
     key: int("key").autoincrement().primaryKey(),
-    acceptTime: timestamp('accept_time'),
+    acceptTimestamp: int('accept_timestamp'),
     toUser: varchar('to_user', { length: 256 }).notNull().references(() => authentication.uuid),
     fromUser: varchar('from_user', { length: 256 }).notNull().references(() => authentication.uuid),
     connectionStatus: mysqlEnum('connection_status', ['requested', 'accepted', 'rejected', 'blocked']),
-    lastMessage: varchar('last_message', { length: 256 }).unique().references(() => messages.key),
+    lastMessage: int('last_message').unique().references(() => messages.key),
     ...drizzleTimeFields,
 }, (table) => ({
     uniqueItem: unique().on(table.toUser, table.fromUser),
@@ -20,9 +20,9 @@ export const connections = mysqlTable('connections', {
 
 export const DB_Connection_Schema = createSelectSchema(connections, {
     createdAt: (schema) => schema.createdAt.optional(),
-    updatedAt: (schema) => schema.updatedAt.optional(),
-    acceptTime: (schema) => schema.acceptTime.optional(),
     lastMessage: (schema) => schema.lastMessage.optional(),
+    updatedAt: (schema) => schema.updatedAt.nullish(),
+    acceptTimestamp: (schema) => schema.acceptTimestamp.nullish(),
 });
 
 export const DBN_Connection_Schema = createInsertSchema(connections);

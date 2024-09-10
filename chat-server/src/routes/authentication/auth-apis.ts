@@ -15,6 +15,7 @@ import { getMediaEntry, insertMediaEntry } from "../../repositories/media_reposi
 import fs from "fs";
 import path from "path";
 import { profilePath, profilePathString } from "../../constants/directories";
+import { createActivityEntry } from "../../repositories/acitivity_repository";
 
 
 
@@ -96,6 +97,7 @@ authRoute.post(
           ...data.data,
           photo: imagePath,
         });
+        await createActivityEntry(userData.uuid);
         const [accessToken, accessTokenExpire] = tokenizer.generateToken(userData);
         const [refreshToken, refreshExpire] = tokenizer.generateRefreshToken({ uuid: userData.uuid, email: userData.email, token: accessToken });
         await auth.updateRefreshToken(authData.uuid, refreshToken);

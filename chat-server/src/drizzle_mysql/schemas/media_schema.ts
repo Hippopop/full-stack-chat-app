@@ -9,7 +9,7 @@ export const medias = mysqlTable('medias', {
     key: int("key").autoincrement().primaryKey(),
     name: varchar('name', { length: 256 }).notNull(),
     extension: varchar('extension', { length: 50 }).notNull(),
-    message: varchar('message', { length: 256 }).references(() => messages.key),
+    message: int('message').references(() => messages.key),
     type: mysqlEnum('type', ['profile', 'photo', 'video', 'voice_note']).notNull(),
     uuid: varchar('uuid', { length: 256, }).notNull().unique().references(() => authentication.uuid),
     ...drizzleTimeFields,
@@ -21,7 +21,7 @@ export const medias = mysqlTable('medias', {
 export const DB_Media_Schema = createSelectSchema(medias, {
     message: (schema) => schema.message.optional(),
     createdAt: (schema) => schema.createdAt.optional(),
-    updatedAt: (schema) => schema.updatedAt.optional(),
+    updatedAt: (schema) => schema.updatedAt.nullish(),
 });
 
 export const DB_Media_Type_Schema = DB_Media_Schema.shape.type;

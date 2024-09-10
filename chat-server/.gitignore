@@ -1,5 +1,6 @@
 # The distribution folder. Converted from [.ts] to [.js] files.
 dist
+seeds
 # NodeJs package related files.
 node_modules
 package-lock.json

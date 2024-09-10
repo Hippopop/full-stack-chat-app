@@ -18,7 +18,7 @@ export const DB_User_Schema = createSelectSchema(users, {
     photo: (schema) => schema.photo.optional(),
     birthdate: (schema) => schema.birthdate.optional(),
     createdAt: (schema) => schema.createdAt.optional(),
-    updatedAt: (schema) => schema.updatedAt.optional(),
+    updatedAt: (schema) => schema.updatedAt.nullish(),
 });
 export const DBN_User_Schema = createInsertSchema(users);
 

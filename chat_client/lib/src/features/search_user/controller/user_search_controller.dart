@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:chat_client/src/data/user_provider/user_repository_provider.dart';
-import 'package:chat_client/src/repositories/repository.dart';
-import 'package:chat_client/src/repositories/server/source/config_provider.dart';
-import 'package:chat_client/src/repositories/server/user_repository/models/connection_data.dart';
+import 'package:chat_client/src/domain/repository.dart';
+import 'package:chat_client/src/domain/server/source/config_provider.dart';
+import 'package:chat_client/src/domain/server/user_repository/models/connection_data.dart';
 import 'package:chat_client/src/utilities/extensions/riverpod_ref_extensions.dart';
 import 'package:chat_client/src/utilities/scaffold_utils/snackbar_util.dart';
 import 'package:dio/dio.dart';

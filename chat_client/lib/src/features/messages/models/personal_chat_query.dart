@@ -8,14 +8,10 @@ part 'personal_chat_query.g.dart';
 @freezed
 class PersonalChatQuery with _$PersonalChatQuery {
   const factory PersonalChatQuery({
-    String? email,
-    String? phone,
     String? name,
     String? photo,
-    String? birthdate,
-    DateTime? createdAt,
+    bool? isActive,
     DateTime? updatedAt,
-    String? activityStatus,
   }) = _PersonalChatQuery;
 
   const PersonalChatQuery._();

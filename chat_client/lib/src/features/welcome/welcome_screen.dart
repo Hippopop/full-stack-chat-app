@@ -1,5 +1,6 @@
 import 'package:chat_client/src/constants/design/paddings.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
+import 'package:chat_client/src/utilities/extensions/size_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,30 +41,35 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
             const Spacer(flex: 3),
-            FittedBox(
-              child: TextButton(
-                  onPressed: () => context.go(AuthenticationScreen.route),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Skip",
-                        style: context.textTheme.bodyLarge!.copyWith(
-                          color: context.color.primaryAccent.withOpacity(0.8),
-                        ),
+            InkWell(
+              onTap: () => context.go(AuthenticationScreen.route),
+              customBorder: const StadiumBorder(),
+              child: Padding(
+                padding: horizontal10 + vertical8,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Skip",
+                      style: context.textTheme.bodyLarge!.copyWith(
+                        color: context.color.primaryAccent.withOpacity(0.8),
                       ),
-                      const SizedBox(width: defaultPaddingSpace / 4),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .color!
-                            .withOpacity(0.8),
-                      )
-                    ],
-                  )),
-            )
+                    ),
+                    6.width,
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .color!
+                          .withOpacity(0.8),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            20.height,
           ],
         ),
       ),

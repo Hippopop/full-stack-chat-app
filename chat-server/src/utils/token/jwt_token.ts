@@ -6,6 +6,7 @@ import { createHash } from "node:crypto";
 import { AccessTokenModelSchema } from "./models/token";
 import { ResponseError } from "../../types/response/errors/error-z";
 import { badRequest, unauthorized } from "../../constants/errors/error_codes";
+import { convertDateToSecondsTimestamp, getCurrentTimestampSeconds } from "../../drizzle_mysql/helpers/schema_snippets";
 
 const accessTokenTime = "2h";
 const refreshTokenTime = "60 days";
@@ -13,9 +14,9 @@ const refreshTokenTime = "60 days";
 
 const _tokenSchema = AccessTokenModelSchema.omit({ expire: true, timestamp: true });
 
-function generateToken(data: string | object): [string, string] {
+function generateToken(data: string | object): [string, number] {
   const tokenSecret = process.env.ACCESS_TOKEN as string;
-  const expire = DateTime.now().plus({ hours: 2 }).toISO();
+  const expire = convertDateToSecondsTimestamp(DateTime.now().plus({ hours: 2 }).toMillis());
   const token = tokenizer.sign(data, tokenSecret, {
     expiresIn: accessTokenTime,
   });
@@ -24,12 +25,12 @@ function generateToken(data: string | object): [string, string] {
 
 const _generateRefreshTokenSchema = RefreshTokenSchema.omit({ sha256: true, expire: true, timestamp: true });
 type _generateRefreshTokenType = z.infer<typeof _generateRefreshTokenSchema>;
-function generateRefreshToken(data: _generateRefreshTokenType): [string, String] {
+
+function generateRefreshToken(data: _generateRefreshTokenType): [string, number] {
   const tokenSecret = process.env.REFRESH_TOKEN as string;
 
-
-  const timeStamp = DateTime.now().toISO();
-  const expire = DateTime.now().plus({ hours: 2 }).toISO();
+  const timeStamp = getCurrentTimestampSeconds();
+  const expire = convertDateToSecondsTimestamp(DateTime.now().plus({ hours: 2 }).toMillis());
   const newHash = createHash("sha256");
   const hashString = newHash.digest("hex");
   const signData = {

@@ -1,7 +1,7 @@
 import 'package:chat_client/src/constants/assets/assets.dart';
 import 'package:chat_client/src/constants/design/paddings.dart';
 import 'package:chat_client/src/features/search_user/controller/user_search_controller.dart';
-import 'package:chat_client/src/repositories/server/user_repository/models/connection_data.dart';
+import 'package:chat_client/src/domain/server/user_repository/models/connection_data.dart';
 import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +102,7 @@ class SearchedUserCard extends StatelessWidget {
               ),
               child: Consumer(builder: (context, ref, child) {
                 final myUUID =
-                    ref.watch(authStateNotifierProvider).currentUser!.uuid;
+                    ref.watch(userStateNotifierProvider).currentUser!.uuid;
                 final isSender = connection?.fromUser == myUUID;
                 // final isReceiver = connection?.toUser == myUUID;
                 final isRequested =

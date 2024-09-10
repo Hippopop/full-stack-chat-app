@@ -184,7 +184,7 @@ class _VerticalRegistrationAreaState extends State<VerticalRegistrationArea> {
                       hintText: "Enter Your Phone Number",
                       validators: [
                         isRequired,
-                        tooShort11,
+                        tooShort10,
                       ],
                       controller: phoneController,
                       onChange: (value) => ref

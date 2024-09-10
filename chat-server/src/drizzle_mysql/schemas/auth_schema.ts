@@ -17,7 +17,7 @@ export const authentication = mysqlTable('authentication', {
 export const DB_Authentication_Schema = createSelectSchema(authentication, {
     phone: (schema) => schema.phone.optional(),
     createdAt: (schema) => schema.createdAt.optional(),
-    updatedAt: (schema) => schema.updatedAt.optional(),
+    updatedAt: (schema) => schema.updatedAt.nullish(),
 });
 export const DBN_Authentication_Schema = createInsertSchema(authentication);
 

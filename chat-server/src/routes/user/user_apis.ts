@@ -25,7 +25,6 @@ userRoute.get(
             const isEmail = z.string().email().safeParse(query).success;
             if (isEmail) (query as string).toLowerCase();
             let response = await searchUserWithFriendInfo(query as string, user!.uuid);
-            console.log(JSON.stringify(response));
             return response;
         },
     })

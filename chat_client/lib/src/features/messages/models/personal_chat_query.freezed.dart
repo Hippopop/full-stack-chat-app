@@ -20,17 +20,17 @@ PersonalChatQuery _$PersonalChatQueryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PersonalChatQuery {
-  String? get email => throw _privateConstructorUsedError;
-  String? get phone => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get photo => throw _privateConstructorUsedError;
-  String? get birthdate => throw _privateConstructorUsedError;
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  bool? get isActive => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
-  String? get activityStatus => throw _privateConstructorUsedError;
 
+  /// Serializes this PersonalChatQuery to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PersonalChatQueryCopyWith<PersonalChatQuery> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -41,15 +41,7 @@ abstract class $PersonalChatQueryCopyWith<$Res> {
           PersonalChatQuery value, $Res Function(PersonalChatQuery) then) =
       _$PersonalChatQueryCopyWithImpl<$Res, PersonalChatQuery>;
   @useResult
-  $Res call(
-      {String? email,
-      String? phone,
-      String? name,
-      String? photo,
-      String? birthdate,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      String? activityStatus});
+  $Res call({String? name, String? photo, bool? isActive, DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -62,27 +54,17 @@ class _$PersonalChatQueryCopyWithImpl<$Res, $Val extends PersonalChatQuery>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = freezed,
-    Object? phone = freezed,
     Object? name = freezed,
     Object? photo = freezed,
-    Object? birthdate = freezed,
-    Object? createdAt = freezed,
+    Object? isActive = freezed,
     Object? updatedAt = freezed,
-    Object? activityStatus = freezed,
   }) {
     return _then(_value.copyWith(
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -91,22 +73,14 @@ class _$PersonalChatQueryCopyWithImpl<$Res, $Val extends PersonalChatQuery>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
-      birthdate: freezed == birthdate
-          ? _value.birthdate
-          : birthdate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      isActive: freezed == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      activityStatus: freezed == activityStatus
-          ? _value.activityStatus
-          : activityStatus // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -119,15 +93,7 @@ abstract class _$$PersonalChatQueryImplCopyWith<$Res>
       __$$PersonalChatQueryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? email,
-      String? phone,
-      String? name,
-      String? photo,
-      String? birthdate,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      String? activityStatus});
+  $Res call({String? name, String? photo, bool? isActive, DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -138,27 +104,17 @@ class __$$PersonalChatQueryImplCopyWithImpl<$Res>
       $Res Function(_$PersonalChatQueryImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = freezed,
-    Object? phone = freezed,
     Object? name = freezed,
     Object? photo = freezed,
-    Object? birthdate = freezed,
-    Object? createdAt = freezed,
+    Object? isActive = freezed,
     Object? updatedAt = freezed,
-    Object? activityStatus = freezed,
   }) {
     return _then(_$PersonalChatQueryImpl(
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -167,22 +123,14 @@ class __$$PersonalChatQueryImplCopyWithImpl<$Res>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as String?,
-      birthdate: freezed == birthdate
-          ? _value.birthdate
-          : birthdate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      isActive: freezed == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      activityStatus: freezed == activityStatus
-          ? _value.activityStatus
-          : activityStatus // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -192,39 +140,24 @@ class __$$PersonalChatQueryImplCopyWithImpl<$Res>
 class _$PersonalChatQueryImpl extends _PersonalChatQuery
     with DiagnosticableTreeMixin {
   const _$PersonalChatQueryImpl(
-      {this.email,
-      this.phone,
-      this.name,
-      this.photo,
-      this.birthdate,
-      this.createdAt,
-      this.updatedAt,
-      this.activityStatus})
+      {this.name, this.photo, this.isActive, this.updatedAt})
       : super._();
 
   factory _$PersonalChatQueryImpl.fromJson(Map<String, dynamic> json) =>
       _$$PersonalChatQueryImplFromJson(json);
 
   @override
-  final String? email;
-  @override
-  final String? phone;
-  @override
   final String? name;
   @override
   final String? photo;
   @override
-  final String? birthdate;
-  @override
-  final DateTime? createdAt;
+  final bool? isActive;
   @override
   final DateTime? updatedAt;
-  @override
-  final String? activityStatus;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PersonalChatQuery(email: $email, phone: $phone, name: $name, photo: $photo, birthdate: $birthdate, createdAt: $createdAt, updatedAt: $updatedAt, activityStatus: $activityStatus)';
+    return 'PersonalChatQuery(name: $name, photo: $photo, isActive: $isActive, updatedAt: $updatedAt)';
   }
 
   @override
@@ -232,14 +165,10 @@ class _$PersonalChatQueryImpl extends _PersonalChatQuery
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'PersonalChatQuery'))
-      ..add(DiagnosticsProperty('email', email))
-      ..add(DiagnosticsProperty('phone', phone))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('photo', photo))
-      ..add(DiagnosticsProperty('birthdate', birthdate))
-      ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('updatedAt', updatedAt))
-      ..add(DiagnosticsProperty('activityStatus', activityStatus));
+      ..add(DiagnosticsProperty('isActive', isActive))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt));
   }
 
   @override
@@ -247,26 +176,22 @@ class _$PersonalChatQueryImpl extends _PersonalChatQuery
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PersonalChatQueryImpl &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.photo, photo) || other.photo == photo) &&
-            (identical(other.birthdate, birthdate) ||
-                other.birthdate == birthdate) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
-            (identical(other.activityStatus, activityStatus) ||
-                other.activityStatus == activityStatus));
+                other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, email, phone, name, photo,
-      birthdate, createdAt, updatedAt, activityStatus);
+  int get hashCode =>
+      Object.hash(runtimeType, name, photo, isActive, updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PersonalChatQueryImplCopyWith<_$PersonalChatQueryImpl> get copyWith =>
@@ -283,37 +208,28 @@ class _$PersonalChatQueryImpl extends _PersonalChatQuery
 
 abstract class _PersonalChatQuery extends PersonalChatQuery {
   const factory _PersonalChatQuery(
-      {final String? email,
-      final String? phone,
-      final String? name,
+      {final String? name,
       final String? photo,
-      final String? birthdate,
-      final DateTime? createdAt,
-      final DateTime? updatedAt,
-      final String? activityStatus}) = _$PersonalChatQueryImpl;
+      final bool? isActive,
+      final DateTime? updatedAt}) = _$PersonalChatQueryImpl;
   const _PersonalChatQuery._() : super._();
 
   factory _PersonalChatQuery.fromJson(Map<String, dynamic> json) =
       _$PersonalChatQueryImpl.fromJson;
 
   @override
-  String? get email;
-  @override
-  String? get phone;
-  @override
   String? get name;
   @override
   String? get photo;
   @override
-  String? get birthdate;
-  @override
-  DateTime? get createdAt;
+  bool? get isActive;
   @override
   DateTime? get updatedAt;
+
+  /// Create a copy of PersonalChatQuery
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String? get activityStatus;
-  @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PersonalChatQueryImplCopyWith<_$PersonalChatQueryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

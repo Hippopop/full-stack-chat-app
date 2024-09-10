@@ -3,7 +3,11 @@ import 'package:chat_client/src/features/messages/components/message.dart';
 import 'package:chat_client/src/features/messages/models/personal_chat_query.dart';
 
 import 'package:chat_client/src/constants/design/paddings.dart';
+import 'package:chat_client/src/services/socket_connection/data/personal_message_provider.dart';
+import 'package:chat_client/src/services/theme/app_theme.dart';
+import 'package:chat_client/src/utilities/extensions/date_time_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../data/models/chat_message.dart';
@@ -18,7 +22,11 @@ class PersonalChatScreen extends StatefulWidget {
     final path = "/PersonalChat/$uuid";
     final queryParams = queryParameters?.toJson()
       ?..removeWhere((key, value) => value == null);
-    return Uri(path: path, queryParameters: queryParams).toString();
+    return Uri(
+      path: path,
+      queryParameters:
+          queryParams?.map((key, value) => MapEntry(key, value.toString())),
+    ).toString();
   }
 
   const PersonalChatScreen({
@@ -32,8 +40,17 @@ class PersonalChatScreen extends StatefulWidget {
 }
 
 class _PersonalChatScreenState extends State<PersonalChatScreen> {
-  PersonalChatQuery get queryData =>
-      PersonalChatQuery.fromJson(GoRouterState.of(context).uri.queryParameters);
+  PersonalChatQuery get queryData => PersonalChatQuery.fromJson(
+          GoRouterState.of(context).uri.queryParameters.map(
+        (key, value) {
+          if (value == "true") {
+            return MapEntry(key, true);
+          } else if (value == "false") {
+            return MapEntry(key, false);
+          }
+          return MapEntry(key, value);
+        },
+      ));
   final List<ChatMessage> messages = [];
 
   @override
@@ -49,14 +66,29 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
-      body: Body(
-        messageList: messages,
+      appBar: buildAppBar(context),
+      body: Consumer(
+        builder: (context, ref, child) {
+          final userMessages = ref.watch(userMessagesProvider(widget.uuid));
+
+          return userMessages.when(
+            data: (data) => child!,
+            error: (e, s) => Center(
+              child: Text(e.toString()),
+            ),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        },
+        child: Body(
+          messageList: messages,
+        ),
       ),
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
       title: Row(
@@ -76,10 +108,21 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
                 queryData.name ?? " ??? ",
                 style: const TextStyle(fontSize: 16),
               ),
-              if (queryData.activityStatus != null)
+              const SizedBox(height: 2),
+              if (!(queryData.isActive ?? false))
                 Text(
-                  queryData.activityStatus!,
-                  style: const TextStyle(fontSize: 12),
+                  () {
+                    if ((queryData.isActive ?? false) ||
+                        queryData.updatedAt == null) return "";
+                    final text = DateTime.now()
+                        .difference(queryData.updatedAt!)
+                        .adaptiveDurationString;
+                    return text == "Just now" ? text : "$text ago";
+                  }(),
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: context.color.secondaryText,
+                  ),
                 )
             ],
           )
