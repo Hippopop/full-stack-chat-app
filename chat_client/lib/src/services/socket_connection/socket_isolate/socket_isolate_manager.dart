@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'dart:isolate';
 
 import 'package:chat_client/src/services/socket_connection/socket_isolate/isolated_socket_state.dart';
+import 'package:chat_client/src/services/socket_connection/socket_isolate/processors/chat_socket_processor/chat_socket_processor.dart';
+import 'package:chat_client/src/services/socket_connection/socket_isolate/processors/user_socket_processor/user_socket_processor.dart';
+import 'package:chat_client/src/services/socket_connection/socket_isolate/processors/web_socket_processor/web_socket_processor.dart';
 import 'package:chat_client/src/services/socket_connection/socket_isolate/utils/event_keys.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 
+/// Type of user token set.
 typedef TokenSetType = ({String accessToken, String refreshToken});
-typedef TokenResetCallback = Future<void> Function(dynamic tokenSet);
 
 /// Creates and manages the data related to newly spawned `Isolate`!
 class SocketIsolateManager<T> {
@@ -34,52 +36,34 @@ class SocketIsolateManager<T> {
   void send(({String key, dynamic value}) data) =>
       state.isolatesSendPort.send(data);
 
-  Future<void> initiate({
-    TokenResetCallback? resetToken,
-    required T Function(dynamic value) dataPurser,
-  }) async {
+  Future<void> initiate({void Function(dynamic value)? resetToken}) async {
     try {
-      final rPort = ReceivePort();
       final rStream = StreamController.broadcast();
       final dStream = StreamController<T>.broadcast();
       final sStream = StreamController<SocketConnectionStatus>.broadcast();
 
-      rPort.listen(
-        (message) {
-          log(message.toString(), name: "FROM-ISOLATE");
-          switch (message) {
-            case (:String key, :var value):
-              {
-                //This means the stream data is in the [(:key, : value)] format!
-                switch (key) {
-                  case SocketActionKeys.freshToken:
-                    resetToken?.call(value);
-                  case SocketActionKeys.data:
-                    dStream.add(dataPurser(value));
-                  case IsolateEventKeys.socketStatus:
-                    sStream.add(value);
-                }
-                rStream.add(message);
-              }
-            default:
-              rStream.add(message);
-          }
-        },
-      );
+      final rPort = ReceivePort();
+      rPort.listen(rStream.add);
+      if (resetToken != null) {
+        rStream.stream.listen(
+          (event) {
+            if (event case (key: String key, value: var value)
+                when key == SocketActionKeys.freshToken) {
+              resetToken.call(value);
+            }
+          },
+        );
+      }
 
+      // Actual initialization of the [Isolate].
       final isolate = await Isolate.spawn(
         _$SocketHandlingIsolate,
         (sendPort: rPort.sendPort, connectionPath: socketPath),
       );
-
       final sendPort = await rStream.stream.first as SendPort;
-      sendPort.send(tokenSet);
 
-      // This ensures that some form of `ConnectionStatus` has been received from
-      // the isolated socket!
-      await sStream.stream.first;
-      // Finally initialize the state!
-      _currentState = IsolateManagerState(
+      // Finally initiate the state!
+      final controls = IsolateManagerState<T>(
         isolate: isolate,
         isolatesSendPort: sendPort,
         myReceivePort: rPort,
@@ -87,6 +71,30 @@ class SocketIsolateManager<T> {
         unfilteredReceiveStream: rStream,
         socketStatusStreamController: sStream,
       );
+
+      // Now set up the processor. But first make sure WebSocket part is settled!
+      final uri = Uri.parse(socketPath);
+      final wsProcessor = WebSocketProcessor(socketUri: uri);
+      await wsProcessor.processIncoming(
+        controls: controls,
+        currentTokens: tokenSet,
+      );
+
+      final listOfProcessorFunctions = [
+        UserSocketProcessor(socketUri: uri).processIncoming(
+          controls: controls,
+          currentTokens: tokenSet,
+        ),
+        ChatSocketProcessor(socketUri: uri).processIncoming(
+          controls: controls,
+          currentTokens: tokenSet,
+        ),
+      ];
+
+      await Future.wait(listOfProcessorFunctions);
+
+      // Finally assign the control state to this manager!
+      _currentState = controls;
     } catch (e, s) {
       log(
         error: e,
@@ -106,14 +114,14 @@ Future<void> _$SocketHandlingIsolate(
   ({SendPort sendPort, String connectionPath}) config,
 ) async {
   final (:sendPort, :connectionPath) = config;
-  final ReceivePort receivePort = ReceivePort();
-  final StreamController receiverController = StreamController.broadcast();
 
-  sendPort.send(receivePort.sendPort);
-  receivePort.listen(receiverController.add);
+  final ReceivePort rPort = ReceivePort();
+  final StreamController rStream = StreamController.broadcast();
+  sendPort.send(rPort.sendPort);
+  rPort.listen(rStream.add);
 
-  final (:accessToken, :refreshToken) =
-      await receiverController.stream.firstWhere((port) {
+  // Await for the `authentication tokens` to arrive!
+  final userTokens = await rStream.stream.firstWhere((port) {
     if (port case (accessToken: String _, refreshToken: String _)) {
       return true;
     }
@@ -121,50 +129,27 @@ Future<void> _$SocketHandlingIsolate(
   });
 
   final connectionUri = Uri.parse(connectionPath);
-  final option = OptionBuilder()
-      .setTransports(['websocket'])
-      .setReconnectionDelay(1000)
-      .setReconnectionAttempts(10)
-      .setReconnectionDelayMax(1000 * 6)
-      .setAuth({
-        'token': accessToken,
-        'refreshToken': refreshToken,
-      })
-      .build();
-  final Socket websocket = io(connectionUri.toString(), option);
 
-  websocket.onConnect(
-    (event) => sendPort.send((
-      key: IsolateEventKeys.socketStatus,
-      value: SocketConnectionStatus.connected,
-    )),
+  /// Process all the outgoing parts of your [IsolateSocketProcessors] here!
+  /// And first one must be the WebSocketProcessor.
+  final wsProcessor = WebSocketProcessor(socketUri: connectionUri);
+  final ws = await wsProcessor.processOutgoing(
+    mySendPort: sendPort,
+    receiveStream: rStream,
+    currentTokens: userTokens,
   );
 
-  websocket.onDisconnect(
-    (data) => sendPort.send((
-      key: IsolateEventKeys.socketStatus,
-      value: SocketConnectionStatus.disconnected,
-    )),
+  UserSocketProcessor(socketUri: connectionUri).processOutgoing(
+    socket: ws,
+    mySendPort: sendPort,
+    receiveStream: rStream,
+    currentTokens: userTokens,
   );
 
-  websocket.onConnectError(
-    (data) => sendPort.send((
-      key: IsolateEventKeys.socketStatus,
-      value: SocketConnectionStatus.error,
-    )),
-  );
-
-  websocket.onAny(
-    (event, data) => sendPort.send((key: event, value: data)),
-  );
-
-  receiverController.stream.listen(
-    (message) {
-      log(message.toString(), name: "TO-ISOLATE");
-      switch (message) {
-        case (:String key, :String message):
-          websocket.emit(key, message);
-      }
-    },
+  ChatSocketProcessor(socketUri: connectionUri).processOutgoing(
+    socket: ws,
+    mySendPort: sendPort,
+    receiveStream: rStream,
+    currentTokens: userTokens,
   );
 }

@@ -13,7 +13,7 @@ class HiveConfig {
   Box<String> get themeBox => Hive.box(themeKey);
   Box<String> get authenticationBox => Hive.box(authenticationBoxKey);
 
-  Future<void> dispose() async {
+  Future<void> clear() async {
     themeBox.clear();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_client/src/constants/server/api_config.dart';
 import 'package:chat_client/src/utilities/dialogues/overlay_loader.dart';
 import 'package:chat_client/src/utilities/scaffold_utils/snackbar_util.dart';
@@ -12,17 +14,19 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print(APIConfig.baseURL);
+    log(APIConfig.baseURL);
     final goRouter = ref.watch(goRouterProvider);
     final themeState = ref.watch(themeStateProvider);
-    return LoadingOverlayWrapper.global(builder: (context) {
-      return MaterialApp.router(
-        routerConfig: goRouter,
-        title: 'Full-Stack Chat',
-        theme: themeState.currentTheme,
-        debugShowCheckedModeBanner: false,
-        scaffoldMessengerKey: ScaffoldUtilities.instance.key,
-      );
-    });
+    return LoadingOverlayWrapper.global(
+      builder: (context) {
+        return MaterialApp.router(
+          routerConfig: goRouter,
+          title: 'Full-Stack Chat',
+          theme: themeState.currentTheme,
+          debugShowCheckedModeBanner: false,
+          scaffoldMessengerKey: ScaffoldUtilities.instance.key,
+        );
+      },
+    );
   }
 }

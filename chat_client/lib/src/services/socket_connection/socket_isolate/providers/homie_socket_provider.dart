@@ -22,7 +22,6 @@ final homieSocketProvider =
     );
 
     final initialization = socketIsolate.initiate(
-      dataPurser: (i) => (i as List).map((e) => HomieData.fromJson(e)).toList(),
       resetToken: (tokenSet) async {
         final newToken = UserToken.fromJson(tokenSet);
         ref.read(userStateNotifierProvider.notifier).saveUserToken(newToken);

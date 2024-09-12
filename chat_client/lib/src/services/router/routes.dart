@@ -18,6 +18,7 @@ final goRouterProvider = Provider<GoRouter>(
     final authState = ref.watch(authorizationProvider);
     return GoRouter(
       debugLogDiagnostics: true,
+      restorationScopeId: "#root",
       navigatorKey: _navigatorKey,
       initialLocation: HomepageScreen.path,
       routes: [
