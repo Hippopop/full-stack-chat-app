@@ -10,4 +10,11 @@ class IsolateEventKeys {
 class SocketActionKeys {
   static const freshToken = "FRESH_TOKEN";
   static const data = "DATA";
+  static const newMessage = "NEW_MESSAGE";
+}
+
+/// User Message Keys!
+class UserMessageKeys {
+  static const message = "MESSAGE";
+  static const received = "RECEIVED";
 }

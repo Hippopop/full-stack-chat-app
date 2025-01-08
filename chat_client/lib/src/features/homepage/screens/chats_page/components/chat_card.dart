@@ -10,6 +10,7 @@ class ChatCard extends StatelessWidget {
     this.image,
     this.lastMsg,
     this.isActive = false,
+    this.isMsgSeen = true,
     required this.name,
     required this.onTap,
     required this.timeText,
@@ -20,6 +21,7 @@ class ChatCard extends StatelessWidget {
   final String? lastMsg;
   final String timeText;
   final bool isActive;
+  final bool isMsgSeen;
 
   final VoidCallback onTap;
 
@@ -80,6 +82,13 @@ class ChatCard extends StatelessWidget {
                         opacity: 0.64,
                         child: Text(
                           lastMsg!,
+                          style: TextStyle(
+                            fontWeight:
+                                isMsgSeen ? FontWeight.w400 : FontWeight.w600,
+                            color: isMsgSeen
+                                ? context.color.theme
+                                : context.color.primary,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

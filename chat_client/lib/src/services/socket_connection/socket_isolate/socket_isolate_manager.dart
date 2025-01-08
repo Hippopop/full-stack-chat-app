@@ -33,8 +33,8 @@ class SocketIsolateManager<T> {
 
   Future<void> dispose() async => await _currentState?.dispose();
 
-  void send(({String key, dynamic value}) data) =>
-      state.isolatesSendPort.send(data);
+  void send({required String key, dynamic value}) =>
+      state.isolatesSendPort.send((key: key, value: value));
 
   Future<void> initiate({void Function(dynamic value)? resetToken}) async {
     try {

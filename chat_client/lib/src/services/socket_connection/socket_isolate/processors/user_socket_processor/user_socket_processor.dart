@@ -47,6 +47,14 @@ class UserSocketProcessor extends SocketIsolateProcessor<List<HomieData>> {
     }
 
     /// TODO: ADD ALL THE SOCKET END ACTIONS FOR THIS PATH!
+    receiveStream.stream.listen(
+      (event) {
+        if (event case (key: String key, value: var value)) {
+          socket.emit(key, value);
+        }
+      },
+    );
+
     return socket;
   }
 }

@@ -1,50 +1,49 @@
+import 'package:chat_client/src/constants/assets/assets.dart';
 import 'package:chat_client/src/constants/design/paddings.dart';
-import 'package:chat_client/src/data/models/chat_message.dart';
+import 'package:chat_client/src/services/authentication/authentication_service.dart';
+import 'package:chat_client/src/services/socket_connection/models/message/user_message.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'audio_message.dart';
 import 'text_message.dart';
-import 'video_message.dart';
 
-class Message extends StatelessWidget {
+class Message extends ConsumerWidget {
   const Message({
     super.key,
     required this.message,
+    required this.homieProfileImage,
   });
 
-  final ChatMessage message;
+  final UserMessage message;
+  final String? homieProfileImage;
 
   @override
-  Widget build(BuildContext context) {
-    Widget messageContains(ChatMessage message) {
-      switch (message.messageType) {
-        case ChatMessageType.text:
-          return TextMessage(message: message);
-        case ChatMessageType.audio:
-          return AudioMessage(message: message);
-        case ChatMessageType.video:
-          return const VideoMessage();
-        default:
-          return const SizedBox();
-      }
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authorizationProvider).currentUuid!;
+    final isSender = message.sender == user;
 
     return Padding(
       padding: const EdgeInsets.only(top: defaultPaddingSpace),
       child: Row(
         mainAxisAlignment:
-            message.isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+            isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          if (!message.isSender) ...[
-            const CircleAvatar(
+          if (!isSender) ...[
+            CircleAvatar(
               radius: 12,
-              backgroundImage: AssetImage("assets/images/user_2.png"),
+              foregroundImage: (homieProfileImage == null)
+                  ? null
+                  : NetworkImage(homieProfileImage!),
+              backgroundImage: const AssetImage(ImageAssets.profile),
             ),
             const SizedBox(width: defaultPaddingSpace / 2),
           ],
-          Expanded(child: messageContains(message)),
-          if (message.isSender) MessageStatusDot(status: message.messageStatus)
+          TextMessage(
+            text: message.text!,
+            isSender: isSender,
+          ),
+          if (isSender) MessageStatusDot(status: message.state)
         ],
       ),
     );
@@ -52,21 +51,21 @@ class Message extends StatelessWidget {
 }
 
 class MessageStatusDot extends StatelessWidget {
-  final MessageStatus? status;
+  final MessageState status;
 
-  const MessageStatusDot({super.key, this.status});
+  const MessageStatusDot({super.key, required this.status});
   @override
   Widget build(BuildContext context) {
-    Color dotColor(MessageStatus status) {
+    Color dotColor(MessageState status) {
       switch (status) {
-        case MessageStatus.not_sent:
+        case MessageState.error:
           return context.color.errorState;
-        case MessageStatus.not_view:
+        case MessageState.delivered:
           return Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.1);
-        case MessageStatus.viewed:
+        case MessageState.seen:
           return context.color.primary;
         default:
-          return Colors.transparent;
+          return Colors.grey.withOpacity(0.7);
       }
     }
 
@@ -75,11 +74,11 @@ class MessageStatusDot extends StatelessWidget {
       height: 12,
       width: 12,
       decoration: BoxDecoration(
-        color: dotColor(status!),
+        color: dotColor(status),
         shape: BoxShape.circle,
       ),
       child: Icon(
-        status == MessageStatus.not_sent ? Icons.close : Icons.done,
+        status == MessageState.loading ? Icons.close : Icons.done,
         size: 8,
         color: Theme.of(context).scaffoldBackgroundColor,
       ),

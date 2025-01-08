@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:chat_client/src/constants/server/api_config.dart';
 import 'package:chat_client/src/domain/repository.dart';
@@ -8,7 +9,7 @@ import 'package:chat_client/src/services/socket_connection/socket_isolate/socket
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final homieSocketProvider =
-    FutureProvider<SocketIsolateManager<List<HomieData>>>(
+    FutureProvider.autoDispose<SocketIsolateManager<List<HomieData>>>(
   (ref) async {
     final authenticationState = ref.watch(userStateNotifierProvider);
     if (!authenticationState.isAuthenticated) {
@@ -35,6 +36,7 @@ final homieSocketProvider =
 
     ref.onDispose(() async {
       await socketIsolate.dispose();
+      log("Disposing HomieDataProvider!");
     });
     return socketIsolate;
   },

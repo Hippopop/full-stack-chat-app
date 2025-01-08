@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:chat_client/src/constants/server/api_config.dart';
 import 'package:chat_client/src/domain/repository.dart';
@@ -7,8 +8,8 @@ import 'package:chat_client/src/services/socket_connection/models/message/user_m
 import 'package:chat_client/src/services/socket_connection/socket_isolate/socket_isolate_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final chatSocketProvider =
-    FutureProvider.family<SocketIsolateManager<List<UserMessage>>, String>(
+final chatSocketProvider = FutureProvider.family
+    .autoDispose<SocketIsolateManager<List<UserMessage>>, String>(
   (ref, uuid) async {
     final authenticationState = ref.watch(userStateNotifierProvider);
     if (!authenticationState.isAuthenticated) {
@@ -35,6 +36,7 @@ final chatSocketProvider =
 
     ref.onDispose(() async {
       await socketIsolate.dispose();
+      log("Disposing ChatSocket!");
     });
     return socketIsolate;
   },

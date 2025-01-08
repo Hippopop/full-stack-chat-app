@@ -236,7 +236,7 @@ class __$$UserMessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$UserMessageImpl with DiagnosticableTreeMixin implements _UserMessage {
+class _$UserMessageImpl extends _UserMessage with DiagnosticableTreeMixin {
   const _$UserMessageImpl(
       {required this.key,
       required this.connection,
@@ -248,7 +248,8 @@ class _$UserMessageImpl with DiagnosticableTreeMixin implements _UserMessage {
       this.createdAt,
       this.updatedAt,
       this.deliverTime,
-      this.seenTime});
+      this.seenTime})
+      : super._();
 
   factory _$UserMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserMessageImplFromJson(json);
@@ -356,7 +357,7 @@ class _$UserMessageImpl with DiagnosticableTreeMixin implements _UserMessage {
   }
 }
 
-abstract class _UserMessage implements UserMessage {
+abstract class _UserMessage extends UserMessage {
   const factory _UserMessage(
       {required final int key,
       required final int connection,
@@ -369,6 +370,7 @@ abstract class _UserMessage implements UserMessage {
       final int? updatedAt,
       final int? deliverTime,
       final int? seenTime}) = _$UserMessageImpl;
+  const _UserMessage._() : super._();
 
   factory _UserMessage.fromJson(Map<String, dynamic> json) =
       _$UserMessageImpl.fromJson;

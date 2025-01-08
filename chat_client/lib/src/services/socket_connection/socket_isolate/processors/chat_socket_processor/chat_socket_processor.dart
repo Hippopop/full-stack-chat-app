@@ -1,7 +1,8 @@
 import 'dart:async';
-
 import 'dart:isolate';
+import 'dart:developer';
 
+import 'package:uuid/uuid.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:chat_client/src/constants/server/api_config.dart';
 import 'package:chat_client/src/services/socket_connection/models/message/user_message.dart';
@@ -23,15 +24,27 @@ class ChatSocketProcessor extends SocketIsolateProcessor<List<UserMessage>> {
     required TokenSetType currentTokens,
   }) async {
     if (!shouldConnect) return;
-
     controls.unfilteredReceiveStream.stream.listen((event) {
-      if (event case (:String key, :var value)
-          when key == SocketActionKeys.data) {
-        controls.dataStreamController
-            .add((value as List).map((e) => UserMessage.fromJson(e)).toList());
+      if (event case (:String key, :var value)) {
+        switch (key) {
+          case SocketActionKeys.data:
+            {
+              controls.dataStreamController.add(
+                (value as List).map((e) => UserMessage.fromJson(e)).toList(),
+              );
+            }
+          case SocketActionKeys.newMessage:
+            {
+              final message = UserMessage.fromJson(value);
+              controls.dataStreamController.add([message]);
+            }
+        }
       }
     });
   }
+
+  /// Private variable that will only be used inside the [Isolate]!
+  final _acknowledgementList = <String>[];
 
   @override
   Future<Socket?> processOutgoing({
@@ -45,6 +58,48 @@ class ChatSocketProcessor extends SocketIsolateProcessor<List<UserMessage>> {
     }
 
     /// TODO: ADD ALL THE SOCKET END ACTIONS FOR THIS PATH!
+    _acknowledgementList.clear();
+    final seg = socketUri.pathSegments.last;
+    final isUuid = Uuid.isValidUUID(fromString: seg);
+
+    if (isUuid) {
+      final receiver = seg;
+      socket.on(SocketActionKeys.data, (data) {
+        final list =
+            (data as List).map((e) => UserMessage.fromJson(e)).toList();
+        final needToUpdateList = list.where((element) =>
+            element.state == MessageState.sent && element.sender == receiver);
+        if (needToUpdateList.isNotEmpty) {
+          socket.emit(
+            UserMessageKeys.received,
+            needToUpdateList.map((e) => e.key).toList(),
+          );
+        }
+      });
+    }
+
+    receiveStream.stream.listen(
+      (event) {
+        if (event case (key: String key, value: var value)) {
+          final isUuid = Uuid.isValidUUID(fromString: key);
+          if (isUuid && value is String) {
+            _acknowledgementList.add(key);
+            socket.emitWithAck(
+              UserMessageKeys.message,
+              value,
+              ack: (response) {
+                log(response.toString());
+                mySendPort.sendWithKey(key, response);
+                _acknowledgementList.remove(key);
+              },
+            );
+          } else {
+            socket.emit(key, value);
+          }
+        }
+      },
+    );
+
     return socket;
   }
 }

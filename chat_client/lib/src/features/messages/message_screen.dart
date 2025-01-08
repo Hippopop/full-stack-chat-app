@@ -13,6 +13,15 @@ import 'package:go_router/go_router.dart';
 import '../../data/models/chat_message.dart';
 import 'components/chat_input_field.dart';
 
+MapEntry<String, Object> _stringToBool(String key, String value) {
+  if (value == "true") {
+    return MapEntry(key, true);
+  } else if (value == "false") {
+    return MapEntry(key, false);
+  }
+  return MapEntry(key, value);
+}
+
 class PersonalChatScreen extends StatefulWidget {
   static const path = "/PersonalChat/:uuid";
   static String route({
@@ -41,16 +50,8 @@ class PersonalChatScreen extends StatefulWidget {
 
 class _PersonalChatScreenState extends State<PersonalChatScreen> {
   PersonalChatQuery get queryData => PersonalChatQuery.fromJson(
-          GoRouterState.of(context).uri.queryParameters.map(
-        (key, value) {
-          if (value == "true") {
-            return MapEntry(key, true);
-          } else if (value == "false") {
-            return MapEntry(key, false);
-          }
-          return MapEntry(key, value);
-        },
-      ));
+        GoRouterState.of(context).uri.queryParameters.map(_stringToBool),
+      );
   final List<ChatMessage> messages = [];
 
   @override
@@ -67,23 +68,40 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: Consumer(
-        builder: (context, ref, child) {
-          final userMessages = ref.watch(userMessagesProvider(widget.uuid));
-
-          return userMessages.when(
-            data: (data) => child!,
-            error: (e, s) => Center(
-              child: Text(e.toString()),
+      body: Column(
+        children: [
+          Expanded(
+            child: Consumer(
+              builder: (context, ref, child) {
+                final userMessages =
+                    ref.watch(userMessagesProvider(widget.uuid));
+                return userMessages.when(
+                  data: (data) => ListView.builder(
+                    reverse: true,
+                    itemCount: data.length,
+                    itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingSpace),
+                      child: Message(
+                        message: data[index],
+                        homieProfileImage: queryData.photoUrl,
+                      ),
+                    ),
+                  ),
+                  error: (e, s) => Center(
+                    child: Text(e.toString()),
+                  ),
+                  loading: () => Center(
+                    child: CircularProgressIndicator.adaptive(
+                      backgroundColor: context.color.primary,
+                    ),
+                  ),
+                );
+              },
             ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        },
-        child: Body(
-          messageList: messages,
-        ),
+          ),
+          ChatInputField(uuid: widget.uuid),
+        ],
       ),
     );
   }
@@ -93,7 +111,8 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
       automaticallyImplyLeading: false,
       title: Row(
         children: [
-          const BackButton(),
+          BackButton(onPressed: () => context.pop()),
+          const SizedBox(width: defaultPaddingSpace / 2),
           CircleAvatar(
             foregroundImage: queryData.photoUrl == null
                 ? null
@@ -138,33 +157,6 @@ class _PersonalChatScreenState extends State<PersonalChatScreen> {
           onPressed: () {},
         ),
         const SizedBox(width: defaultPaddingSpace / 2),
-      ],
-    );
-  }
-}
-
-class Body extends StatelessWidget {
-  const Body({super.key, required this.messageList});
-
-  final List<ChatMessage> messageList;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: defaultPaddingSpace),
-            child: ListView.builder(
-              reverse: true,
-              itemCount: messageList.length,
-              itemBuilder: (context, index) =>
-                  Message(message: messageList[index]),
-            ),
-          ),
-        ),
-        const ChatInputField(),
       ],
     );
   }

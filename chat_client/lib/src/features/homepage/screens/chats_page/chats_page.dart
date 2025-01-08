@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chat_client/src/constants/utils/date_utils.dart';
 import 'package:chat_client/src/features/messages/message_screen.dart';
 import 'package:chat_client/src/features/messages/models/personal_chat_query.dart';
+import 'package:chat_client/src/services/authentication/authentication_service.dart';
 import 'package:chat_client/src/services/socket_connection/data/homie_data_provider.dart';
 import 'package:chat_client/src/services/theme/app_theme.dart';
 import 'package:chat_client/src/utilities/extensions/date_time_extensions.dart';
@@ -52,6 +53,7 @@ class ChatsScreen extends StatelessWidget {
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   final userData = data[index];
+                  print(userData.message?.deliverTime);
 
                   return ChatCard(
                     name: userData.homie.name,
@@ -60,6 +62,9 @@ class ChatsScreen extends StatelessWidget {
                       userData.homie.isActive,
                       userData.homie.lastActivity,
                     ),
+                    isMsgSeen: userData.message?.sender !=
+                            ref.watch(authorizationProvider).currentUuid &&
+                        userData.message?.deliverTime != null,
                     lastMsg: userData.message?.text ??
                         "Connected at ${userData.connection.acceptedAt == null ? "" : timeDate.format(userData.connection.acceptedAt!)}.",
                     onTap: () {
@@ -89,8 +94,10 @@ class ChatsScreen extends StatelessWidget {
             ),
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
+        loading: () => Center(
+          child: CircularProgressIndicator.adaptive(
+            backgroundColor: context.color.primary,
+          ),
         ),
       );
     });

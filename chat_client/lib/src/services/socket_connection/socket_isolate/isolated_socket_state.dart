@@ -18,10 +18,10 @@ final class IsolateManagerState<T> {
 
   IsolateManagerState({
     required this.isolate,
-    required this.isolatesSendPort,
     required this.myReceivePort,
-    required this.unfilteredReceiveStream,
+    required this.isolatesSendPort,
     required this.dataStreamController,
+    required this.unfilteredReceiveStream,
     required this.socketStatusStreamController,
   });
 
