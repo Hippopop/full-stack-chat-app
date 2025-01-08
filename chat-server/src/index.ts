@@ -18,6 +18,7 @@ let initRedis = async () => {
 initRedis();
 
 const server = expressServer.listen(port, () => {
+    console.clear();
     console.log(`Listening on port ${port} // http://localhost:${port}/`);
 });
 

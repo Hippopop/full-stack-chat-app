@@ -31,7 +31,7 @@ export const setupSocketIO = async function (httpServer: HttpServer) {
         socket.emit("message", `Current path is -> ${socket.handshake.url}`);
         socket.on("message", (message: string) => {
             console.log(`Message received: ${message}`);
-            socket.emit('message', `Now you can fuck off!`);
+            socket.emit('message', `Now you can fnuk off!`);
         });
 
         /// --- End of connection processing!

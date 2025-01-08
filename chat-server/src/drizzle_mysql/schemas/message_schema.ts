@@ -11,7 +11,7 @@ type Attachment = {
 };
 
 export const messages = mysqlTable('messages', {
-    key: int('key').notNull().primaryKey(),
+    key: int('key').autoincrement().primaryKey(),
     text: text('text'),
     voiceNote: varchar('voice_note', { length: 256 }),
     connection: int("connection_ref").notNull().references((): AnyMySqlColumn => connections.key),
@@ -26,15 +26,24 @@ export const messages = mysqlTable('messages', {
 
 
 export const DB_Message_Schema = createSelectSchema(messages, {
+    attachment: (_) => z.object({
+        picture: z.array(z.string()).default([]),
+        video: z.array(z.string()).default([]),
+    }).optional(),
+    text: (schema) => schema.text.optional(),
     parent: (schema) => schema.parent.optional(),
     voiceNote: (schema) => schema.voiceNote.optional(),
-    attachment: (schema) => schema.attachment.optional(),
     createdAt: (schema) => schema.createdAt.optional(),
     deliverTime: (schema) => schema.deliverTime.nullish(),
     seenTime: (schema) => schema.seenTime.nullish(),
     updatedAt: (schema) => schema.updatedAt.nullish(),
 });
-export const DBN_Message_Schema = createInsertSchema(messages);
+export const DBN_Message_Schema = createInsertSchema(messages, {
+    attachment: (_) => z.object({
+        picture: z.array(z.string()).default([]),
+        video: z.array(z.string()).default([]),
+    }).optional(),
+});
 
 export type DB_Message = z.infer<typeof DB_Message_Schema>;
 export type DBN_Message = z.infer<typeof DBN_Message_Schema>;

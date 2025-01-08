@@ -3,7 +3,7 @@ import drizzleDatabase from "../drizzle_mysql/database"
 import { activities } from "../drizzle_mysql/schemas/activity_schema"
 
 const createActivityEntry = async (uuid: string): Promise<string> => {
-    let response = await drizzleDatabase.insert(activities).values({
+    await drizzleDatabase.insert(activities).values({
         user: uuid
     }).onDuplicateKeyUpdate({ set: { user: sql`user` } }).$returningId();
     return uuid;
@@ -14,10 +14,6 @@ const switchActivityState = async (uuid: string, socket?: string | undefined): P
     let res = await drizzleDatabase.update(activities)
         .set({ isActive: hasSocket, ...(hasSocket ? { socket: socket } : { socket: null }) })
         .where(eq(activities.user, uuid));
-
-    console.log(`${res[1]}`);
-    console.log(`${JSON.stringify(res[0])}`);
-
     return res.length > 0;
 }
 

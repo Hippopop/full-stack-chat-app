@@ -1,8 +1,9 @@
 import { Namespace, Server, Socket } from "socket.io";
 import { SocketActionKeys, SocketEventKeys } from "../utils/socket_event_keys";
 import * as AuthorizationMiddleware from "../authorization_process/socket_authorization";
-import { createActivityEntry, switchActivityState } from "../../repositories/acitivity_repository";
-import { getListOfMyHomies } from "../../repositories/user_repository";
+import { switchActivityState } from "../../repositories/activity_repository";
+import { getListOfMyHomies } from "../../repositories/connection_repository";
+
 
 let processUserList = async (io: Server): Promise<Namespace> => {
     const usersConnection = io.of("/users");
@@ -16,10 +17,11 @@ let processUserList = async (io: Server): Promise<Namespace> => {
         await switchActivityState(userData.uuid, socket.id);
 
 
-        console.log(`   --- Connected ${socket.id} + ${userData.name} ---   `);
-        console.log(`Name -> ${socket.nsp.name}`);
-
+        /// User/Homie management part!
         socket.emit(SocketActionKeys.data, await getListOfMyHomies(userData.uuid));
+        socket.on(SocketActionKeys.refresh, async () => {
+            socket.emit(SocketActionKeys.data, await getListOfMyHomies(userData.uuid));
+        });
 
         /// Signal Disconnect!
         socket.on(SocketEventKeys.disconnectKey, async () => {

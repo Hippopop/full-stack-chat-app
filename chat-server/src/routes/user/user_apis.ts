@@ -3,10 +3,11 @@ import { NextFunction, Request, Response, Router } from "express";
 import { wrapperFunction } from "../request-handler";
 import { badRequest, success, successfullyChanged, successfullyCreated } from "../../constants/errors/error_codes";
 import { searchUserWithFriendSchema } from "../../repositories/models/search_user";
-import { requestConnection, searchUserWithFriendInfo, updateUserConnectionStatus } from "../../repositories/user_repository";
+import { searchUserWithFriendInfo } from "../../repositories/user_repository";
 import { ResponseError } from "../../types/response/errors/error-z";
 import { User } from "../../types/user/user-z";
 import { DB_Connection_Schema, DB_ConnectionStatus_Schema } from "../../drizzle_mysql/schemas/connection_schema";
+import { requestConnection, updateUserConnectionStatus } from "../../repositories/connection_repository";
 
 
 const userRoute = Router();

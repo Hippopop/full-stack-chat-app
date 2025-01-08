@@ -15,7 +15,7 @@ import { getMediaEntry, insertMediaEntry } from "../../repositories/media_reposi
 import fs from "fs";
 import path from "path";
 import { profilePath, profilePathString } from "../../constants/directories";
-import { createActivityEntry } from "../../repositories/acitivity_repository";
+import { createActivityEntry } from "../../repositories/activity_repository";
 
 
 
@@ -107,7 +107,7 @@ authRoute.post(
             refreshToken: refreshToken,
             expiresAt: accessTokenExpire,
           },
-          user: { ...userData, phone: authData.phone, birthdate: userData?.birthdate?.toDateString() },
+          user: { ...userData, phone: authData.phone, birthdate: userData?.birthdate?.toDateString(), },
         };
       } else {
         throw data.error;
